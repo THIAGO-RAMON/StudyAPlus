@@ -5,6 +5,8 @@
         <group>
             <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/Main/TelaPadraoFullScreen.java</file>
             <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/Main/Principal.java</file>
+            <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/perfil/TelaPerfil.java</file>
+            <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/perfil/TelaAlterar.java</file>
             <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/inicial/TelaLogin.java</file>
             <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/view/inicial/TelaCadastro.java</file>
             <file>file:/D:/ProjetoEmmerson/StudyAPlus/src/model/dao/UserDAO.java</file>

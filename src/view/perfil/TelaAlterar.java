@@ -9,10 +9,6 @@ import java.awt.EventQueue;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static view.Main.Principal.tl;
-import static view.Main.Principal.userDao;
-
 import java.awt.BasicStroke;
 
 import javax.swing.ImageIcon;
@@ -24,23 +20,24 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
+import model.bean.User;
+import view.Main.Principal;
 
-import model.dao.UserDAO;
-import view.Main.TelaPadraoFullScreen;;
 
 public class TelaAlterar extends JFrame {
 
-    JButton btnConfirmar, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2, leave;
-    JLabel lbl, lblNovoNome, lblNovaSenha, lblConfirmarSenha;
-    JTextField tfNovoNome;
-    JPasswordField tfNovaSenha, tfConfirmarSenha;
-    JPanel painel1;
+    private JButton btnConfirmar, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2, leave;
+    private JLabel lbl, lblNovoNome, lblNovaSenha, lblConfirmarSenha;
+    private JTextField tfNovoNome;
+    private JPasswordField tfNovaSenha, tfConfirmarSenha;
+    private JPanel painel1;
+    private Principal principal;
+    private User user = principal.user;
 
     public TelaAlterar() {
         configTela();
         configPainel();
 
-        
         // Labels and TextFields
         lbl = new JLabel("Insira suas novas informações:");
         lbl.setFont(new Font("Arial", 1, 20));
@@ -181,8 +178,8 @@ public class TelaAlterar extends JFrame {
 
                     JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!",
                             JOptionPane.INFORMATION_MESSAGE);
-                    userDao.setNome(tfNovoNome.getText());
-                    userDao.setSenha(tfNovaSenha.getText());
+                    user.setNome(tfNovoNome.getText());
+                    user.setSenha(tfNovaSenha.getText());
                     new TelaPerfil().setVisible(true);
                     setVisible(false);
 
@@ -262,6 +259,10 @@ public class TelaAlterar extends JFrame {
                 new TelaPerfil().setVisible(true);
             }
         });
+    }
+    
+    public static void main(String[] args) {
+        new TelaAlterar().runTela();
     }
     
 }

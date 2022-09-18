@@ -1,39 +1,33 @@
 package view.perfil;
 
-import static view.Main.Principal.tl;
-import static view.Main.Principal.userDao;
-
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.AbstractBorder;
+import model.bean.User;
 
 import view.Main.BarraLateral;
+import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
 
 public class TelaPerfil extends TelaPadraoFullScreen {
 
-    JButton btnFoto, btnLogo, leave, btnAlterar, btnAlterar2;
-    JPanel painel1, painelB;
-    JLabel lblNome, lblSenha;
-    JTextField txtNome, txtSenha;
-    
+    private JButton btnFoto, btnLogo, leave, btnAlterar, btnAlterar2;
+    private JPanel painel1, painelB;
+    private JLabel lblNome, lblSenha;
+    private JTextField txtNome, txtSenha;
+    public static Principal principal;
+    private User user = principal.user;
+
     public static TelaPerfil telaPerfil = new TelaPerfil();
 
     public TelaPerfil() {
@@ -52,27 +46,29 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
         // Labels e TextFields
         lblNome = new JLabel("NOME:");
-        lblNome.setFont(new Font("Arial", 1, 20));
-        lblNome.setBounds(358, 250, 90, 30);
+        lblNome.setFont(new Font("Arial", 1, 28));
+        lblNome.setBounds(358, 275, 130, 30);
         painel1.add(lblNome);
 
         txtNome = new JTextField();
-        txtNome.setBounds(358, 300, 300, 25);
+        txtNome.setBounds(358, 325, 300, 30);
         txtNome.setBackground(new Color(218, 217, 215));
-        txtNome.setText(" " + userDao.getNome());
+        txtNome.setFont(new Font("Arial", 0, 24));
+        txtNome.setText(" " + user.getNome());
         txtNome.setBorder(new BordaCantoArrendondado());
         txtNome.setEditable(false);
         painel1.add(txtNome);
 
         lblSenha = new JLabel("SENHA:");
-        lblSenha.setFont(new Font("Arial", 1, 20));
-        lblSenha.setBounds(358, 350, 90, 30);
+        lblSenha.setFont(new Font("Arial", 1, 28));
+        lblSenha.setBounds(358, 375, 130, 40);
         painel1.add(lblSenha);
 
-        txtSenha = new JTextField();
-        txtSenha.setBounds(358, 400, 300, 25);
-        txtSenha.setBackground(new Color(218, 217, 215));   
-        txtSenha.setText(" " + userDao.getSenha());
+        txtSenha = new JPasswordField();
+        txtSenha.setBounds(358, 425, 300, 30);
+        txtSenha.setFont(new Font("Arial", 0, 24));
+        txtSenha.setBackground(new Color(218, 217, 215));
+        txtSenha.setText(" " + user.getSenha());
         txtSenha.setBorder(new BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
@@ -101,7 +97,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnAlterar.setText("Deseja alterar suas informações? Clique aqui!");
         btnAlterar.setBorder(null);
         btnAlterar.setBackground(new Color(218, 217, 215));
-        btnAlterar.setBounds(358, 450, 300, 40);
+        btnAlterar.setBounds(358, 475, 300, 40);
         painel1.add(btnAlterar);
     }
 
@@ -128,38 +124,18 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            if (e.getSource() == btnAlterar){
+            if (e.getSource() == btnAlterar) {
                 new TelaAlterar().setVisible(true);
             }
         }
 
     }
 
-    private class BordaCantoArrendondado extends AbstractBorder {
-
-        private final BasicStroke CONTORNO = new BasicStroke(2);
-
-        @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-
-            super.paintBorder(c, g, x, y, width, height);
-
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setStroke(CONTORNO);
-
-            g2d.setColor(Color.black);
-            g2d.drawRoundRect(x, y, width - 1, height - 1, 20, 20);
-
-            g2d.dispose();
-        }
-    }
-
     public static void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-             telaPerfil.setVisible(true);
+                telaPerfil.setVisible(true);
             }
         });
     }

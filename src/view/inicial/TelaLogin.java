@@ -17,19 +17,21 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import model.bean.User;
 import model.dao.UserDAO;
+import view.Main.Principal;
 
 import view.Main.TelaPadraoFullScreen;
 import view.telasPrograma.TelaTarefas;
 
 public class TelaLogin extends TelaPadraoFullScreen {
 
-    JLabel lblT, lblNU, lblSenha, lblBackground;
-    JTextField tfNome;
-    JPasswordField pfSenha;
-    JButton btnOk, btnCancel, btnVerSenha1, btnOcultar1;
-    PainelGraphics painel1;
-    User usuario = new User();
-    UserDAO dao = new UserDAO();
+    private JLabel lblT, lblNU, lblSenha, lblBackground;
+    private JTextField tfNome;
+    private JPasswordField pfSenha;
+    private JButton btnOk, btnCancel, btnVerSenha1, btnOcultar1;
+    private PainelGraphics painel1;
+    private User usuario = new User();
+    private UserDAO dao = new UserDAO();
+    public static Principal principal;
 
     TelaLogin() {
 
@@ -124,31 +126,24 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
             for (User user : dao.listUsers()) {
                 if (e.getSource() == btnOk) {
-
-                    if (tfNome.getText().equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) {
+                    if (tfNome.getText().equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
                         JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
+                        principal.user = user;
                         new TelaTarefas().runTela();
                         dispose();
-
                     } else if (!tfNome.getText().equals(user.getNome())) {
                         JOptionPane.showMessageDialog(null, "Nome incorreto!", "Login!", JOptionPane.WARNING_MESSAGE);
-
                     } else if (!pfSenha.getText().equals(user.getSenha())) {
-
                         JOptionPane.showMessageDialog(null, "senha incorreta!", "Login!", JOptionPane.WARNING_MESSAGE);
-
                     } else if (tfNome.getText().isEmpty() && pfSenha.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!", "Login!",
-                                JOptionPane.WARNING_MESSAGE);
-
+                        JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!", "Login",JOptionPane.WARNING_MESSAGE);
                     }
-
-                } else if (e.getSource() == btnCancel) {
-                    dispose();
-                    new TelaMain().runTela();
                 }
             }
-
+            if (e.getSource() == btnCancel) {
+                dispose();
+                new TelaMain().runTela();
+            }
         }
     }
 

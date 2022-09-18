@@ -8,6 +8,7 @@ public class Task {
     private String descricao;
     private Date dataInic;
     private Date dataFim;
+    private int qtd;
     private boolean importancia; 
 
     /**
@@ -78,6 +79,14 @@ public class Task {
      */
     public void setImportancia(boolean importancia) {
         this.importancia = importancia;
+    }
+
+    public int getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(int qtd) {
+        this.qtd = qtd;
     }
 
     public Task(){

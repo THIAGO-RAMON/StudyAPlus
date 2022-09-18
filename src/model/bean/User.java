@@ -7,6 +7,7 @@ public class User {
     private String sobreMim;
     private String escolaridade;
     private String objetivo;
+    private double desempenho_percentual;
     
     /**
      * @return String return the nome
@@ -77,6 +78,16 @@ public class User {
     public void setObjetivo(String objetivo) {
         this.objetivo = objetivo;
     }
+
+    public double getDesempenho_percentual() {
+        return desempenho_percentual;
+    }
+
+    public void setDesempenho_percentual(double desempenho_percentual) {
+        this.desempenho_percentual = desempenho_percentual;
+    }
+    
+    
 
     public User(){
 

@@ -17,18 +17,20 @@ import javax.swing.JTextField;
 import javax.swing.JPanel;
 import model.bean.User;
 import model.dao.UserDAO;
+import view.Main.Principal;
 
 import view.Main.TelaPadraoFullScreen;
 
 public class TelaCadastro extends TelaPadraoFullScreen {
 
-    JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar;
-    JTextField jfNome;
-    JPasswordField pfSenha, pfConfirmar;
-    JButton btnOk, btnCancel, leave, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2;
-    PainelPadrao painel1;
-    User usuario;
-    UserDAO dao = new UserDAO();
+    private JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar;
+    private JTextField jfNome;
+    private JPasswordField pfSenha, pfConfirmar;
+    private JButton btnOk, btnCancel, leave, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2;
+    private PainelPadrao painel1;
+    private User usuario;
+    private UserDAO dao = new UserDAO();
+    public static Principal principal;
 
     TelaCadastro() {
 
@@ -218,10 +220,10 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                 } else {
                     usuario = new User();
                     usuario.setNome(jfNome.getText());
-                    usuario.setSenha(pfSenha.getText());
-
+                    usuario.setSenha(pfSenha.getText());                    
+                    
                     if (dao.saveCadastro(usuario)) {
-                        JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
                         dispose();
                     }else{
