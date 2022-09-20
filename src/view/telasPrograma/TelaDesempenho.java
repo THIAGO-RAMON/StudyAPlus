@@ -43,9 +43,10 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
 
         x = telaTarefas.porcentagem();
 
-        lblCabe = new JLabel("Desempenho");
+        lblCabe = new JLabel("DESEMPENHO");
         lblCabe.setBounds(600, 20, 300, 50);
-        lblCabe.setFont(new Font("Arial", 1, 40));
+        lblCabe.setFont(new Font("Arial", 1, 30));
+        lblCabe.setForeground(Color.BLACK.darker());
         painel1.add(lblCabe);
 
         lblDes1 = new JLabel("O seu desempenho é:");

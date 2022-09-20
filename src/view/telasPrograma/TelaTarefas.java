@@ -67,7 +67,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         painelPrincipal.add(painelTarefas);
 
         lblAfazeres = new JLabel("SEUS AFAZERES");
-        lblAfazeres.setFont(new Font("Arial", 1, 25));
+        lblAfazeres.setFont(new Font("Arial", 1, 30));
         lblAfazeres.setBounds(580, 20, 250, 30);
         lblAfazeres.setForeground(Color.BLACK.darker());
         painelPrincipal.add(lblAfazeres);

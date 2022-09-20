@@ -28,11 +28,12 @@ public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconePerfil, iconeProgesso;
     private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa;
-
+    private Color colorButton = Color.WHITE;
+    
     public BarraLateral() {
         setSize(300, 600);
         setLayout(null);
-        setBackground(new Color(218, 217, 215));
+        setBackground(new Color(147, 230, 232));
 
         iconeTarefas = new JLabel();
         iconeTarefas.setBounds(0, 30, 50, 50);
@@ -44,7 +45,7 @@ public class BarraLateral extends JPanel {
 
         painelTarefas = new JButton("Tarefas");
         painelTarefas.setFont(new Font("Arial", 1, 20));
-        painelTarefas.setBackground(null);
+        painelTarefas.setBackground(colorButton);
         painelTarefas.setBorder(new BordaPersonalizada());
         painelTarefas.setBounds(60, 30, 230, 50);
         painelTarefas.addActionListener(eventoTarefas);
@@ -54,7 +55,7 @@ public class BarraLateral extends JPanel {
 
         painelCriarTarefa = new JButton("Criar Tarefa");
         painelCriarTarefa.setFont(new Font("Arial", 1, 20));
-        painelCriarTarefa.setBackground(null);
+        painelCriarTarefa.setBackground(colorButton);
         painelCriarTarefa.setBorder(new BordaPersonalizada());
         painelCriarTarefa.setBounds(60, 90, 230, 50);
         painelCriarTarefa.addActionListener(evtCriar);
@@ -69,7 +70,7 @@ public class BarraLateral extends JPanel {
 
         painelProgresso = new JButton("Desempenho");
         painelProgresso.setFont(new Font("Arial", 1, 20));
-        painelProgresso.setBackground(null);
+        painelProgresso.setBackground(colorButton);
         painelProgresso.setBorder(new BordaPersonalizada());
         painelProgresso.setBounds(60, 150, 230, 50);
         painelProgresso.addActionListener(eventoAbrirProgresso);
@@ -83,7 +84,7 @@ public class BarraLateral extends JPanel {
         add(iconePerfil);
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
-        painelPerfil.setBackground(null);
+        painelPerfil.setBackground(colorButton);
         painelPerfil.setBorder(new BordaPersonalizada());
         painelPerfil.setBounds(60, 540, 230, 50);
         painelPerfil.addActionListener(eventoAbrirPerfil);
