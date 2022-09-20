@@ -18,7 +18,7 @@ import view.Main.TelaPadraoFullScreen;
 
 public class TelaDesempenho extends TelaPadraoFullScreen {
 
-    JPanel painel1;
+    JPanel painel1,painel2;
     JLabel lblCabe, lblDes1, lblDes2, lblMensagem, lblMsgDes, lblError;
     JButton btnBack, btnFoto, leave;
 
@@ -30,7 +30,9 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
     public static TelaDesempenho telaDesempenho = new TelaDesempenho();
 
     public TelaDesempenho() {
+        painel2();
         painel1();
+        
         telaTarefas = new TelaTarefas();
         InserirIcone ic = new InserirIcone();
         ic.InserirIcone(this);
@@ -47,26 +49,26 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1.add(lblCabe);
 
         lblDes1 = new JLabel("O seu desempenho é:");
-        lblDes1.setBounds(500, 230, 420, 30);
+        lblDes1.setBounds(20,30, 420, 30);
         lblDes1.setFont(new Font("Arial", 1, 32));
-        painel1.add(lblDes1);
+        painel2.add(lblDes1);
 
         lblMsgDes = new JLabel();
-        lblMsgDes.setBounds(500, 320, 420, 25);
+        lblMsgDes.setBounds(40, 180, 420,40);
         lblMsgDes.setFont(new Font("Arial", 1, 32));
-        painel1.add(lblMsgDes);
+        painel2.add(lblMsgDes);
 
         lblDes2 = new JLabel("0%");
         lblDes2.setFont(new Font("Arial", 1, 20));
-        lblDes2.setBounds(850, 220, 95, 50);
-        painel1.add(lblDes2);
+        lblDes2.setBounds(390, 25, 95, 50);
+        painel2.add(lblDes2);
 
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                setVisible(false);
             }
         });
         leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
@@ -95,10 +97,10 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
 
         if (Double.isNaN(x)) {
             lblError = new JLabel("Nenhuma tarefa criada");
-            lblError.setBounds(500,320,300,30);
+            lblError.setBounds(40,180,300,30);
             lblError.setFont(new Font("Arial", 1, 23));;
             lblError.setForeground(Color.red);
-            painel1.add(lblError);
+            painel2.add(lblError);
             lblDes2.setText("0%");
         } else {
             lblDes2.setText(df.format(x) + " %");
@@ -109,8 +111,17 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, this.getWidth(), this.getHeight());
-        painel1.setBackground(new Color(218, 217, 215));
+        painel1.setBackground(new Color(147,230,232));
         add(painel1);
+    }
+    
+    private void painel2(){
+        painel2 = new JPanel();
+        painel2.setLayout(null);
+        painel2.setBounds(480,200,600,400);
+        painel2.setBackground(new Color(218, 217, 215));
+        painel2.setBorder(new BordaCantoArrendondado());
+        add(painel2);
     }
 
     public  void runTela() {

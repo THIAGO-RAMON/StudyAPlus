@@ -35,8 +35,9 @@ public class TelaAlterar extends JFrame {
     private User user = principal.user;
 
     public TelaAlterar() {
-        configTela();
         configPainel();
+        configTela();
+        
 
         // Labels and TextFields
         lbl = new JLabel("Insira suas novas informações:");

@@ -144,7 +144,6 @@ public class BarraLateral extends JPanel {
             // TODO Auto-generated method stub
 
             new TelaDesempenho().runTela();
-            
         }
     }
 

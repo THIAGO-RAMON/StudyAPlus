@@ -96,7 +96,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnAlterar.addActionListener(eventoBotao);
         btnAlterar.setText("Deseja alterar suas informações? Clique aqui!");
         btnAlterar.setBorder(null);
-        btnAlterar.setBackground(new Color(218, 217, 215));
+        btnAlterar.setBackground(new Color(147,230,232));
         btnAlterar.setBounds(358, 475, 300, 40);
         painel1.add(btnAlterar);
     }
@@ -114,7 +114,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, getWidth(), getHeight());
-        painel1.setBackground(new Color(218, 217, 215));
+        painel1.setBackground(new Color(147,230,232));
         add(painel1);
     }
 
