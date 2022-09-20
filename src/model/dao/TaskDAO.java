@@ -30,7 +30,7 @@ public class TaskDAO {
     }
 
     public boolean saveTarefa(Task task) {
-        String sql = "insert into tarefa(User_nome, descricao, dataInic, dataFim) values (?,?,?,?)";
+        String sql = "insert into tarefas(User_nome, descricao, dataInic, dataFim) values (?,?,?,?)";
         PreparedStatement stmt = null;
 
         try {
@@ -83,6 +83,27 @@ public class TaskDAO {
         
         return tasks;
         
+    }
+    
+     public boolean updateTarefa(Task taskOld, Task taskNew) {
+        String sql = "UPDATE tarefas set descricao = ? where descricao = ?";
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareCall(sql);
+            stmt.setString(1, taskOld.getDescricao());
+            stmt.setString(2, taskNew.getDescricao());
+            
+            stmt.executeUpdate();
+            return true;
+
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Atualizar a tarefa", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }finally{
+            ConnectionFactory.closeConnection(con,stmt);
+        }
     }
 
 }

@@ -19,10 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.AbstractBorder;
 import model.bean.User;
+import model.dao.UserDAO;
 import view.Main.Principal;
-
 
 public class TelaAlterar extends JFrame {
 
@@ -32,12 +33,12 @@ public class TelaAlterar extends JFrame {
     private JPasswordField tfNovaSenha, tfConfirmarSenha;
     private JPanel painel1;
     private Principal principal;
-    private User user = principal.user;
+    private User userPrincipal = principal.user;
+    private UserDAO dao = new UserDAO();
 
     public TelaAlterar() {
         configPainel();
         configTela();
-        
 
         // Labels and TextFields
         lbl = new JLabel("Insira suas novas informações:");
@@ -53,7 +54,7 @@ public class TelaAlterar extends JFrame {
         tfNovoNome = new JTextField();
         tfNovoNome.setBorder(new BordaCantoArrendondado());
         tfNovoNome.setBackground(new Color(218, 217, 215));
-        tfNovoNome.setFont(new Font ("Arial", 0, 15));
+        tfNovoNome.setFont(new Font("Arial", 0, 15));
         tfNovoNome.setBounds(10, 110, 400, 30);
         painel1.add(tfNovoNome);
 
@@ -67,13 +68,13 @@ public class TelaAlterar extends JFrame {
         tfNovaSenha = new JPasswordField();
         tfNovaSenha.setBorder(new BordaCantoArrendondado());
         tfNovaSenha.setBackground(new Color(218, 217, 215));
-        tfNovaSenha.setFont(new Font ("Arial", 0, 15));
+        tfNovaSenha.setFont(new Font("Arial", 0, 15));
         tfNovaSenha.setBounds(10, 210, 400, 30);
         painel1.add(tfNovaSenha);
 
         // Label Confimar Senha
         lblConfirmarSenha = new JLabel("CONFIRMAR SENHA:");
-        lblConfirmarSenha.setFont(new Font("Arial", 1 , 20));
+        lblConfirmarSenha.setFont(new Font("Arial", 1, 20));
         lblConfirmarSenha.setBounds(10, 270, 400, 30);
         painel1.add(lblConfirmarSenha);
 
@@ -81,7 +82,7 @@ public class TelaAlterar extends JFrame {
         tfConfirmarSenha = new JPasswordField();
         tfConfirmarSenha.setBorder(new BordaCantoArrendondado());
         tfConfirmarSenha.setBackground(new Color(218, 217, 215));
-        tfConfirmarSenha.setFont(new Font ("Arial", 0, 15));
+        tfConfirmarSenha.setFont(new Font("Arial", 0, 15));
         tfConfirmarSenha.setBounds(10, 310, 400, 30);
         painel1.add(tfConfirmarSenha);
 
@@ -136,7 +137,6 @@ public class TelaAlterar extends JFrame {
         leave.addActionListener(new EventoBotao());
         painel1.add(leave);
 
-
     }
 
     // MÉTODOS AUXILIARES
@@ -173,14 +173,19 @@ public class TelaAlterar extends JFrame {
 
                 } else if (!(tfConfirmarSenha.getText().equals(tfNovaSenha.getText()))) {
 
-                    JOptionPane.showMessageDialog(null, "Erro! As senhas não estão iguais.", "Atenção",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro! As senhas não estão iguais.", "Atenção", JOptionPane.WARNING_MESSAGE);
 
                 } else if (tfConfirmarSenha.getText().equals(tfNovaSenha.getText())) {
 
-                    JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    user.setNome(tfNovoNome.getText());
-                    user.setSenha(tfNovaSenha.getText());
+                    User userNew = new User();
+                    userNew.setNome(tfNovoNome.getText());
+                    userNew.setSenha(tfNovaSenha.getText());
+                    
+                    if(dao.updateUser(userPrincipal, userNew)){
+                        JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!",JOptionPane.INFORMATION_MESSAGE);
+                        principal.user = userNew;
+                    }
+                    
                     new TelaPerfil().setVisible(true);
                     setVisible(false);
 
@@ -223,10 +228,10 @@ public class TelaAlterar extends JFrame {
                 tfConfirmarSenha.requestFocus();
 
                 btnVerSenha2.setVisible(true);
-            
-            }else if(e.getSource() == leave){
+
+            } else if (e.getSource() == leave) {
                 dispose();
-                
+
             }
 
         }
@@ -261,9 +266,9 @@ public class TelaAlterar extends JFrame {
             }
         });
     }
-    
+
     public static void main(String[] args) {
         new TelaAlterar().runTela();
     }
-    
+
 }

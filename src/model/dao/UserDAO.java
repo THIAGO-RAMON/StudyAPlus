@@ -66,5 +66,25 @@ public class UserDAO{
 
         return usuarios;
     }
+    
+    public boolean updateUser(User userOld, User userNew){
+
+        String sql = "UPDATE usuario set nome = ? , senha =? where nome = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, userNew.getNome()); 
+            stmt.setString(2, userNew.getSenha());
+            stmt.setString(3, userOld.getNome());
+            stmt.executeUpdate();
+            
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e, "ERROR BD\n Erro ao Atualizar", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }finally{
+            ConnectionFactory.closeConnection(con,stmt);  
+        }
+    }
 
 }
