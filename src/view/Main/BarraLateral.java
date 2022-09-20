@@ -22,11 +22,12 @@ import view.telasPrograma.TelaTarefas;
 import static view.telasPrograma.TelaTarefas.telaDasTarefas;
 import static view.telasPrograma.TelaDesempenho.telaDesempenho;
 import static view.perfil.TelaPerfil.telaPerfil;
+import view.telasPrograma.TelaCriarTarefa;
 
 public class BarraLateral extends JPanel {
 
-    JLabel iconeTarefas, iconePerfil, iconeProgesso;
-    JButton painelTarefas, painelProgresso, painelPerfil;
+    private JLabel iconeTarefas, iconePerfil, iconeProgesso;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa;
 
     public BarraLateral() {
         setSize(300, 600);
@@ -49,8 +50,18 @@ public class BarraLateral extends JPanel {
         painelTarefas.addActionListener(eventoTarefas);
         add(painelTarefas);
 
+        EventoAbrirCriarTarefa evtCriar = new EventoAbrirCriarTarefa();
+
+        painelCriarTarefa = new JButton("Criar Tarefa");
+        painelCriarTarefa.setFont(new Font("Arial", 1, 20));
+        painelCriarTarefa.setBackground(null);
+        painelCriarTarefa.setBorder(new BordaPersonalizada());
+        painelCriarTarefa.setBounds(60, 90, 230, 50);
+        painelCriarTarefa.addActionListener(evtCriar);
+        add(painelCriarTarefa);
+
         iconeProgesso = new JLabel();
-        iconeProgesso.setBounds(0, 90, 50, 50);
+        iconeProgesso.setBounds(0, 150, 50, 50);
         iconeProgesso.setIcon(new ImageIcon(getClass().getResource("/images/iconeProgesso50x50.png")));
         add(iconeProgesso);
 
@@ -60,7 +71,7 @@ public class BarraLateral extends JPanel {
         painelProgresso.setFont(new Font("Arial", 1, 20));
         painelProgresso.setBackground(null);
         painelProgresso.setBorder(new BordaPersonalizada());
-        painelProgresso.setBounds(60, 90, 230, 50);
+        painelProgresso.setBounds(60, 150, 230, 50);
         painelProgresso.addActionListener(eventoAbrirProgresso);
         add(painelProgresso);
 
@@ -121,6 +132,15 @@ public class BarraLateral extends JPanel {
 
     }
 
+    private class EventoAbrirCriarTarefa implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new TelaCriarTarefa().runTela();
+        }
+
+    }
+
     private class EventoAbrirTarefas implements ActionListener {
 
         @Override
@@ -144,6 +164,7 @@ public class BarraLateral extends JPanel {
             // TODO Auto-generated method stub
 
             new TelaDesempenho().runTela();
+
         }
     }
 
