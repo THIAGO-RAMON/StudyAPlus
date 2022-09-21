@@ -21,6 +21,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -44,7 +45,9 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
     private JTextArea txtDescricao;
     private PainelCriar painelCriar;
     private BarraLateral barraLateral;
+    private Color colorTxtField = new Color(255, 255, 255);
     private Font sansSerif = new Font("SansSerif", 0, 20);
+    private EventoTxtChangeColor eventoTxtDestaque = new EventoTxtChangeColor();
 
     public TelaCriarTarefa() {
         configPanel();
@@ -57,15 +60,8 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painel.add(cabecalho);
         
         barraLateral = new BarraLateral();
-        barraLateral.setBounds(10, 100, barraLateral.getWidth(), barraLateral.getHeight());
+        barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel.add(barraLateral);
-
-        btnFoto = new JButton();
-        btnFoto.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
-        btnFoto.setBackground(new Color(147, 230, 232));
-        btnFoto.setBorder(null);
-        btnFoto.setBounds(10, 10, 100, 75);
-        painel.add(btnFoto);
 
         painelCriar = new PainelCriar();
         painelCriar.setBounds(320, 100, 930, 600);
@@ -87,8 +83,9 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         
         txtTitulo = new JTextField();
         txtTitulo.setFont(sansSerif);
-        txtTitulo.setBackground(new Color(247, 247, 247));
+        txtTitulo.setBackground(colorTxtField);
         txtTitulo.setBounds(40, 130, 600, 30);
+        txtTitulo.addMouseListener(eventoTxtDestaque);
         txtTitulo.setBorder(new BordaTextField());
         painelCriar.add(txtTitulo);
         
@@ -100,8 +97,9 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         
         txtDescricao = new JTextArea(3, 10);
         txtDescricao.setFont(sansSerif);
-        txtDescricao.setBackground(new Color(247, 247, 247));
+        txtDescricao.setBackground(colorTxtField);
         txtDescricao.setBounds(40, 210, 600, 120);
+        txtDescricao.addMouseListener(eventoTxtDestaque);
         txtDescricao.setBorder(new BordaTextField());
         painelCriar.add(txtDescricao);
         
@@ -113,10 +111,10 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         
         txtDataInicio = new JTextField();
         txtDataInicio.setFont(sansSerif);
-        txtDataInicio.setBackground(new Color(247, 247, 247));
+        txtDataInicio.setBackground(colorTxtField);
         txtDataInicio.setBounds(165, 350, 150,30);
         txtDataInicio.setBorder(new BordaTextField());
-        txtDataInicio.addActionListener(new EventoTxtChangeColor());
+        txtDataInicio.addMouseListener(new EventoTxtChangeColor());
         painelCriar.add(txtDataInicio);
         
         lblDataFim = new JLabel("Termina em: ");
@@ -127,20 +125,38 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         
         txtDataFim = new JTextField();
         txtDataFim.setFont(sansSerif);
-        txtDataFim.setBackground(new Color(247, 247, 247));
+        txtDataFim.setBackground(colorTxtField);
         txtDataFim.setBounds(475, 350, 150,30);
         txtDataFim.setBorder(new BordaTextField());
-        txtDataFim.addActionListener(new EventoTxtChangeColor());
+        txtDataFim.addMouseListener(new EventoTxtChangeColor());
         painelCriar.add(txtDataFim);
         
     }
     
-    private class EventoTxtChangeColor implements ActionListener{
+    private class EventoTxtChangeColor implements MouseListener{
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+        public void mouseClicked(MouseEvent e) {
         }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            e.getComponent().setBackground(e.getComponent().getBackground().darker());
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            e.getComponent().setBackground(e.getComponent().getBackground().brighter());
+        }
+        
         
     }
     
@@ -149,7 +165,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painel = new JPanel();
         painel.setSize(getSize());
         painel.setLayout(null);
-        painel.setBackground(new Color(147, 230, 232));
+        painel.setBackground(new Color(207, 227, 225));
 
     }
     
@@ -191,7 +207,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
     
     private class BordaTextField extends AbstractBorder{
         
-        private final BasicStroke contorno = new BasicStroke(2);
+        private final BasicStroke contorno = new BasicStroke(4);
 
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -200,7 +216,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
             Graphics2D g2d = (Graphics2D) g;
             
             g2d.setStroke(contorno);
-            g2d.drawRoundRect(x, y, width-1, height-1, 10, 10);
+            g2d.drawRoundRect(x, y, width+1, height+1, 10, 10);
             g.clearRect(x, y, 1, 1);
             
         }

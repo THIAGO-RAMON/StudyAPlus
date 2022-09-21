@@ -27,16 +27,23 @@ import view.telasPrograma.TelaCriarTarefa;
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconePerfil, iconeProgesso;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo;
     private Color colorButton = Color.WHITE;
     
     public BarraLateral() {
-        setSize(300, 600);
+        setSize(300, 685);
         setLayout(null);
-        setBackground(new Color(147, 230, 232));
+        setBackground(new Color(207, 227, 225));
 
+        btnLogo = new JButton();
+        btnLogo.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
+        btnLogo.setBackground(this.getBackground());
+        btnLogo.setBorder(null);
+        btnLogo.setBounds(0, 0, 100, 75);
+        add(btnLogo);
+        
         iconeTarefas = new JLabel();
-        iconeTarefas.setBounds(0, 30, 50, 50);
+        iconeTarefas.setBounds(0, 115, 50, 50);
 
         iconeTarefas.setIcon(new ImageIcon(getClass().getResource("/images/iconeTarefas50x50.png")));
         add(iconeTarefas);
@@ -47,7 +54,7 @@ public class BarraLateral extends JPanel {
         painelTarefas.setFont(new Font("Arial", 1, 20));
         painelTarefas.setBackground(colorButton);
         painelTarefas.setBorder(new BordaPersonalizada());
-        painelTarefas.setBounds(60, 30, 230, 50);
+        painelTarefas.setBounds(60, 115, 230, 50);
         painelTarefas.addActionListener(eventoTarefas);
         add(painelTarefas);
 
@@ -57,12 +64,12 @@ public class BarraLateral extends JPanel {
         painelCriarTarefa.setFont(new Font("Arial", 1, 20));
         painelCriarTarefa.setBackground(colorButton);
         painelCriarTarefa.setBorder(new BordaPersonalizada());
-        painelCriarTarefa.setBounds(60, 90, 230, 50);
+        painelCriarTarefa.setBounds(60, 175, 230, 50);
         painelCriarTarefa.addActionListener(evtCriar);
         add(painelCriarTarefa);
 
         iconeProgesso = new JLabel();
-        iconeProgesso.setBounds(0, 150, 50, 50);
+        iconeProgesso.setBounds(0, 235, 50, 50);
         iconeProgesso.setIcon(new ImageIcon(getClass().getResource("/images/iconeProgesso50x50.png")));
         add(iconeProgesso);
 
@@ -72,21 +79,21 @@ public class BarraLateral extends JPanel {
         painelProgresso.setFont(new Font("Arial", 1, 20));
         painelProgresso.setBackground(colorButton);
         painelProgresso.setBorder(new BordaPersonalizada());
-        painelProgresso.setBounds(60, 150, 230, 50);
+        painelProgresso.setBounds(60, 235, 230, 50);
         painelProgresso.addActionListener(eventoAbrirProgresso);
         add(painelProgresso);
 
         EventoAbrirPerfil eventoAbrirPerfil = new EventoAbrirPerfil();
 
         iconePerfil = new JLabel();
-        iconePerfil.setBounds(0, 540, 50, 50);
+        iconePerfil.setBounds(0, 625, 50, 50);
         iconePerfil.setIcon(new ImageIcon(getClass().getResource("/images/iconePerfil50x50.png")));
         add(iconePerfil);
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
         painelPerfil.setBackground(colorButton);
         painelPerfil.setBorder(new BordaPersonalizada());
-        painelPerfil.setBounds(60, 540, 230, 50);
+        painelPerfil.setBounds(60, 625, 230, 50);
         painelPerfil.addActionListener(eventoAbrirPerfil);
         add(painelPerfil);
 
@@ -99,7 +106,7 @@ public class BarraLateral extends JPanel {
 
         // Barra Lateral
         g.setColor(new Color(168, 168, 168));
-        g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 30, 30);
+        g.fillRoundRect(0, 90, this.getWidth(), this.getHeight()-90, 30, 30);
 
     }
 
@@ -112,7 +119,7 @@ public class BarraLateral extends JPanel {
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(Color.black);
 
-        g2d.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 30, 30);
+        g2d.drawRoundRect(0, 90, this.getWidth() - 1, this.getHeight() - 91, 30, 30);
 
     }
 
