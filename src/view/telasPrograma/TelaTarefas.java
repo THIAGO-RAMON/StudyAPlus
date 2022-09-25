@@ -10,6 +10,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,9 +34,11 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private PainelTarefas painelTarefas;
     private JPanel painelPrincipal;
     private BarraLateral barraLateral;
+    private JScrollPane painelPendente, painelConcluido;
+
     private JLabel lblAfazeres, lblCreateTarefa, lblTarefa;
-    private JButton btn, btnAdd, btnFoto, btnConfirmar, btnAlter, btnPerfil, btnDesempenho, btnX, leave;
-    private JTextField txtCreateTarefa, txtAlter;
+    private JButton btnConcluido, btnPendente, btnAdd, btnFoto, btnConfirmar, btnAlter, btnPerfil, btnDesempenho, btnX, leave;
+    private JTextField txtCreateTarefa, txtAlter, txtConcluido, txtPendente;
     private ArrayList<JCheckBox> cBoxs = new ArrayList<>();
     private ArrayList<JLabel> tarefas = new ArrayList<>();
     private static double tarefa = 0, concluido = 0;
@@ -72,21 +76,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         lblAfazeres.setForeground(Color.BLACK.darker());
         painelPrincipal.add(lblAfazeres);
 
-        lblCreateTarefa = new JLabel("CRIAR TAREFA");
-        lblCreateTarefa.setFont(new Font("Arial", 1, 26));
-        lblCreateTarefa.setBackground(new Color(255, 249, 232));
-        lblCreateTarefa.setForeground(Color.BLACK.darker());
-        lblCreateTarefa.setBounds(350, 60, 200, 35);
-        painelTarefas.add(lblCreateTarefa);
-
-        btnAdd = new JButton("+");
-        btnAdd.setBackground(new Color(237, 236, 235));
-        btnAdd.setFont(new Font("Arial", 0, 20));
-        btnAdd.setForeground(Color.BLACK.darker());
-        btnAdd.addActionListener(evtCriar);
-        btnAdd.setBounds(750, 60, 50, 35);
-        painelTarefas.add(btnAdd);
-
         btnFoto = new JButton();
         btnFoto.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
         btnFoto.setBackground(new Color(218, 217, 215));
@@ -105,6 +94,63 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
         painelPrincipal.add(leave);
+
+        txtConcluido = new JTextField(" Concluído");
+        txtConcluido.setFont(new Font("Arial", 1, 30));
+        txtConcluido.setBackground(new Color(218, 217, 215));
+        txtConcluido.setBorder(new BarraLateral().getBorder());
+        txtConcluido.setEditable(false);
+        txtConcluido.setBounds(30, 30, 165, 40);
+        painelTarefas.add(txtConcluido);
+
+        txtPendente = new JTextField(" Pendente");
+        txtPendente.setBackground(new Color(218, 217, 215));
+        txtPendente.setFont(new Font("Arial", 1, 30));
+        txtPendente.setBorder(new BarraLateral().getBorder());
+        txtPendente.setEditable(false);
+        txtPendente.setBounds(30, 90, 165, 40);
+        painelTarefas.add(txtPendente);
+
+        EventoConcluido evtConcluido = new EventoConcluido();
+        btnConcluido = new JButton();
+        btnConcluido.setBorder(null);
+        btnConcluido.setBackground(new Color(168, 168, 168));
+        btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
+        btnConcluido.setBounds(450, 30, 35, 35);
+        btnConcluido.addMouseListener(evtConcluido);
+        painelTarefas.add(btnConcluido);
+
+        EventoPainelPendente evtPendente = new EventoPainelPendente();
+        btnPendente = new JButton();
+        btnPendente.setBorder(null);
+        btnPendente.setBackground(new Color(168, 168, 168));
+        btnPendente.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
+        btnPendente.setBounds(450, 90, 35, 35);
+        btnPendente.addMouseListener(evtPendente);
+        painelTarefas.add(btnPendente);
+
+        btnFoto = new JButton();
+        btnFoto.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
+        btnFoto.setBackground(new Color(218, 217, 215));
+        btnFoto.setBorder(null);
+        btnFoto.setBounds(10, 10, 100, 75);
+        painelPrincipal.add(btnFoto);
+
+        painelPendente = new JScrollPane();
+        painelPendente.setBounds(txtPendente.getX(), txtPendente.getY() + 40, 700, 400);
+        painelPendente.setBackground(Color.BLACK);
+        painelPendente.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        painelPendente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        painelPendente.setVisible(false);
+        painelTarefas.add(painelPendente);
+
+        painelConcluido = new JScrollPane();
+        painelConcluido.setBounds(txtConcluido.getX(), txtConcluido.getY() + 40, 700, 400);
+        painelConcluido.setBackground(Color.BLACK);
+        painelConcluido.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        painelConcluido.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        painelConcluido.setVisible(false);
+        painelTarefas.add(painelConcluido);
 
     }
 
@@ -250,7 +296,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             alterarTarefa();
-            
+
             txtAlter.setVisible(true);
             txtAlter.requestFocus();
             txtAlter.setText(lblTarefa.getText());
@@ -259,13 +305,13 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
             btnAlter.setVisible(false);
             btnX.setVisible(true);
-            
+
             btnX.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     txtAlter.setVisible(false);
                     lblTarefa.setVisible(true);
-                    
+
                     btnX.setVisible(false);
                     btnAlter.setVisible(true);
                 }
@@ -288,7 +334,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
                 lblTarefa.setText(txtAlter.getText());
                 txtAlter.setVisible(false);
                 lblTarefa.setVisible(true);
-                
+
                 btnX.setVisible(false);
                 btnAlter.setVisible(true);
             }
@@ -301,7 +347,84 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     }
 
-    // MÉTODOS AUXILIARES
+    private class EventoPainelPendente implements MouseListener {
+
+        int cont = 1;
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+            if (cont % 2 != 0) {
+                btnPendente.setIcon(new ImageIcon(getClass().getResource("/images/setaBaixo.png")));
+                painelPendente.setVisible(true);
+            } else {
+                btnPendente.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
+                painelPendente.setVisible(false);
+            }
+
+            cont++;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
+    }
+
+    private class EventoConcluido implements MouseListener {
+
+        int cont = 1;
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (cont % 2 != 0) {
+                btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaBaixo.png")));
+                txtPendente.setBounds(painelConcluido.getX(), painelConcluido.getY() + 445, 165, 40);
+                btnPendente.setBounds(450, painelConcluido.getY() + 455, 35, 35);
+
+                painelConcluido.setVisible(true);
+            } else {
+                btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
+                txtPendente.setBounds(30, 90, 165, 40);
+                btnPendente.setBounds(450, 90, 35, 35);
+
+                painelConcluido.setVisible(false);
+            }
+
+            cont++;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
+    }
+
+// MÉTODOS AUXILIARES
     public void criarTarefa() {
 
         JCheckBox cb = new JCheckBox();
@@ -371,7 +494,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         btnX.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.black, Color.black.darker()));
         btnX.setForeground(Color.black);
         btnX.setVisible(false);
-        
+
         painelTarefas.add(btnX);
         painelTarefas.add(txtAlter);
 
@@ -395,5 +518,3 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     }
 
 }
-
-
