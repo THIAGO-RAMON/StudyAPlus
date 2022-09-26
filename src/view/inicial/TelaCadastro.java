@@ -220,7 +220,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                 } else {
                     usuario = new User();
                     usuario.setNome(jfNome.getText());
-                    usuario.setSenha(pfSenha.getText());                    
+                    usuario.setSenha(pfSenha.getText());       
                     
                     if (dao.saveCadastro(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);

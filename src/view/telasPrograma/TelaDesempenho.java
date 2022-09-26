@@ -10,29 +10,39 @@ import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import model.bean.User;
+import model.dao.UserDAO;
 
 import view.Main.BarraLateral;
+import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
+import view.perfil.TelaPerfil;
+import static view.perfil.TelaPerfil.principal;
 
 public class TelaDesempenho extends TelaPadraoFullScreen {
 
-    JPanel painel1,painel2;
+    JPanel painel1, painel2;
     JLabel lblCabe, lblDes1, lblDes2, lblMensagem, lblMsgDes, lblError;
     JButton btnBack, btnFoto, leave;
+
+    private User usuario = principal.user;
+    private Principal princial;
+    private UserDAO dao = new UserDAO();
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
     static TelaTarefas telaTarefas;
     BarraLateral barraLateral;
-    private static double x;
+    private static double x ;
 
     public static TelaDesempenho telaDesempenho = new TelaDesempenho();
 
     public TelaDesempenho() {
         painel2();
         painel1();
-        
+
         telaTarefas = new TelaTarefas();
         InserirIcone ic = new InserirIcone();
         ic.InserirIcone(this);
@@ -41,7 +51,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         barraLateral.setBounds(10, 100, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
 
-        x = telaTarefas.porcentagem();
+        x = 4;
 
         lblCabe = new JLabel("DESEMPENHO");
         lblCabe.setBounds(600, 20, 300, 50);
@@ -50,18 +60,21 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1.add(lblCabe);
 
         lblDes1 = new JLabel("O seu desempenho é:");
-        lblDes1.setBounds(20,30, 420, 30);
+        lblDes1.setBounds(20, 30, 420, 30);
         lblDes1.setFont(new Font("Arial", 1, 32));
         painel2.add(lblDes1);
 
         lblMsgDes = new JLabel();
-        lblMsgDes.setBounds(40, 180, 420,40);
+        lblMsgDes.setBounds(40, 180, 420, 40);
         lblMsgDes.setFont(new Font("Arial", 1, 32));
         painel2.add(lblMsgDes);
 
-        lblDes2 = new JLabel("0%");
+        usuario = dao.listDesempenho(Principal.user.getNome());
+
+        lblDes2 = new JLabel(String.valueOf(usuario.getDesempenho_percentual()) + "%");
         lblDes2.setFont(new Font("Arial", 1, 20));
         lblDes2.setBounds(390, 25, 95, 50);
+
         painel2.add(lblDes2);
 
         leave = new JButton("X");
@@ -70,6 +83,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                System.exit(0);
             }
         });
         leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
@@ -83,7 +97,6 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         btnFoto.setBounds(10, 10, 100, 75);
         painel1.add(btnFoto);
 
-
         if (x >= 0.0 && x <= 19.9) {
             lblMsgDes.setText("Desempenho muito baixo!");
         } else if (x >= 20.0 && x <= 39.9) {
@@ -95,16 +108,38 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         } else if (x >= 80.0 && x <= 100.0) {
             lblMsgDes.setText("Desempenho ótimo!");
         }
-
+        
         if (Double.isNaN(x)) {
+            x = 0;
+
             lblError = new JLabel("Nenhuma tarefa criada");
-            lblError.setBounds(40,180,300,30);
+            lblError.setBounds(40, 180, 300, 30);
             lblError.setFont(new Font("Arial", 1, 23));;
             lblError.setForeground(Color.red);
-            painel2.add(lblError);
-            lblDes2.setText("0%");
+
+            usuario.setDesempenho_percentual(x);
+
+            User desNew = new User();
+            desNew.setDesempenho_percentual(x);
+
+            if (dao.updateUser(usuario, desNew)) {
+                Principal.user.setDesempenho_percentual(x);
+            }
+
         } else {
-            lblDes2.setText(df.format(x) + " %");
+
+            if (x != usuario.getDesempenho_percentual()) {
+
+                User desNew = new User();
+                desNew.setDesempenho_percentual(x);
+
+                if (dao.updateDesempenho(usuario, desNew)) {
+                    JOptionPane.showMessageDialog(null, "Desempenho atualizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+                    principal.user = desNew;
+                    lblDes2.setText(String.valueOf(Principal.user.getDesempenho_percentual()) + " %");
+                }
+
+            }
         }
     }
 
@@ -112,24 +147,24 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, this.getWidth(), this.getHeight());
-        painel1.setBackground(new Color(147,230,232));
+        painel1.setBackground(new Color(147, 230, 232));
         add(painel1);
     }
-    
-    private void painel2(){
+
+    private void painel2() {
         painel2 = new JPanel();
         painel2.setLayout(null);
-        painel2.setBounds(480,200,600,400);
+        painel2.setBounds(480, 200, 600, 400);
         painel2.setBackground(new Color(218, 217, 215));
         painel2.setBorder(new BordaCantoArrendondado());
         add(painel2);
     }
 
-    public  void runTela() {
+    public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TelaDesempenho().setVisible(true);
+                telaDesempenho.setVisible(true);
             }
         });
     }

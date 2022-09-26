@@ -125,18 +125,21 @@ public class TelaLogin extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
 
             for (User user : dao.listUsers()) {
+                
                 if (e.getSource() == btnOk) {
                     if (tfNome.getText().equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
                         JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
+                        
                         principal.user = user;
                         new TelaTarefas().runTela();
                         dispose();
+                        
                     } else if (!tfNome.getText().equals(user.getNome())) {
                         JOptionPane.showMessageDialog(null, "Nome incorreto!", "Login!", JOptionPane.WARNING_MESSAGE);
                     } else if (!pfSenha.getText().equals(user.getSenha())) {
                         JOptionPane.showMessageDialog(null, "senha incorreta!", "Login!", JOptionPane.WARNING_MESSAGE);
                     } else if (tfNome.getText().isEmpty() && pfSenha.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!", "Login",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!", "Login", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }

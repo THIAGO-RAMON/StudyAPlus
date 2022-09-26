@@ -36,7 +36,7 @@ public class BarraLateral extends JPanel {
         setBackground(new Color(207, 227, 225));
 
         btnLogo = new JButton();
-        btnLogo.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
+       // btnLogo.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
         btnLogo.setBackground(this.getBackground());
         btnLogo.setBorder(null);
         btnLogo.setBounds(0, 0, 100, 75);
@@ -171,7 +171,7 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            new TelaDesempenho().runTela();
+            telaDesempenho.runTela();
 
         }
     }
