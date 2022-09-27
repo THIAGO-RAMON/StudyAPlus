@@ -34,7 +34,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         // Configurações de tela
         painel1();
         BarraLateral barraLateral = new BarraLateral();
-        barraLateral.setBounds(10, 100, barraLateral.getWidth(), barraLateral.getHeight());
+        barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
 
         btnLogo = new JButton();
@@ -76,7 +76,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         // Botões
         btnFoto = new JButton("Foto do usuário");
         btnFoto.setBackground(new Color(218, 217, 215));
-        btnFoto.setBounds(358, barraLateral.getY(), 150, 150);
+        btnFoto.setBounds(358, barraLateral.getY()+90, 150, 150);
         painel1.add(btnFoto);
 
         leave = new JButton("X");
@@ -96,7 +96,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnAlterar.addActionListener(eventoBotao);
         btnAlterar.setText("Deseja alterar suas informações? Clique aqui!");
         btnAlterar.setBorder(null);
-        btnAlterar.setBackground(new Color(147,230,232));
+        btnAlterar.setBackground(painel1.getBackground());
         btnAlterar.setBounds(358, 475, 300, 40);
         painel1.add(btnAlterar);
     }
@@ -114,7 +114,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, getWidth(), getHeight());
-        painel1.setBackground(new Color(147,230,232));
+        painel1.setBackground(new Color(207, 227, 225));
         add(painel1);
     }
 

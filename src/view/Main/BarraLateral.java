@@ -26,25 +26,24 @@ import view.telasPrograma.TelaCriarTarefa;
 
 public class BarraLateral extends JPanel {
 
-    private JLabel iconeTarefas, iconePerfil, iconeProgesso;
+    private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso;
     private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo;
     private Color colorButton = Color.WHITE;
-    
+
     public BarraLateral() {
         setSize(300, 685);
         setLayout(null);
         setBackground(new Color(207, 227, 225));
 
         btnLogo = new JButton();
-       // btnLogo.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
+        btnLogo.setIcon(new ImageIcon(getClass().getResource("/images/Logo100x75.png")));
         btnLogo.setBackground(this.getBackground());
         btnLogo.setBorder(null);
         btnLogo.setBounds(0, 0, 100, 75);
         add(btnLogo);
-        
+
         iconeTarefas = new JLabel();
         iconeTarefas.setBounds(0, 115, 50, 50);
-
         iconeTarefas.setIcon(new ImageIcon(getClass().getResource("/images/iconeTarefas50x50.png")));
         add(iconeTarefas);
 
@@ -60,6 +59,11 @@ public class BarraLateral extends JPanel {
 
         EventoAbrirCriarTarefa evtCriar = new EventoAbrirCriarTarefa();
 
+        iconeCriarTarefa = new JLabel();
+        iconeCriarTarefa.setBounds(0, 175, 50, 50);
+        iconeCriarTarefa.setIcon(new ImageIcon(getClass().getResource("/images/iconeAddTarefa.png")));
+        add(iconeCriarTarefa);
+        
         painelCriarTarefa = new JButton("Criar Tarefa");
         painelCriarTarefa.setFont(new Font("Arial", 1, 20));
         painelCriarTarefa.setBackground(colorButton);
@@ -106,7 +110,7 @@ public class BarraLateral extends JPanel {
 
         // Barra Lateral
         g.setColor(new Color(168, 168, 168));
-        g.fillRoundRect(0, 90, this.getWidth(), this.getHeight()-90, 30, 30);
+        g.fillRoundRect(0, 90, this.getWidth(), this.getHeight() - 90, 30, 30);
 
     }
 
@@ -171,7 +175,7 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            telaDesempenho.runTela();
+            new TelaDesempenho().runTela();
 
         }
     }

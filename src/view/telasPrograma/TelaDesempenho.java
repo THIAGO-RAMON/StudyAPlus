@@ -48,7 +48,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         ic.InserirIcone(this);
 
         barraLateral = new BarraLateral();
-        barraLateral.setBounds(10, 100, barraLateral.getWidth(), barraLateral.getHeight());
+        barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
 
         x = 4;
@@ -147,7 +147,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, this.getWidth(), this.getHeight());
-        painel1.setBackground(new Color(147, 230, 232));
+        painel1.setBackground(new Color(207, 227, 225));
         add(painel1);
     }
 

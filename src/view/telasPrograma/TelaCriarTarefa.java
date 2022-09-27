@@ -11,25 +11,26 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
+import model.bean.Task;
+import model.bean.User;
+import model.dao.TaskDAO;
 import view.Main.BarraLateral;
+import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
 
 /**
@@ -38,9 +39,15 @@ import view.Main.TelaPadraoFullScreen;
  */
 public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    
+    private TaskDAO dao = new TaskDAO();
+    private Task tarefa;
+    public static Principal principal;
+    
     private JPanel painel;
-    private JButton btnFoto;
-    private JLabel cabecalho, lblInforme, lblDescricao, lblTitulo, lblDataInicio, lblDataFim;
+    private JButton btnImportante ,btnConfirmar, btnLimpar, leave;
+    private JLabel cabecalho, lblInforme, lblDescricao, lblTitulo, lblDataInicio, lblDataFim, lblImportante;
     private JTextField txtTitulo, txtDataInicio, txtDataFim;
     private JTextArea txtDescricao;
     private PainelCriar painelCriar;
@@ -48,6 +55,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
     private Color colorTxtField = new Color(255, 255, 255);
     private Font sansSerif = new Font("SansSerif", 0, 20);
     private EventoTxtChangeColor eventoTxtDestaque = new EventoTxtChangeColor();
+    private boolean isImportante = false;
 
     public TelaCriarTarefa() {
         configPanel();
@@ -130,6 +138,126 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         txtDataFim.setBorder(new BordaTextField());
         txtDataFim.addMouseListener(new EventoTxtChangeColor());
         painelCriar.add(txtDataFim);
+        
+        lblImportante = new JLabel("É importante? ");
+        lblImportante.setFont(sansSerif);
+        lblImportante.setForeground(Color.black.darker());
+        lblImportante.setBounds(40, 430, 300, 30);
+        painelCriar.add(lblImportante);
+        
+        btnImportante = new JButton(new ImageIcon(getClass().getResource("/images/CirculoNaoMarcado.png")));
+        btnImportante.setFont(sansSerif);
+        btnImportante.setBorder(null);
+        btnImportante.addMouseListener(new EventoImportante());
+        btnImportante.setBackground(new Color(168, 168, 168));
+        btnImportante.setBounds(190, 420, 50, 50);
+        painelCriar.add(btnImportante);
+        
+        btnConfirmar = new JButton("Confirmar");
+        btnConfirmar.setFont(sansSerif);
+        btnConfirmar.setBackground(colorTxtField);
+        btnConfirmar.setBounds(40, 530, 200, 40);
+        btnConfirmar.addMouseListener(new EventoTxtChangeColor());
+        btnConfirmar.setBorder(new BordaTextField());
+        painelCriar.add(btnConfirmar);
+        
+        btnLimpar = new JButton("Limpar");
+        btnLimpar.setFont(sansSerif);
+        btnLimpar.setBackground(colorTxtField);
+        btnLimpar.addMouseListener(new EventoTxtChangeColor());
+        btnLimpar.addActionListener(new EventoLimpar());
+        btnLimpar.setBorder(new BordaTextField());
+        btnLimpar.setBounds(340, 530, 200, 40);
+        painelCriar.add(btnLimpar);
+        
+        leave = new JButton("X");
+        leave.setBackground(new Color(223, 63, 16));
+        leave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        leave.setBounds(painel.getWidth() - 60, 0, 60, 30);
+        painel.add(leave);
+    }
+    
+    private void confirmar(){
+        
+        User user = principal.user;
+        
+        String titulo = "";
+        String descricao = "";
+        Date dataInicio;
+        Date dataFim;
+        boolean Importante = isImportante;
+        
+        if(txtTitulo.getText()=="" && txtDataInicio.getText()=="" && txtDataFim.getText()==""){
+            JOptionPane.showMessageDialog(null, "Preencha os campos", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }else if(vefData(txtDataFim) == false || vefData(txtDataInicio) == false){
+            JOptionPane.showMessageDialog(null, "Datas Incopatives", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }else{
+            
+        }
+        
+        
+    }
+    
+    private boolean vefData(JTextField txtData){
+        
+        String data = txtData.getText();
+        
+        if(data.length()==10){
+            return true;
+        }
+        return false;
+    }
+    
+    private class EventoLimpar implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            txtTitulo.setText("");
+            txtDescricao.setText("");
+            txtDataInicio.setText("");
+            txtDataFim.setText("");
+        }
+    }
+    
+    private class EventoImportante implements MouseListener{
+        int cont = 1;
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            if (cont % 2 != 0) {
+                isImportante = true;
+                btnImportante.setIcon(new ImageIcon(getClass().getResource("/images/CirculoMarcado.png")));
+            } else {
+                isImportante = false;
+                btnImportante.setIcon(new ImageIcon(getClass().getResource("/images/CirculoNaoMarcado.png")));
+            }
+
+            cont++;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+            me.getComponent().setBackground(me.getComponent().getBackground().darker());
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+            me.getComponent().setBackground(new Color(168,168,168));
+        }
+
+        
         
     }
     

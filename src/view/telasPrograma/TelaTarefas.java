@@ -56,12 +56,12 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         ic.InserirIcone(this);
 
         painelPrincipal = new JPanel(null);
-        painelPrincipal.setBackground(new Color(147, 230, 232));
+        painelPrincipal.setBackground(new Color(207, 227, 225));
         painelPrincipal.setBounds(0, 0, getWidth(), getHeight());
         add(painelPrincipal);
 
         barraLateral = new BarraLateral();
-        barraLateral.setBounds(10, 100, barraLateral.getWidth(), barraLateral.getHeight());
+        barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painelPrincipal.add(barraLateral);
 
         painelTarefas = new PainelTarefas();
