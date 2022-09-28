@@ -163,6 +163,10 @@ public class TelaMain extends TelaPadraoFullScreen {
         });
 
     }
+    
+    public static void main(String[] args) {
+        new TelaMain().runTela();
+    }
 
     private class PainelPadrao extends JPanel {
 

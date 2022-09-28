@@ -1,6 +1,7 @@
 package view.telasPrograma;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -32,7 +33,7 @@ import view.perfil.TelaPerfil;
 public class TelaTarefas extends TelaPadraoFullScreen {
 
     private PainelTarefas painelTarefas;
-    private JPanel painelPrincipal;
+    private JPanel painelPrincipal, painelTeste;
     private BarraLateral barraLateral;
     private JScrollPane painelPendente, painelConcluido;
 
@@ -72,7 +73,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         lblAfazeres = new JLabel("SEUS AFAZERES");
         lblAfazeres.setFont(new Font("Arial", 1, 30));
-        lblAfazeres.setBounds(580, 20, 250, 30);
+        lblAfazeres.setBounds(550, 20, 400, 30);
         lblAfazeres.setForeground(Color.BLACK.darker());
         painelPrincipal.add(lblAfazeres);
 
@@ -116,7 +117,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         btnConcluido.setBorder(null);
         btnConcluido.setBackground(new Color(168, 168, 168));
         btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
-        btnConcluido.setBounds(450, 30, 35, 35);
+        btnConcluido.setBounds(860, 30, 35, 35);
         btnConcluido.addMouseListener(evtConcluido);
         painelTarefas.add(btnConcluido);
 
@@ -125,7 +126,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         btnPendente.setBorder(null);
         btnPendente.setBackground(new Color(168, 168, 168));
         btnPendente.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
-        btnPendente.setBounds(450, 90, 35, 35);
+        btnPendente.setBounds(860, 90, 35, 35);
         btnPendente.addMouseListener(evtPendente);
         painelTarefas.add(btnPendente);
 
@@ -136,14 +137,25 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         btnFoto.setBounds(10, 10, 100, 75);
         painelPrincipal.add(btnFoto);
 
+        painelTeste = new JPanel(null);
+
         painelPendente = new JScrollPane();
-        painelPendente.setBounds(txtPendente.getX(), txtPendente.getY() + 40, 700, 400);
-        painelPendente.setBackground(Color.BLACK);
-        painelPendente.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        painelPendente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        painelPendente.setVerticalScrollBar(painelPendente.createVerticalScrollBar());
+        painelPendente.setBounds(txtPendente.getX(), btnPendente.getY() + 50, 700, 400);
+        painelPendente.setLayout(null);
         painelPendente.setVisible(false);
         painelTarefas.add(painelPendente);
 
+        int y = 10;
+        for (int i = 0; i < 10; i++) {
+            JLabel lbl = new JLabel("TESTE");
+            lbl.setFont(new Font("Arial", 0, 16));
+            lbl.setBounds(10, y, 100, 30);
+            y += 100;
+            painelPendente.add(lbl);
+        };
+
+        
         painelConcluido = new JScrollPane();
         painelConcluido.setBounds(txtConcluido.getX(), txtConcluido.getY() + 40, 700, 400);
         painelConcluido.setBackground(Color.BLACK);
@@ -203,6 +215,24 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         @Override
         public void keyReleased(KeyEvent e) {
 
+        }
+
+    }
+
+    private void addElementosInJScrollPane(JScrollPane painel) {
+        int y = 10;
+        JPanel painelTeste = new JPanel(null);
+
+        painel.setViewportView(painelTeste);
+
+        for (int i = 0; i < 10; i++) {
+
+            JLabel lbl = new JLabel("Teste");
+            lbl.setFont(new Font("Arial", 1, 16));
+            lbl.setBounds(10, y, 100, 30);
+
+            painelTeste.add(lbl);
+            y += 10;
         }
 
     }
@@ -392,13 +422,13 @@ public class TelaTarefas extends TelaPadraoFullScreen {
             if (cont % 2 != 0) {
                 btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaBaixo.png")));
                 txtPendente.setBounds(painelConcluido.getX(), painelConcluido.getY() + 445, 165, 40);
-                btnPendente.setBounds(450, painelConcluido.getY() + 455, 35, 35);
+                btnPendente.setBounds(860, painelConcluido.getY() + 455, 35, 35);
 
                 painelConcluido.setVisible(true);
             } else {
                 btnConcluido.setIcon(new ImageIcon(getClass().getResource("/images/setaEsquerda.png")));
                 txtPendente.setBounds(30, 90, 165, 40);
-                btnPendente.setBounds(450, 90, 35, 35);
+                btnPendente.setBounds(860, 90, 35, 35);
 
                 painelConcluido.setVisible(false);
             }
@@ -508,6 +538,9 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if (telaDasTarefas.isActive()) {
+                    telaDasTarefas.dispose();
+                }
                 telaDasTarefas.setVisible(true);
             }
         });

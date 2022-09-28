@@ -51,8 +51,6 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
 
-        x = 4;
-
         lblCabe = new JLabel("DESEMPENHO");
         lblCabe.setBounds(600, 20, 300, 50);
         lblCabe.setFont(new Font("Arial", 1, 30));
@@ -164,6 +162,9 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if(telaDesempenho.isActive()){
+                    telaDesempenho.dispose();
+                }
                 telaDesempenho.setVisible(true);
             }
         });

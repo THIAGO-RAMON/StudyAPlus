@@ -22,6 +22,7 @@ import view.telasPrograma.TelaTarefas;
 import static view.telasPrograma.TelaTarefas.telaDasTarefas;
 import static view.telasPrograma.TelaDesempenho.telaDesempenho;
 import static view.perfil.TelaPerfil.telaPerfil;
+import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
 import view.telasPrograma.TelaCriarTarefa;
 
 public class BarraLateral extends JPanel {
@@ -63,7 +64,7 @@ public class BarraLateral extends JPanel {
         iconeCriarTarefa.setBounds(0, 175, 50, 50);
         iconeCriarTarefa.setIcon(new ImageIcon(getClass().getResource("/images/iconeAddTarefa.png")));
         add(iconeCriarTarefa);
-        
+
         painelCriarTarefa = new JButton("Criar Tarefa");
         painelCriarTarefa.setFont(new Font("Arial", 1, 20));
         painelCriarTarefa.setBackground(colorButton);
@@ -148,6 +149,15 @@ public class BarraLateral extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (telaPerfil.isVisible()) {
+                telaPerfil.dispose();
+            }
+            if (telaDesempenho.isVisible()) {
+                telaDesempenho.dispose();
+            }
+            if (telaDasTarefas.isVisible()) {
+                telaDasTarefas.dispose();
+            }
             new TelaCriarTarefa().runTela();
         }
 
@@ -159,13 +169,16 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            TelaTarefas.runTela();
             if (telaPerfil.isVisible()) {
                 telaPerfil.dispose();
             }
             if (telaDesempenho.isVisible()) {
                 telaDesempenho.dispose();
             }
+            if (telaCriarTarefa.isVisible()) {
+                telaCriarTarefa.dispose();
+            }
+            TelaTarefas.runTela();
         }
     }
 
@@ -175,6 +188,15 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
+            if (telaDasTarefas.isVisible()) {
+                telaDasTarefas.dispose();
+            }
+            if (telaCriarTarefa.isVisible()) {
+                telaCriarTarefa.dispose();
+            }
+            if (telaPerfil.isVisible()) {
+                telaPerfil.dispose();
+            }
             new TelaDesempenho().runTela();
 
         }
@@ -186,13 +208,16 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            TelaPerfil.runTela();
             if (telaDasTarefas.isVisible()) {
                 telaDasTarefas.dispose();
             }
             if (telaDesempenho.isVisible()) {
                 telaDesempenho.dispose();
             }
+            if (telaCriarTarefa.isVisible()) {
+                telaCriarTarefa.dispose();
+            }
+            new TelaPerfil().runTela();
         }
     }
 }

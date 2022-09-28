@@ -131,10 +131,14 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
     }
 
-    public static void runTela() {
+    public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                
+                if(telaPerfil.isVisible()){
+                    telaPerfil.dispose();
+                }
                 telaPerfil.setVisible(true);
             }
         });

@@ -30,15 +30,16 @@ public class TaskDAO {
     }
 
     public boolean saveTarefa(Task task) {
-        String sql = "insert into tarefas(User_nome, descricao, dataInic, dataFim) values (?,?,?,?)";
+        String sql = "insert into tarefas(id, User_nome, titulo, descricao, dataInic, dataFim) values (DEFAULT,?, ?,?,?,?)";
         PreparedStatement stmt = null;
 
         try {
             stmt = con.prepareCall(sql);
             stmt.setString(1, task.getUser().getNome());
-            stmt.setString(2, task.getDescricao());
-            stmt.setDate(3, task.getDataInic());
-            stmt.setDate(4, task.getDataFim());
+            stmt.setString(2, task.getTitulo());
+            stmt.setString(3, task.getDescricao());
+            stmt.setDate(4, task.getDataInic());
+            stmt.setDate(5, task.getDataFim());
             
             stmt.execute();
             return true;
@@ -47,8 +48,6 @@ public class TaskDAO {
 
             JOptionPane.showMessageDialog(null, ex, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
-        }finally{
-            ConnectionFactory.closeConnection(con,stmt);
         }
     }
     

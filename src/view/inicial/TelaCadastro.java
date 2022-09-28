@@ -125,7 +125,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         btnVerSenha1.setBounds(565, 353, 35, 30);
         btnVerSenha1.addActionListener(new EventoSenha());
         painel1.add(btnVerSenha1);
-
+        
         btnVerSenha2 = new JButton();
         btnVerSenha2.setBorder(new BordaCantoArrendondado());
         btnVerSenha2.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));

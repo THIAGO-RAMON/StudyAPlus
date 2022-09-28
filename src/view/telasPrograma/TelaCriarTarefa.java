@@ -15,9 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,7 +40,9 @@ import view.Main.TelaPadraoFullScreen;
  */
 public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    public static TelaCriarTarefa telaCriarTarefa = new TelaCriarTarefa();
+    
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
     
     private TaskDAO dao = new TaskDAO();
     private Task tarefa;
@@ -80,10 +83,10 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         lblInforme = new JLabel("Informe a sua tarefa nos campos a seguir");
         lblInforme.setFont(new Font("Arial", 1, 30));
         lblInforme.setForeground(Color.BLACK.darker());
-        lblInforme.setBounds(175, 10, 600, 40);
+        lblInforme.setBounds(150, 10, 700, 40);
         painelCriar.add(lblInforme);
         
-        lblTitulo = new JLabel("Escreva o titulo de sua tarefa");
+        lblTitulo = new JLabel("Escreva o titulo de sua tarefa *");
         lblTitulo.setFont(sansSerif);
         lblTitulo.setForeground(Color.BLACK.darker());
         lblTitulo.setBounds(40, 90, 300, 30);
@@ -158,6 +161,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         btnConfirmar.setBackground(colorTxtField);
         btnConfirmar.setBounds(40, 530, 200, 40);
         btnConfirmar.addMouseListener(new EventoTxtChangeColor());
+        btnConfirmar.addActionListener(new EventoConfirmar());
         btnConfirmar.setBorder(new BordaTextField());
         painelCriar.add(btnConfirmar);
         
@@ -188,19 +192,63 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         
         String titulo = "";
         String descricao = "";
-        Date dataInicio;
-        Date dataFim;
-        boolean Importante = isImportante;
+        String dataInicio;
+        String dataFim;
         
-        if(txtTitulo.getText()=="" && txtDataInicio.getText()=="" && txtDataFim.getText()==""){
-            JOptionPane.showMessageDialog(null, "Preencha os campos", "ERROR", JOptionPane.ERROR_MESSAGE);
+        java.util.Date dataInicioDate;
+        java.util.Date dataFimDate;
+        
+        boolean importante = isImportante;
+        
+        java.sql.Date dataInicioSQL;
+        java.sql.Date dataFimSQL;
+        
+        try{
+        if(txtTitulo.getText()==""){
+            JOptionPane.showMessageDialog(null, "Preencha o Campo Titulo", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else if(vefData(txtDataFim) == false || vefData(txtDataInicio) == false){
             JOptionPane.showMessageDialog(null, "Datas Incopatives", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else{
             
+            titulo = txtTitulo.getText();
+            descricao = txtDescricao.getText();
+            dataInicio = txtDataInicio.getText();
+            dataFim = txtDataFim.getText();
+            
+            dataInicioDate = formatter.parse(corrigirData(dataInicio));
+            dataFimDate = formatter.parse(corrigirData(dataFim));
+            
+            dataInicioSQL = new java.sql.Date(dataInicioDate.getTime());
+            dataFimSQL = new java.sql.Date(dataFimDate.getTime());
+            
+            
+            Task tarefa = new Task(user, titulo, descricao, dataInicioSQL, dataFimSQL);
+            
+            if(dao.saveTarefa(tarefa)){
+                JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso", "Criar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        }catch(ParseException ex){
+            JOptionPane.showMessageDialog(null, "Datas Incopatives", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         
+    }
+    
+    private String corrigirData(String data){
         
+        String dataCorrigida = "";
+        
+        for (int i = data.length()-1; i >= 0 ; i--) { // Inverte a palavra
+            dataCorrigida += data.charAt(i);
+        }
+        
+        for(int i = 0; i < data.length()-1; i++){
+            
+            if(dataCorrigida.charAt(i) == '/'){
+                dataCorrigida.replace('/', '-');
+            }
+        }
+        return dataCorrigida;
     }
     
     private boolean vefData(JTextField txtData){
@@ -224,6 +272,16 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         }
     }
     
+    
+    private class EventoConfirmar implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            confirmar();
+        }
+        
+        
+    }
     private class EventoImportante implements MouseListener{
         int cont = 1;
         @Override
@@ -302,7 +360,10 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TelaCriarTarefa().setVisible(true);
+                if(telaCriarTarefa.isVisible()){
+                    telaCriarTarefa.dispose();
+                }
+                telaCriarTarefa.setVisible(true);
             }
         });
     }

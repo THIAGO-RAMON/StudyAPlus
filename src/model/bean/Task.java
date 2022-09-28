@@ -4,12 +4,22 @@ import java.sql.Date;
 
 public class Task {
     
+    private int id;
     private User user;
+    private String titulo;
     private String descricao;
     private Date dataInic;
     private Date dataFim;
     private int qtd;
     private boolean importancia; 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * @return User return the user
@@ -25,6 +35,15 @@ public class Task {
         this.user = user;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    
     /**
      * @return String return the descricao
      */
@@ -93,8 +112,9 @@ public class Task {
 
     }
 
-    public Task(User user, String descricao, Date dataInic, Date dataFim){
+    public Task(User user, String titulo, String descricao, Date dataInic, Date dataFim){
         this.user = user;
+        this.titulo = titulo;
         this.descricao = descricao;
         this.dataInic = dataInic;
         this.dataFim = dataFim;
