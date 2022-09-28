@@ -51,22 +51,20 @@ public class TaskDAO {
         }
     }
     
-    public List<Task> listarTaks(){
-        String sql = "Select * from Tarefas";
+    public List<Task> listarTaks(User usuario){
+        String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         ArrayList<Task> tasks = new ArrayList<>();
         try {
             
             stmt = con.prepareCall(sql);
+            stmt.setString(1, usuario.getNome());
             rs = stmt.executeQuery();
             
             while(rs.next()){
                 Task task = new Task();
-                User user = new User();
-                user.setNome(rs.getString("nome"));
                 
-                task.setUser(user);
                 task.setDescricao(rs.getString("descricao"));
                 task.setDataInic(rs.getDate("dataInic"));
                 task.setDataFim(rs.getDate("dataFim"));

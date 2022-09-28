@@ -1,14 +1,12 @@
 package view.telasPrograma;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,29 +17,40 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import model.bean.Task;
+import model.bean.User;
+import model.dao.TaskDAO;
+import model.dao.UserDAO;
 
 import view.Main.BarraLateral;
-import view.Main.TelaPadraoFullScreen;
+import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
 
 import view.perfil.TelaPerfil;
 
 public class TelaTarefas extends TelaPadraoFullScreen {
 
+    private User user = Principal.user;
+
+    private static int numConcluido = 0;
+
     private PainelTarefas painelTarefas;
-    private JPanel painelPrincipal, painelTeste;
+    private JPanel painelPrincipal, painelInternoPendente;
     private BarraLateral barraLateral;
     private JScrollPane painelPendente, painelConcluido;
+
+    private TaskDAO daoTarefas = new TaskDAO();
+    private UserDAO daoUser = new UserDAO();
 
     private JLabel lblAfazeres, lblCreateTarefa, lblTarefa;
     private JButton btnConcluido, btnPendente, btnAdd, btnFoto, btnConfirmar, btnAlter, btnPerfil, btnDesempenho, btnX, leave;
     private JTextField txtCreateTarefa, txtAlter, txtConcluido, txtPendente;
     private ArrayList<JCheckBox> cBoxs = new ArrayList<>();
-    private ArrayList<JLabel> tarefas = new ArrayList<>();
+    private ArrayList<Task> tarefas = new ArrayList<>();
     private static double tarefa = 0, concluido = 0;
 
     public static TelaTarefas telaDasTarefas = new TelaTarefas();
@@ -50,8 +59,10 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     public static int YTAREFALBL = 60, YCBTAREFA = 60, YBTNREMOVE = 60;
 
     public TelaTarefas() {
-        EventoCriarTarefa evtCriar = new EventoCriarTarefa();
-        EventoPerfil eventoPerfil = new EventoPerfil();
+
+        for (Task tarefa : daoTarefas.listarTaks(user)) {
+            tarefas.add(tarefa);
+        }
 
         InserirIcone ic = new InserirIcone();
         ic.InserirIcone(this);
@@ -137,25 +148,31 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         btnFoto.setBounds(10, 10, 100, 75);
         painelPrincipal.add(btnFoto);
 
-        painelTeste = new JPanel(null);
+        painelInternoPendente = new JPanel();
+        GridLayout layoutPainelInterno = new GridLayout();
+        layoutPainelInterno.setRows(tarefas.size()+99);
+        layoutPainelInterno.setColumns(2);
+        layoutPainelInterno.setHgap(20);
+        layoutPainelInterno.setVgap(30);
+        painelInternoPendente.setLayout(layoutPainelInterno);
+        painelInternoPendente.setBackground(new Color(168, 168, 168));
 
-        painelPendente = new JScrollPane();
-        painelPendente.setVerticalScrollBar(painelPendente.createVerticalScrollBar());
-        painelPendente.setBounds(txtPendente.getX(), btnPendente.getY() + 50, 700, 400);
-        painelPendente.setLayout(null);
+        painelPendente = new JScrollPane(painelInternoPendente, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        painelPendente.setBounds(txtPendente.getX(), btnPendente.getY() + 60, 870, 400);
+        painelPendente.setBorder(null);
+        painelPendente.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = Color.WHITE.brighter();
+                this.trackColor = new Color(168, 168, 168).brighter();
+
+            }
+        });
+
         painelPendente.setVisible(false);
+        generateTarefa(painelInternoPendente);
         painelTarefas.add(painelPendente);
 
-        int y = 10;
-        for (int i = 0; i < 10; i++) {
-            JLabel lbl = new JLabel("TESTE");
-            lbl.setFont(new Font("Arial", 0, 16));
-            lbl.setBounds(10, y, 100, 30);
-            y += 100;
-            painelPendente.add(lbl);
-        };
-
-        
         painelConcluido = new JScrollPane();
         painelConcluido.setBounds(txtConcluido.getX(), txtConcluido.getY() + 40, 700, 400);
         painelConcluido.setBackground(Color.BLACK);
@@ -167,72 +184,42 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     }
 
     // EVENTOS DE BOTÃOS
-    private class EventoConfirmarTarefa implements ActionListener, KeyListener {
+    private class EventoConcluirTarefas implements MouseListener {
 
+        int cont = 1;
+
+        JButton btn;
+        
+        public EventoConcluirTarefas(JButton btn) {
+            this.btn = btn;
+        }
         @Override
-        public void actionPerformed(ActionEvent ae) {
+        public void mouseClicked(MouseEvent e) {
 
-            lblCreateTarefa.setVisible(true);
-            txtCreateTarefa.setVisible(false);
-            btnAdd.setVisible(true);
-            btnConfirmar.setVisible(false);
-
-            String txtTarefa = txtCreateTarefa.getText();
-
-            if (txtTarefa.equals("")) {
+            if (cont % 2 != 0) {
+                btn.setIcon(new ImageIcon(getClass().getResource("/images/QuadradoMarcado.png")));
 
             } else {
-                criarTarefa();
+                btn.setIcon(new ImageIcon(getClass().getResource("/images/QuadradoNaoMarcado.png")));
             }
 
+            cont++;
         }
 
         @Override
-        public void keyTyped(KeyEvent e) {
+        public void mousePressed(MouseEvent e) {
         }
 
         @Override
-        public void keyPressed(KeyEvent e) {
-            int cod = e.getKeyCode();
-            int tecla = KeyEvent.VK_ENTER;
-
-            if (cod == tecla) {
-
-                lblCreateTarefa.setVisible(true);
-                txtCreateTarefa.setVisible(false);
-                btnAdd.setVisible(true);
-                btnConfirmar.setVisible(false);
-
-                String txtTarefa = txtCreateTarefa.getText();
-
-                if (txtTarefa.equals("")) {
-                } else {
-                    criarTarefa();
-                }
-            }
+        public void mouseReleased(MouseEvent e) {
         }
 
         @Override
-        public void keyReleased(KeyEvent e) {
-
+        public void mouseEntered(MouseEvent e) {
         }
 
-    }
-
-    private void addElementosInJScrollPane(JScrollPane painel) {
-        int y = 10;
-        JPanel painelTeste = new JPanel(null);
-
-        painel.setViewportView(painelTeste);
-
-        for (int i = 0; i < 10; i++) {
-
-            JLabel lbl = new JLabel("Teste");
-            lbl.setFont(new Font("Arial", 1, 16));
-            lbl.setBounds(10, y, 100, 30);
-
-            painelTeste.add(lbl);
-            y += 10;
+        @Override
+        public void mouseExited(MouseEvent e) {
         }
 
     }
@@ -243,59 +230,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
             new TelaPerfil().setVisible(true);
 
-        }
-
-    }
-
-    private class EventoCheck implements ItemListener {
-
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-
-            int cont = 0;
-
-            for (JCheckBox cb : cBoxs) {
-                if (cb.isSelected()) {
-                    tarefas.get(cont).setForeground(new Color(58, 133, 10));
-
-                } else {
-                    tarefas.get(cont).setForeground(Color.BLACK);
-                }
-                cont++;
-            }
-            concluido++;
-        }
-
-    }
-
-    private class EventoCriarTarefa implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            EventoConfirmarTarefa evt = new EventoConfirmarTarefa();
-
-            lblCreateTarefa.setVisible(false);
-            btnAdd.setVisible(false);
-
-            btnConfirmar = new JButton("Confirmar");
-            btnConfirmar.setBackground(new Color(237, 236, 235));
-            btnConfirmar.setFont(new Font("Arial", 0, 20));
-
-            txtCreateTarefa = new JTextField();
-            txtCreateTarefa.setFont(new Font("Arial", 0, 22));
-            txtCreateTarefa.addKeyListener(evt);
-            txtCreateTarefa.setBackground(new Color(243, 238, 233));
-            txtCreateTarefa.setForeground(Color.BLACK.darker());
-            txtCreateTarefa.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.black, Color.black.darker()));
-
-            painelTarefas.add(txtCreateTarefa);
-            txtCreateTarefa.setBounds(60, 60, 600, 35);
-            txtCreateTarefa.requestFocus();
-
-            painelTarefas.add(btnConfirmar);
-            btnConfirmar.setBounds(700, 60, 150, 35);
-
-            btnConfirmar.addActionListener(evt);
         }
 
     }
@@ -455,55 +389,24 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     }
 
 // MÉTODOS AUXILIARES
-    public void criarTarefa() {
+    public void generateTarefa(JPanel painel) {
 
-        JCheckBox cb = new JCheckBox();
+        for (Task tarefa : tarefas) {
 
-        EventoCheck evtCheck = new EventoCheck();
+            JButton btnConcluidoTarefas = new JButton(new ImageIcon(getClass().getResource("/images/QuadradoNaoMarcado.png")));
+            btnConcluidoTarefas.setBorder(null);
+            btnConcluidoTarefas.setBackground(painel.getBackground());
+            btnConcluidoTarefas.addMouseListener(new EventoConcluirTarefas(btnConcluidoTarefas));
+            painel.add(btnConcluidoTarefas);
 
-        YTAREFALBL += 45;
-        YCBTAREFA += 45;
-        YBTNREMOVE += 45;
+            JButton tarefas = new JButton(tarefa.getTitulo());
+            tarefas.setFont(new Font("Arial", 0, 20));
+            tarefas.setBorder(null);
+            tarefas.setBackground(painel.getBackground());
+            painel.add(tarefas);
 
-        lblTarefa = new JLabel(txtCreateTarefa.getText());
-        lblTarefa.setFont(new Font("Arial", 0, 20));
-        lblTarefa.setForeground(Color.BLACK);
-        tarefas.add(lblTarefa);
+        }
 
-        btnAlter = new JButton();
-
-        painelTarefas.add(lblTarefa);
-        painelTarefas.add(btnAlter);
-
-        lblTarefa.setBounds(XTAREFALBL, YTAREFALBL, 450, 30);
-
-        cb.setBounds(XCBTAREFA, YCBTAREFA, 30, 30);
-        cb.setBackground(new Color(168, 168, 168));
-
-        btnAlter.setBounds(750, YBTNREMOVE, 35, 35);
-        btnAlter.setFont(new Font("Arial", 0, 18));
-        btnAlter.setIcon(new ImageIcon(getClass().getResource("/images/Alterar.png")));
-        btnAlter.setBackground(new Color(168, 168, 168));
-        btnAlter.setBorder(null);
-        btnAlter.addActionListener(new EventoBotaoAlterar());
-
-        XTAREFALBL = lblTarefa.getX();
-        YTAREFALBL = lblTarefa.getY();
-
-        XBTNRMOVE = btnAlter.getX();
-        YBTNREMOVE = btnAlter.getY();
-
-        XCBTAREFA = cb.getX();
-        YCBTAREFA = cb.getY();
-        cb.addItemListener(evtCheck);
-
-        cBoxs.add(cb);
-        cb.setBackground(new Color(168, 168, 168));
-
-        alterarTarefa();
-
-        painelTarefas.add(cb);
-        tarefa++;
     }
 
     public void alterarTarefa() {
