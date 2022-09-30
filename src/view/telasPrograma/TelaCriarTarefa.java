@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
@@ -41,15 +39,15 @@ import view.Main.TelaPadraoFullScreen;
 public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
     public static TelaCriarTarefa telaCriarTarefa = new TelaCriarTarefa();
-    
+
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-    
+
     private TaskDAO dao = new TaskDAO();
     private Task tarefa;
     public static Principal principal;
-    
+
     private JPanel painel;
-    private JButton btnImportante ,btnConfirmar, btnLimpar, leave;
+    private JButton btnImportante, btnConfirmar, btnLimpar, leave;
     private JLabel cabecalho, lblInforme, lblDescricao, lblTitulo, lblDataInicio, lblDataFim, lblImportante;
     private JTextField txtTitulo, txtDataInicio, txtDataFim;
     private JTextArea txtDescricao;
@@ -66,10 +64,10 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         cabecalho = new JLabel("CRIE SUA TAREFA");
         cabecalho.setBounds(540, 20, 400, 30);
-        cabecalho.setFont(new Font("Arial",1,30));
+        cabecalho.setFont(new Font("Arial", 1, 30));
         cabecalho.setForeground(Color.black.darker());
         painel.add(cabecalho);
-        
+
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel.add(barraLateral);
@@ -79,19 +77,19 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painelCriar.setBackground(painel.getBackground());
         painelCriar.setLayout(null);
         painel.add(painelCriar);
-        
+
         lblInforme = new JLabel("Informe a sua tarefa nos campos a seguir");
         lblInforme.setFont(new Font("Arial", 1, 30));
         lblInforme.setForeground(Color.BLACK.darker());
         lblInforme.setBounds(150, 10, 700, 40);
         painelCriar.add(lblInforme);
-        
+
         lblTitulo = new JLabel("Escreva o titulo de sua tarefa *");
         lblTitulo.setFont(sansSerif);
         lblTitulo.setForeground(Color.BLACK.darker());
         lblTitulo.setBounds(40, 90, 300, 30);
         painelCriar.add(lblTitulo);
-        
+
         txtTitulo = new JTextField();
         txtTitulo.setFont(sansSerif);
         txtTitulo.setBackground(colorTxtField);
@@ -99,13 +97,13 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         txtTitulo.addMouseListener(eventoTxtDestaque);
         txtTitulo.setBorder(new BordaTextField());
         painelCriar.add(txtTitulo);
-        
+
         lblDescricao = new JLabel("Escreva a descrição sua tarefa");
         lblDescricao.setFont(sansSerif);
         lblDescricao.setForeground(Color.BLACK.darker());
         lblDescricao.setBounds(40, 170, 300, 30);
         painelCriar.add(lblDescricao);
-        
+
         txtDescricao = new JTextArea(3, 10);
         txtDescricao.setFont(sansSerif);
         txtDescricao.setBackground(colorTxtField);
@@ -113,41 +111,41 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         txtDescricao.addMouseListener(eventoTxtDestaque);
         txtDescricao.setBorder(new BordaTextField());
         painelCriar.add(txtDescricao);
-        
+
         lblDataInicio = new JLabel("Começa em: ");
         lblDataInicio.setFont(sansSerif);
         lblDataInicio.setForeground(Color.black.darker());
         lblDataInicio.setBounds(40, 350, 300, 30);
         painelCriar.add(lblDataInicio);
-        
+
         txtDataInicio = new JTextField();
         txtDataInicio.setFont(sansSerif);
         txtDataInicio.setBackground(colorTxtField);
-        txtDataInicio.setBounds(165, 350, 150,30);
+        txtDataInicio.setBounds(165, 350, 150, 30);
         txtDataInicio.setBorder(new BordaTextField());
         txtDataInicio.addMouseListener(new EventoTxtChangeColor());
         painelCriar.add(txtDataInicio);
-        
+
         lblDataFim = new JLabel("Termina em: ");
         lblDataFim.setFont(sansSerif);
         lblDataFim.setForeground(Color.black.darker());
         lblDataFim.setBounds(350, 350, 300, 30);
         painelCriar.add(lblDataFim);
-        
+
         txtDataFim = new JTextField();
         txtDataFim.setFont(sansSerif);
         txtDataFim.setBackground(colorTxtField);
-        txtDataFim.setBounds(475, 350, 150,30);
+        txtDataFim.setBounds(475, 350, 150, 30);
         txtDataFim.setBorder(new BordaTextField());
         txtDataFim.addMouseListener(new EventoTxtChangeColor());
         painelCriar.add(txtDataFim);
-        
+
         lblImportante = new JLabel("É importante? ");
         lblImportante.setFont(sansSerif);
         lblImportante.setForeground(Color.black.darker());
         lblImportante.setBounds(40, 430, 300, 30);
         painelCriar.add(lblImportante);
-        
+
         btnImportante = new JButton(new ImageIcon(getClass().getResource("/images/CirculoNaoMarcado.png")));
         btnImportante.setFont(sansSerif);
         btnImportante.setBorder(null);
@@ -155,7 +153,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         btnImportante.setBackground(new Color(168, 168, 168));
         btnImportante.setBounds(190, 420, 50, 50);
         painelCriar.add(btnImportante);
-        
+
         btnConfirmar = new JButton("Confirmar");
         btnConfirmar.setFont(sansSerif);
         btnConfirmar.setBackground(colorTxtField);
@@ -164,7 +162,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         btnConfirmar.addActionListener(new EventoConfirmar());
         btnConfirmar.setBorder(new BordaTextField());
         painelCriar.add(btnConfirmar);
-        
+
         btnLimpar = new JButton("Limpar");
         btnLimpar.setFont(sansSerif);
         btnLimpar.setBackground(colorTxtField);
@@ -173,7 +171,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         btnLimpar.setBorder(new BordaTextField());
         btnLimpar.setBounds(340, 530, 200, 40);
         painelCriar.add(btnLimpar);
-        
+
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -185,83 +183,65 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         leave.setBounds(painel.getWidth() - 60, 0, 60, 30);
         painel.add(leave);
     }
-    
-    private void confirmar(){
-        
+
+    private void confirmar() {
+
         User user = principal.user;
-        
+
         String titulo = "";
         String descricao = "";
         String dataInicio;
         String dataFim;
-        
-        java.util.Date dataInicioDate;
-        java.util.Date dataFimDate;
-        
+
         boolean importante = isImportante;
-        
+
         java.sql.Date dataInicioSQL;
         java.sql.Date dataFimSQL;
-        
-        try{
-        if(txtTitulo.getText()==""){
-            JOptionPane.showMessageDialog(null, "Preencha o Campo Titulo", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }else if(vefData(txtDataFim) == false || vefData(txtDataInicio) == false){
-            JOptionPane.showMessageDialog(null, "Datas Incopatives", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }else{
-            
+
+        if (txtTitulo.getText() == "" || txtDataInicio.getText() == "" || txtDataFim.getText() == "") {
+            JOptionPane.showMessageDialog(null, "Preencha o Campos *", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else if (vefData(txtDataFim) == false || vefData(txtDataInicio) == false) {
+            JOptionPane.showMessageDialog(null, "Datas Incompatives", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+
             titulo = txtTitulo.getText();
             descricao = txtDescricao.getText();
             dataInicio = txtDataInicio.getText();
             dataFim = txtDataFim.getText();
-            
-            dataInicioDate = formatter.parse(corrigirData(dataInicio));
-            dataFimDate = formatter.parse(corrigirData(dataFim));
-            
-            dataInicioSQL = new java.sql.Date(dataInicioDate.getTime());
-            dataFimSQL = new java.sql.Date(dataFimDate.getTime());
-            
-            
-            Task tarefa = new Task(user, titulo, descricao, dataInicioSQL, dataFimSQL);
-            
-            if(dao.saveTarefa(tarefa)){
+
+            Task tarefa = new Task(user, titulo, descricao, dataInicio, dataFim, importante, false);
+
+            if (dao.saveTarefa(tarefa)) {
                 JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso", "Criar Tarefa", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        }catch(ParseException ex){
-            JOptionPane.showMessageDialog(null, "Datas Incopatives", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        
+
     }
-    
-    private String corrigirData(String data){
-        
-        String dataCorrigida = "";
-        
-        for (int i = data.length()-1; i >= 0 ; i--) { // Inverte a palavra
-            dataCorrigida += data.charAt(i);
+
+    private boolean vefData(JTextField txtData) {
+
+        String data = txtData.getText();
+        String auxiliar = "";
+        boolean isRight = false;
+
+        if (data.length() == 10) {
+            isRight = true;
+        }else{
+            isRight = false;
         }
-        
-        for(int i = 0; i < data.length()-1; i++){
-            
-            if(dataCorrigida.charAt(i) == '/'){
-                dataCorrigida.replace('/', '-');
+
+        if (isRight) {
+            if (data.charAt(2) == '/' && data.charAt(5) == '/') {
+                isRight = true;
+            }else{
+                isRight = false;
             }
         }
-        return dataCorrigida;
+
+        return isRight;
     }
-    
-    private boolean vefData(JTextField txtData){
-        
-        String data = txtData.getText();
-        
-        if(data.length()==10){
-            return true;
-        }
-        return false;
-    }
-    
-    private class EventoLimpar implements ActionListener{
+
+    private class EventoLimpar implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -271,19 +251,20 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
             txtDataFim.setText("");
         }
     }
-    
-    
-    private class EventoConfirmar implements ActionListener{
+
+    private class EventoConfirmar implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             confirmar();
         }
-        
-        
+
     }
-    private class EventoImportante implements MouseListener{
+
+    private class EventoImportante implements MouseListener {
+
         int cont = 1;
+
         @Override
         public void mouseClicked(MouseEvent me) {
             if (cont % 2 != 0) {
@@ -312,14 +293,12 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         @Override
         public void mouseExited(MouseEvent me) {
-            me.getComponent().setBackground(new Color(168,168,168));
+            me.getComponent().setBackground(new Color(168, 168, 168));
         }
 
-        
-        
     }
-    
-    private class EventoTxtChangeColor implements MouseListener{
+
+    private class EventoTxtChangeColor implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -342,10 +321,9 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         public void mouseExited(MouseEvent e) {
             e.getComponent().setBackground(e.getComponent().getBackground().brighter());
         }
-        
-        
+
     }
-    
+
     private void configPanel() {
 
         painel = new JPanel();
@@ -354,13 +332,12 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painel.setBackground(new Color(207, 227, 225));
 
     }
-    
 
     public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if(telaCriarTarefa.isVisible()){
+                if (telaCriarTarefa.isVisible()) {
                     telaCriarTarefa.dispose();
                 }
                 telaCriarTarefa.setVisible(true);
@@ -393,24 +370,23 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         }
 
     }
-    
-    private class BordaTextField extends AbstractBorder{
-        
+
+    private class BordaTextField extends AbstractBorder {
+
         private final BasicStroke contorno = new BasicStroke(4);
 
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             super.paintBorder(c, g, x, y, width, height); //To change body of generated methods, choose Tools | Templates.
-            
+
             Graphics2D g2d = (Graphics2D) g;
-            
+
             g2d.setStroke(contorno);
-            g2d.drawRoundRect(x, y, width+1, height+1, 10, 10);
+            g2d.drawRoundRect(x, y, width + 1, height + 1, 10, 10);
             g.clearRect(x, y, 1, 1);
-            
+
         }
-        
-        
+
     }
-    
+
 }

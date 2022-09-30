@@ -1,17 +1,16 @@
 package model.bean;
 
-import java.sql.Date;
-
 public class Task {
     
     private int id;
     private User user;
     private String titulo;
     private String descricao;
-    private Date dataInic;
-    private Date dataFim;
+    private String dataInic;
+    private String dataFim;
     private int qtd;
-    private boolean importancia; 
+    private boolean importante; 
+    private boolean concluido;
 
     public int getId() {
         return id;
@@ -61,63 +60,67 @@ public class Task {
     /**
      * @return Date return the dataInic
      */
-    public Date getDataInic() {
+    public String getDataInic() {
         return dataInic;
     }
 
     /**
      * @param dataInic the dataInic to set
      */
-    public void setDataInic(Date dataInic) {
+    public void setDataInic(String dataInic) {
         this.dataInic = dataInic;
     }
 
     /**
      * @return Date return the dataFim
      */
-    public Date getDataFim() {
+    public String getDataFim() {
         return dataFim;
     }
 
     /**
      * @param dataFim the dataFim to set
      */
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(String dataFim) {
         this.dataFim = dataFim;
     }
 
     /**
-     * @return boolean return the importancia
+     * @return boolean return the importante
      */
     public boolean isImportancia() {
-        return importancia;
+        return importante;
     }
 
     /**
-     * @param importancia the importancia to set
+     * @param importancia the importante to set
      */
     public void setImportancia(boolean importancia) {
-        this.importancia = importancia;
+        this.importante = importancia;
     }
 
-    public int getQtd() {
-        return qtd;
+    public boolean isConcluido() {
+        return concluido;
     }
 
-    public void setQtd(int qtd) {
-        this.qtd = qtd;
+    public void setConcluido(boolean concluido) {
+        this.concluido = concluido;
     }
+    
+    
 
     public Task(){
 
     }
 
-    public Task(User user, String titulo, String descricao, Date dataInic, Date dataFim){
+    public Task(User user, String titulo, String descricao, String dataInic, String dataFim, boolean importante, boolean concluido){
         this.user = user;
         this.titulo = titulo;
         this.descricao = descricao;
         this.dataInic = dataInic;
         this.dataFim = dataFim;
+        this.importante = importante;
+        this.concluido = concluido;
     }
 
 }

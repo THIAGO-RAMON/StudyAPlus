@@ -123,28 +123,31 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            boolean b = false;
 
             for (User user : dao.listUsers()) {
 
                 if (e.getSource() == btnOk) {
+
                     if (tfNome.getText().equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
-                        JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
 
                         principal.user = user;
-                        new TelaTarefas().runTela();
-                        dispose();
+                        b = true;
 
                         break;
-                    } else if (!tfNome.getText().equals(user.getNome())) {
-                        JOptionPane.showMessageDialog(null, "Nome incorreto!", "Login!", JOptionPane.WARNING_MESSAGE);
-                    } else if (!pfSenha.getText().equals(user.getSenha())) {
-                        JOptionPane.showMessageDialog(null, "senha incorreta!", "Login!", JOptionPane.WARNING_MESSAGE);
-                    } else if (tfNome.getText().isEmpty() && pfSenha.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Por favor, preencha os campos!", "Login", JOptionPane.WARNING_MESSAGE);
                     }
 
                 }
             }
+
+            if (b) {
+                JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
+                new TelaTarefas().runTela();
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
+            }
+
             if (e.getSource() == btnCancel) {
                 dispose();
                 new TelaMain().runTela();

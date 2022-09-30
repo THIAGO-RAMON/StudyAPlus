@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.bean.Task;
 import model.bean.User;
@@ -30,7 +28,7 @@ public class TaskDAO {
     }
 
     public boolean saveTarefa(Task task) {
-        String sql = "insert into tarefas(id, User_nome, titulo, descricao, dataInic, dataFim) values (DEFAULT,?, ?,?,?,?)";
+        String sql = "insert into tarefas(id, User_nome, titulo, descricao, dataInic, dataFim, importante, concluido) values (DEFAULT,?,?,?,?,?,?,?)";
         PreparedStatement stmt = null;
 
         try {
@@ -38,8 +36,10 @@ public class TaskDAO {
             stmt.setString(1, task.getUser().getNome());
             stmt.setString(2, task.getTitulo());
             stmt.setString(3, task.getDescricao());
-            stmt.setDate(4, task.getDataInic());
-            stmt.setDate(5, task.getDataFim());
+            stmt.setString(4, task.getDataInic());
+            stmt.setString(5, task.getDataFim());
+            stmt.setBoolean(6, task.isImportancia());
+            stmt.setBoolean(7, task.isConcluido());
             
             stmt.execute();
             return true;
@@ -51,7 +51,7 @@ public class TaskDAO {
         }
     }
     
-    public List<Task> listarTaks(User usuario){
+    public List<Task> listarTaksTarefas(User usuario){
         String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -65,9 +65,11 @@ public class TaskDAO {
             while(rs.next()){
                 Task task = new Task();
                 
+                task.setTitulo(rs.getString("titulo"));
                 task.setDescricao(rs.getString("descricao"));
-                task.setDataInic(rs.getDate("dataInic"));
-                task.setDataFim(rs.getDate("dataFim"));
+                task.setDataInic(rs.getString("dataInic"));
+                task.setDataFim(rs.getString("dataFim"));
+                task.setConcluido(rs.getBoolean("concluido"));
                 tasks.add(task);
                 
             }
@@ -102,5 +104,23 @@ public class TaskDAO {
             ConnectionFactory.closeConnection(con,stmt);
         }
     }
+     public boolean updateTarefaConcluido(Task tarefa){
+         String sql = "UPDATE tarefas set concluido = true where titulo = ?";
+         PreparedStatement stmt = null;
+         
+         try{
+             
+             stmt = con.prepareCall(sql);
+             stmt.setString(1, tarefa.getTitulo());
+             
+             stmt.executeUpdate();
+             return true;
+         }catch(SQLException ex){
+             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
+             return false;
+         }
+         
+         
+     }
 
 }
