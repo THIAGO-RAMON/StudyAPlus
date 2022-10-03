@@ -40,7 +40,7 @@ public class TaskDAO {
             stmt.setString(5, task.getDataFim());
             stmt.setBoolean(6, task.isImportancia());
             stmt.setBoolean(7, task.isConcluido());
-            
+
             stmt.execute();
             return true;
 
@@ -50,41 +50,39 @@ public class TaskDAO {
             return false;
         }
     }
-    
-    public List<Task> listarTaksTarefas(User usuario){
+
+    public List<Task> listarTaksTarefas(User usuario) {
         String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         ArrayList<Task> tasks = new ArrayList<>();
         try {
-            
+
             stmt = con.prepareCall(sql);
             stmt.setString(1, usuario.getNome());
             rs = stmt.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 Task task = new Task();
-                
+
                 task.setTitulo(rs.getString("titulo"));
                 task.setDescricao(rs.getString("descricao"));
                 task.setDataInic(rs.getString("dataInic"));
                 task.setDataFim(rs.getString("dataFim"));
                 task.setConcluido(rs.getBoolean("concluido"));
                 tasks.add(task);
-                
+
             }
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error na hora de listar as tarefas", "ERROR", JOptionPane.WARNING_MESSAGE);
-        }finally{
-            ConnectionFactory.closeConnection(con, stmt, rs);
-        }
-        
+        } 
+
         return tasks;
-        
+
     }
     
-     public boolean updateTarefa(Task taskOld, Task taskNew) {
+    public boolean updateTarefa(Task taskOld, Task taskNew) {
         String sql = "UPDATE tarefas set descricao = ? where descricao = ?";
         PreparedStatement stmt = null;
 
@@ -92,7 +90,7 @@ public class TaskDAO {
             stmt = con.prepareCall(sql);
             stmt.setString(1, taskOld.getDescricao());
             stmt.setString(2, taskNew.getDescricao());
-            
+
             stmt.executeUpdate();
             return true;
 
@@ -100,27 +98,44 @@ public class TaskDAO {
 
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Atualizar a tarefa", JOptionPane.WARNING_MESSAGE);
             return false;
-        }finally{
-            ConnectionFactory.closeConnection(con,stmt);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
         }
     }
-     public boolean updateTarefaConcluido(Task tarefa){
-         String sql = "UPDATE tarefas set concluido = true where titulo = ?";
-         PreparedStatement stmt = null;
-         
-         try{
-             
-             stmt = con.prepareCall(sql);
-             stmt.setString(1, tarefa.getTitulo());
-             
-             stmt.executeUpdate();
-             return true;
-         }catch(SQLException ex){
-             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
-             return false;
-         }
-         
-         
-     }
+
+    public boolean updateTarefaConcluido(Task tarefa) {
+        String sql = "UPDATE tarefas set concluido = true where titulo = ?";
+        PreparedStatement stmt = null;
+
+        try {
+
+            stmt = con.prepareCall(sql);
+            stmt.setString(1, tarefa.getTitulo());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
+
+    }
+
+    public boolean updateTarefaNaoConcluido(Task tarefa) {
+
+        String sql = "UPDATE tarefas set concluido = false where titulo = ?";
+        PreparedStatement stmt = null;
+
+        try {
+
+            stmt = con.prepareCall(sql);
+            stmt.setString(1, tarefa.getTitulo());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
+
+    }
 
 }
