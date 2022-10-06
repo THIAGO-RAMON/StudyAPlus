@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.bean.Task;
 import model.bean.User;
@@ -38,7 +40,7 @@ public class TaskDAO {
             stmt.setString(3, task.getDescricao());
             stmt.setString(4, task.getDataInic());
             stmt.setString(5, task.getDataFim());
-            stmt.setBoolean(6, task.isImportancia());
+            stmt.setBoolean(6, task.isImportante());
             stmt.setBoolean(7, task.isConcluido());
 
             stmt.execute();
@@ -82,27 +84,34 @@ public class TaskDAO {
 
     }
     
-    public boolean updateTarefa(Task taskOld, Task taskNew) {
-        String sql = "UPDATE tarefas set descricao = ? where descricao = ?";
+    public boolean updateTarefa(Task tarefaAntiga, Task tarefaNova){
+        String sql = "update tarefas set titulo = ?, descricao = ?, dataInic = ?, dataFim = ? importante = ?  "
+                + "where User_nome = ? and titulo = ?";
+        
         PreparedStatement stmt = null;
-
+        
         try {
             stmt = con.prepareCall(sql);
-            stmt.setString(1, taskOld.getDescricao());
-            stmt.setString(2, taskNew.getDescricao());
-
+            
+            stmt.setString(1, tarefaNova.getTitulo());
+            stmt.setString(2, tarefaNova.getDescricao());
+            stmt.setString(3, tarefaNova.getDataInic());
+            stmt.setString(4, tarefaNova.getDataFim());
+            stmt.setBoolean(5, tarefaNova.isImportante());
+            
+            stmt.setString(6, tarefaAntiga.getUser().getNome());
+            stmt.setString(7, tarefaAntiga.getTitulo());
+            
             stmt.executeUpdate();
+            
             return true;
-
         } catch (SQLException ex) {
-
-            JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Atualizar a tarefa", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa", "Error", 0);
             return false;
-        } finally {
-            ConnectionFactory.closeConnection(con, stmt);
         }
+        
     }
-
+    
     public boolean updateTarefaConcluido(Task tarefa) {
         String sql = "UPDATE tarefas set concluido = true where titulo = ?";
         PreparedStatement stmt = null;
@@ -138,4 +147,26 @@ public class TaskDAO {
 
     }
 
+    public boolean deleteTarefa(Task tarefa){
+        
+        String sql = "DELETE FROM tarefas where User_nome = ? and titulo = ?";
+        
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = con.prepareStatement(sql);
+            
+            stmt.setString(1, tarefa.getUser().getNome());
+            stmt.setString(2, tarefa.getTitulo());
+            
+            stmt.executeUpdate();
+            
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro deletando a tarefa", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+    }
+    
 }

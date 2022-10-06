@@ -88,14 +88,14 @@ public class Task {
     /**
      * @return boolean return the importante
      */
-    public boolean isImportancia() {
+    public boolean isImportante() {
         return importante;
     }
 
     /**
      * @param importancia the importante to set
      */
-    public void setImportancia(boolean importancia) {
+    public void setImportante(boolean importancia) {
         this.importante = importancia;
     }
 
