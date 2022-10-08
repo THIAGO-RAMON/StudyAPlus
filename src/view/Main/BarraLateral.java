@@ -27,6 +27,7 @@ import static view.perfil.TelaPerfil.telaPerfil;
 import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
 import view.telasPrograma.TelaCriarTarefa;
 import static view.perfil.TelaCriarObjetivos.telaCriarObjetivos;
+import view.perfil.TelaCriarObjetivos;
 
 public class BarraLateral extends JPanel {
 
@@ -172,6 +173,9 @@ public class BarraLateral extends JPanel {
             if (telaDasTarefas.isVisible()) {
                 telaDasTarefas.dispose();
             }
+            if(telaCriarObjetivos.isVisible()){
+                telaCriarObjetivos.dispose();
+            }
             new TelaCriarTarefa().runTela();
         }
 
@@ -193,7 +197,7 @@ public class BarraLateral extends JPanel {
             } else if (telaDesempenho.isVisible()) {
                 telaDesempenho.dispose();
             }
-            telaCriarObjetivos.runTela();
+            new TelaCriarObjetivos().runTela();
 
         }
 
@@ -214,6 +218,9 @@ public class BarraLateral extends JPanel {
             if (telaCriarTarefa.isVisible()) {
                 telaCriarTarefa.dispose();
             }
+            if(telaCriarObjetivos.isVisible()){
+                telaCriarObjetivos.dispose();
+            }
             TelaTarefas.runTela();
         }
     }
@@ -232,6 +239,9 @@ public class BarraLateral extends JPanel {
             }
             if (telaPerfil.isVisible()) {
                 telaPerfil.dispose();
+            }
+            if(telaCriarObjetivos.isVisible()){
+                telaCriarObjetivos.dispose();
             }
             new TelaDesempenho().runTela();
 
@@ -252,6 +262,9 @@ public class BarraLateral extends JPanel {
             }
             if (telaCriarTarefa.isVisible()) {
                 telaCriarTarefa.dispose();
+            }
+            if(telaCriarObjetivos.isVisible()){
+                telaCriarObjetivos.dispose();
             }
             new TelaPerfil().runTela();
         }

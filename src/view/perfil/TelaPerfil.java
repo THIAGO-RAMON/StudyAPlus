@@ -28,7 +28,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     public static Principal principal;
     private User user = principal.user;
 
-    public static TelaPerfil telaPerfil = new TelaPerfil();
+    public static TelaPerfil telaPerfil;
 
     public TelaPerfil() {
         // Configurações de tela
@@ -54,7 +54,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtNome.setBounds(358, 325, 300, 30);
         txtNome.setBackground(new Color(218, 217, 215));
         txtNome.setFont(new Font("Arial", 0, 24));
-        txtNome.setText(" " + Principal.user.getNome());
+        txtNome.setText("" + Principal.user.getNome());
         txtNome.setBorder(new BordaCantoArrendondado());
         txtNome.setEditable(false);
         painel1.add(txtNome);
@@ -68,7 +68,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setBounds(358, 425, 300, 30);
         txtSenha.setFont(new Font("Arial", 0, 24));
         txtSenha.setBackground(new Color(218, 217, 215));
-        txtSenha.setText(" " + Principal.user.getSenha());
+        txtSenha.setText("" + Principal.user.getSenha());
         txtSenha.setBorder(new BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
@@ -132,14 +132,15 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     }
     
     public void resetPanel(){
-        painel1.revalidate();
         painel1.repaint();
+        painel1.revalidate();
     }
 
     public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                telaPerfil = new TelaPerfil();
                 
                 if(telaPerfil.isVisible()){
                     telaPerfil.dispose();

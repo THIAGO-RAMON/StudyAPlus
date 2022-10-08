@@ -189,9 +189,12 @@ public class TelaAlterar extends JFrame {
                         Principal.user.setSenha(tfNovaSenha.getText());
                     }
                     
+                    telaPerfil.dispose();
                     telaPerfil.resetPanel();
+                    new TelaPerfil().runTela();
                     
                     dispose();
+                    
                     
                    
                 } else if (tfNovaSenha.getText().isEmpty()) {

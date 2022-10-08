@@ -18,10 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
+import model.bean.Objetivo;
 import view.Main.BarraLateral;
 import view.Main.TelaPadraoFullScreen;
-import model.bean.User;
-import model.dao.UserDAO;
+import model.dao.ObjetivoDAO;
 import view.Main.Principal;
 import static view.perfil.TelaPerfil.telaPerfil;
 
@@ -34,12 +34,12 @@ public class TelaCriarObjetivos extends TelaPadraoFullScreen {
     private JButton btn, leave;
     private BarraLateral barraLateral;
 
-    private UserDAO dao = new UserDAO();
-    private User user;
+    private ObjetivoDAO dao = new ObjetivoDAO();
+    private Objetivo obj;
 
     public static TelaCriarObjetivos telaCriarObjetivos = new TelaCriarObjetivos();
 
-    TelaCriarObjetivos() {
+    public TelaCriarObjetivos() {
         painel();
 
         txt = new JTextArea();
@@ -98,14 +98,15 @@ public class TelaCriarObjetivos extends TelaPadraoFullScreen {
             JOptionPane.showMessageDialog(null, "Por favor, insira algum texto!","Objetivos",0);
         }
         
-        user = new User();
-        user.setNome(Principal.user.getNome());
-        user.setSenha(Principal.user.getSenha());
-        user.setObjetivo(txt.getText());
+        obj = new Objetivo();
+        obj.setNome(Principal.user.getNome());
+        obj.setDescricao(txt.getText());
         
-        if(dao.saveObjetivo(user)){
+        if(dao.saveObjetivo(obj)){
             JOptionPane.showMessageDialog(null, "Objetivo salvo com sucesso!","Objetivos", JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        txt.setText("");
         
     }
     

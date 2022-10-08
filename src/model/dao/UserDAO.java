@@ -38,25 +38,6 @@ public class UserDAO {
         }
     }
 
-    public boolean saveObjetivo(User user) {
-
-        String sql = "INSERT into usuario(nome, senha,objetivo) values (?,?,?)";
-        PreparedStatement stmt = null;
-        try {
-            stmt = con.prepareStatement(sql);
-            stmt.setString(1, user.getNome());
-            stmt.setString(2, user.getSenha());
-            stmt.setString(3, user.getObjetivo());
-            stmt.execute();
-            return true;
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e, "ERROR BD", JOptionPane.WARNING_MESSAGE);
-            return false;
-        } finally {
-            ConnectionFactory.closeConnection(con, stmt);
-        }
-    }
-
     public List<User> listUsers() {
 
         String sql = "SELECT * FROM usuario";

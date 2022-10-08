@@ -9,7 +9,6 @@ nome varchar(100) ,
 senha varchar(50) not null,
 sobreMim varchar(200) null,
 escolaridade varchar(50),
-objetivo varchar (100),
 desempenho double null,
 primary key(nome) 
 );
@@ -27,7 +26,16 @@ primary key (id, User_nome),
 foreign key (User_nome) references Usuario(nome) on update cascade
 );
 
+create table objetivos(
+id int auto_increment,
+user_nome varchar(100) not null,
+descricao varchar(150),
+primary key (id),
+foreign key (user_nome) references Usuario(nome)
+);
+
+
 select * from tarefas;
 select * from usuario;
-
+select * from objetivos;
 

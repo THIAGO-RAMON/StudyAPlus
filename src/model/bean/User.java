@@ -6,7 +6,6 @@ public class User {
     private String senha;
     private String sobreMim;
     private String escolaridade;
-    private String objetivo;
     private double desempenho_percentual;
 
     /**
@@ -68,16 +67,7 @@ public class User {
     /**
      * @return String return the objetivo
      */
-    public String getObjetivo() {
-        return objetivo;
-    }
-
-    /**
-     * @param objetivo the objetivo to set
-     */
-    public void setObjetivo(String objetivo) {
-        this.objetivo = objetivo;
-    }
+  
 
     public double getDesempenho_percentual() {
         return desempenho_percentual;
