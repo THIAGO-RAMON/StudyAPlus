@@ -53,7 +53,7 @@ public class TaskDAO {
         }
     }
 
-    public List<Task> listarTaksTarefas(User usuario) {
+    public List<Task> listarTarefas(User usuario) {
         String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -67,6 +67,7 @@ public class TaskDAO {
             while (rs.next()) {
                 Task task = new Task();
 
+                task.setUser(usuario);
                 task.setTitulo(rs.getString("titulo"));
                 task.setDescricao(rs.getString("descricao"));
                 task.setDataInic(rs.getString("dataInic"));
@@ -85,8 +86,7 @@ public class TaskDAO {
     }
     
     public boolean updateTarefa(Task tarefaAntiga, Task tarefaNova){
-        String sql = "update tarefas set titulo = ?, descricao = ?, dataInic = ?, dataFim = ? importante = ?  "
-                + "where User_nome = ? and titulo = ?";
+        String sql = "update tarefas set titulo = ?, descricao = ?, dataInic = ?, dataFim = ?, importante = ? where User_nome = ? and titulo = ?";
         
         PreparedStatement stmt = null;
         
@@ -106,14 +106,14 @@ public class TaskDAO {
             
             return true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa", "Error", 0);
+            JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa\n"+ex, "Error", 0);
             return false;
         }
         
     }
     
     public boolean updateTarefaConcluido(Task tarefa) {
-        String sql = "UPDATE tarefas set concluido = true where titulo = ?";
+        String sql = "UPDATE tarefas set concluido = 1 where titulo = ?";
         PreparedStatement stmt = null;
 
         try {
@@ -131,7 +131,7 @@ public class TaskDAO {
 
     public boolean updateTarefaNaoConcluido(Task tarefa) {
 
-        String sql = "UPDATE tarefas set concluido = false where titulo = ?";
+        String sql = "UPDATE tarefas set concluido = 0 where titulo = ?";
         PreparedStatement stmt = null;
 
         try {

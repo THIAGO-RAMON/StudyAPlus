@@ -29,22 +29,25 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
     JButton btnBack, btnFoto, leave;
 
     private User usuario = principal.user;
-    private Principal princial;
-    private UserDAO dao = new UserDAO();
+    private UserDAO daoUser = new UserDAO();
 
+    private double porcentagem;
+    
     private static final DecimalFormat df = new DecimalFormat("0.00");
-    static TelaTarefas telaTarefas;
-    BarraLateral barraLateral;
-    private static double x ;
+    private static TelaTarefas telaTarefas;
+    private BarraLateral barraLateral;
 
     public static TelaDesempenho telaDesempenho = new TelaDesempenho();
 
     public TelaDesempenho() {
+        
+        runDesempenho();
+        
         painel2();
         painel1();
 
         telaTarefas = new TelaTarefas();
-        InserirIcone ic = new InserirIcone();
+        TelaPadraoFullScreen.InserirIcone ic = new TelaPadraoFullScreen.InserirIcone();
         ic.InserirIcone(this);
 
         barraLateral = new BarraLateral();
@@ -67,9 +70,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         lblMsgDes.setFont(new Font("Arial", 1, 32));
         painel2.add(lblMsgDes);
 
-        usuario = dao.listDesempenho(Principal.user.getNome());
-
-        lblDes2 = new JLabel(String.valueOf(usuario.getDesempenho_percentual()) + "%");
+        lblDes2 = new JLabel(df.format(porcentagem)+"%");
         lblDes2.setFont(new Font("Arial", 1, 20));
         lblDes2.setBounds(390, 25, 95, 50);
 
@@ -95,49 +96,25 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         btnFoto.setBounds(10, 10, 100, 75);
         painel1.add(btnFoto);
 
-        if (x >= 0.0 && x <= 19.9) {
+        if (porcentagem >= 0.0 && porcentagem <= 19.9) {
             lblMsgDes.setText("Desempenho muito baixo!");
-        } else if (x >= 20.0 && x <= 39.9) {
+        } else if (porcentagem >= 20.0 && porcentagem <= 39.9) {
             lblMsgDes.setText("Desempenho baixo!");
-        } else if (x >= 40.0 && x <= 59.9) {
+        } else if (porcentagem >= 40.0 && porcentagem <= 59.9) {
             lblMsgDes.setText("Desempenho bom!");
-        } else if (x >= 60.0 && x <= 79.9) {
+        } else if (porcentagem >= 60.0 && porcentagem <= 79.9) {
             lblMsgDes.setText("Desempenho muito bom!");
-        } else if (x >= 80.0 && x <= 100.0) {
+        } else if (porcentagem >= 80.0 && porcentagem <= 100.0) {
             lblMsgDes.setText("Desempenho ótimo!");
         }
         
-        if (Double.isNaN(x)) {
-            x = 0;
+        if (Double.isNaN(porcentagem)) {
+            porcentagem = 0;
 
             lblError = new JLabel("Nenhuma tarefa criada");
             lblError.setBounds(40, 180, 300, 30);
             lblError.setFont(new Font("Arial", 1, 23));;
             lblError.setForeground(Color.red);
-
-            usuario.setDesempenho_percentual(x);
-
-            User desNew = new User();
-            desNew.setDesempenho_percentual(x);
-
-            if (dao.updateUser(usuario, desNew)) {
-                Principal.user.setDesempenho_percentual(x);
-            }
-
-        } else {
-
-            if (x != usuario.getDesempenho_percentual()) {
-
-                User desNew = new User();
-                desNew.setDesempenho_percentual(x);
-
-                if (dao.updateDesempenho(usuario, desNew)) {
-                    JOptionPane.showMessageDialog(null, "Desempenho atualizado com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
-                    principal.user = desNew;
-                    lblDes2.setText(String.valueOf(Principal.user.getDesempenho_percentual()) + " %");
-                }
-
-            }
         }
     }
 
@@ -154,10 +131,14 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel2.setLayout(null);
         painel2.setBounds(480, 200, 600, 400);
         painel2.setBackground(new Color(218, 217, 215));
-        painel2.setBorder(new BordaCantoArrendondado());
+        painel2.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         add(painel2);
     }
-
+    
+    private void runDesempenho() {
+        porcentagem = daoUser.getPorcentagem(usuario);
+    }
+    
     public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -165,6 +146,8 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
                 if(telaDesempenho.isActive()){
                     telaDesempenho.dispose();
                 }
+                TelaDesempenho telaDesempenhoNova = new TelaDesempenho();
+                telaDesempenho = telaDesempenhoNova;
                 telaDesempenho.setVisible(true);
             }
         });
@@ -173,4 +156,6 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
     public static void main(String[] args) {
         telaDesempenho.runTela();
     }
+
+    
 }

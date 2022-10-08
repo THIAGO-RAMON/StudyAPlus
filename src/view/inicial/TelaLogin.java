@@ -35,7 +35,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
     TelaLogin() {
 
-        InserirIcone ic = new InserirIcone();
+        TelaPadraoFullScreen.InserirIcone ic = new TelaPadraoFullScreen.InserirIcone();
         ic.InserirIcone(this);
 
         painel1 = new PainelGraphics();
@@ -58,7 +58,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         tfNome.setBackground(new Color(218, 217, 215));
         tfNome.setBounds(70, 320, 425, 30);
         tfNome.setFont(new Font("Arial", 0, 20));
-        tfNome.setBorder(new BordaCantoArrendondado());
+        tfNome.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         tfNome.requestFocus();
 
         painel1.add(tfNome);
@@ -73,12 +73,12 @@ public class TelaLogin extends TelaPadraoFullScreen {
         pfSenha.setBackground(new Color(218, 217, 215));
         pfSenha.setBounds(70, 400, 425, 30);
         pfSenha.setFont(new Font("Arial", 0, 20));
-        pfSenha.setBorder(new BordaCantoArrendondado());
+        pfSenha.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         painel1.add(pfSenha);
 
         btnOk = new JButton("OK");
         btnOk.setBackground(new Color(168, 168, 168));
-        btnOk.setBorder(new BordaCantoArrendondado());
+        btnOk.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnOk.setFont(new Font("Arial", 1, 20));
         btnOk.setBounds(70, 475, 170, 50);
         EventoConfirmar evt = new EventoConfirmar();
@@ -86,10 +86,10 @@ public class TelaLogin extends TelaPadraoFullScreen {
         painel1.add(btnOk);
 
         btnCancel = new JButton("VOLTAR");
-        btnCancel.addActionListener(new EventoConfirmar());
+        btnCancel.addActionListener(new EventoCancelar() );
 
         btnCancel.setFont(new Font("Arial", 1, 20));
-        btnCancel.setBorder(new BordaCantoArrendondado());
+        btnCancel.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnCancel.setBackground(new Color(168, 168, 168));
         btnCancel.setBounds(310, 475, 170, 50);
         painel1.add(btnCancel);
@@ -101,7 +101,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
         // BOTÕES DE SENHA
         btnVerSenha1 = new JButton();
-        btnVerSenha1.setBorder(new BordaCantoArrendondado());
+        btnVerSenha1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnVerSenha1.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
         btnVerSenha1.setBackground(new Color(218, 217, 215));
         btnVerSenha1.setBounds(505, 401, 33, 30);
@@ -109,7 +109,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         painel1.add(btnVerSenha1);
 
         btnOcultar1 = new JButton();
-        btnOcultar1.setBorder(new BordaCantoArrendondado());
+        btnOcultar1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnOcultar1.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
         btnOcultar1.setBackground(new Color(218, 217, 215));
         btnOcultar1.setBounds(505, 401, 33, 30);
@@ -148,11 +148,17 @@ public class TelaLogin extends TelaPadraoFullScreen {
                 JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
             }
 
-            if (e.getSource() == btnCancel) {
-                dispose();
-                new TelaMain().runTela();
-            }
         }
+    }
+
+    private class EventoCancelar implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            dispose();
+            new TelaMain().runTela();
+        }
+
     }
 
     private class EventoSenha implements ActionListener {

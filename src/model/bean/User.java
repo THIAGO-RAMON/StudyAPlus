@@ -8,7 +8,7 @@ public class User {
     private String escolaridade;
     private String objetivo;
     private double desempenho_percentual;
-    
+
     /**
      * @return String return the nome
      */

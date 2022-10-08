@@ -105,6 +105,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painelCriar.add(lblDescricao);
 
         txtDescricao = new JTextArea(3, 10);
+        txtDescricao.setLineWrap(true);
         txtDescricao.setFont(sansSerif);
         txtDescricao.setBackground(colorTxtField);
         txtDescricao.setBounds(40, 210, 600, 120);
@@ -340,6 +341,9 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
                 if (telaCriarTarefa.isVisible()) {
                     telaCriarTarefa.dispose();
                 }
+                
+                TelaCriarTarefa telaCriarNova = new TelaCriarTarefa();
+                telaCriarTarefa = telaCriarNova;
                 telaCriarTarefa.setVisible(true);
             }
         });

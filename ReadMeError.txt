@@ -56,15 +56,15 @@ Passo 5:
 
 Passo 6:
 - Na aba de ClassPath, ou primeira aba > Você clicará em add jar/Folder > Selecionará a pasta do MigLayout dentro de lib > 
-	E selecionará os arquivos: miglayout-core-11.0 e miglayout-swing-5.3;
+	E selecionará os arquivos: miglayout-core-5.3 e miglayout-swing-5.3;
 
 Passo 7:
 - Na aba de Source, ou segunda aba > Você clicará em add jar/Folder > Selecionará a pasta do MigLayout dentro de lib >
-	E selecionará os arquivos: miglayout-swing-5.3-sources e miglayout-core-11.0-sources;
+	E selecionará os arquivos: miglayout-swing-5.3-sources e miglayout-core-5.3-sources;
 
 Passo 8:
 - Na aba de JavaDoc, ou terceira aba > Você clicará em add jar/Folder > Selecionará a pasta do MigLayout dentro de lib >
-	E selecionará os arquivos: miglayout-swing-5.3-javadoc e miglayout-core-11.0-javadoc;
+	E selecionará os arquivos: miglayout-swing-5.3-javadoc e miglayout-core-5.3-javadoc;
 
 Passo 9:
 - Em seguida clicará em OK.
