@@ -24,6 +24,7 @@ import javax.swing.border.AbstractBorder;
 import model.bean.User;
 import model.dao.UserDAO;
 import view.Main.Principal;
+import static view.perfil.TelaPerfil.telaPerfil;
 
 public class TelaAlterar extends JFrame {
 
@@ -35,7 +36,7 @@ public class TelaAlterar extends JFrame {
     private Principal principal;
     private User userPrincipal = principal.user;
     private UserDAO dao = new UserDAO();
-
+    
     public TelaAlterar() {
         configPainel();
         configTela();
@@ -180,15 +181,19 @@ public class TelaAlterar extends JFrame {
                     User userNew = new User();
                     userNew.setNome(tfNovoNome.getText());
                     userNew.setSenha(tfNovaSenha.getText());
-                    
-                    if(dao.updateUser(userPrincipal, userNew)){
-                        JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!",JOptionPane.INFORMATION_MESSAGE);
+
+                    if (dao.updateUser(userPrincipal, userNew)) {
+                        JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
                         principal.user = userNew;
+                        Principal.user.setNome(tfNovoNome.getText());
+                        Principal.user.setSenha(tfNovaSenha.getText());
                     }
                     
-                    new TelaPerfil().setVisible(true);
-                    setVisible(false);
-
+                    telaPerfil.resetPanel();
+                    
+                    dispose();
+                    
+                   
                 } else if (tfNovaSenha.getText().isEmpty()) {
 
                     JOptionPane.showMessageDialog(null, "Erro! Preencha a senha.", "Atenção",
@@ -262,7 +267,7 @@ public class TelaAlterar extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TelaPerfil().setVisible(true);
+                new TelaAlterar().setVisible(true);
             }
         });
     }

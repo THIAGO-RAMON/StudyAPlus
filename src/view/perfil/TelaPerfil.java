@@ -22,7 +22,7 @@ import view.Main.TelaPadraoFullScreen;
 public class TelaPerfil extends TelaPadraoFullScreen {
 
     private JButton btnFoto, btnLogo, leave, btnAlterar, btnAlterar2;
-    private JPanel painel1, painelB;
+    protected JPanel painel1, painelB;
     private JLabel lblNome, lblSenha;
     private JTextField txtNome, txtSenha;
     public static Principal principal;
@@ -54,7 +54,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtNome.setBounds(358, 325, 300, 30);
         txtNome.setBackground(new Color(218, 217, 215));
         txtNome.setFont(new Font("Arial", 0, 24));
-        txtNome.setText(" " + user.getNome());
+        txtNome.setText(" " + Principal.user.getNome());
         txtNome.setBorder(new BordaCantoArrendondado());
         txtNome.setEditable(false);
         painel1.add(txtNome);
@@ -68,7 +68,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setBounds(358, 425, 300, 30);
         txtSenha.setFont(new Font("Arial", 0, 24));
         txtSenha.setBackground(new Color(218, 217, 215));
-        txtSenha.setText(" " + user.getSenha());
+        txtSenha.setText(" " + Principal.user.getSenha());
         txtSenha.setBorder(new BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
@@ -129,6 +129,11 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             }
         }
 
+    }
+    
+    public void resetPanel(){
+        painel1.revalidate();
+        painel1.repaint();
     }
 
     public void runTela() {
