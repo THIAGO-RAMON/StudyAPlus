@@ -20,6 +20,7 @@ import model.dao.UserDAO;
 import view.Main.Principal;
 
 import view.Main.TelaPadraoFullScreen;
+import static view.perfil.TelaObjetivos.telaObjetivos;
 
 public class TelaCadastro extends TelaPadraoFullScreen {
 
@@ -33,7 +34,6 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     public static Principal principal;
 
     TelaCadastro() {
-
         InserirIcone ic = new InserirIcone();
         ic.InserirIcone(this);
 
@@ -95,11 +95,12 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         btnOk.addActionListener(evt);
         painel1.add(btnOk);
 
+        EventoCancelar evt2 = new EventoCancelar();
         btnCancel = new JButton("VOLTAR");
         btnCancel.setFont(new Font("Arial", 1, 20));
         btnCancel.setBackground(new Color(168, 168, 168));
 
-        btnCancel.addActionListener(evt);
+        btnCancel.addActionListener(evt2);
 
         btnCancel.setBounds(350, 505, 200, 50);
         btnCancel.setBorder(new BordaCantoArrendondado());
@@ -112,9 +113,14 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
-
-        leave.addActionListener(evt);
-
+        leave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
+        painel1.add(leave);
         leave.setBounds(getWidth() - 60, 0, 60, 30);
         painel1.add(leave);
 
@@ -125,7 +131,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         btnVerSenha1.setBounds(565, 353, 35, 30);
         btnVerSenha1.addActionListener(new EventoSenha());
         painel1.add(btnVerSenha1);
-        
+
         btnVerSenha2 = new JButton();
         btnVerSenha2.setBorder(new BordaCantoArrendondado());
         btnVerSenha2.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
@@ -202,46 +208,48 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getSource() == btnOk) {
+            if (jfNome.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
+            } else if (jfNome.getText().equals("") && pfSenha.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Preencha o Nome e senha!", "Cadastro",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (pfSenha.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Preencha a senha!", "Cadastro", JOptionPane.WARNING_MESSAGE);
+            } else if (!pfConfirmar.getText().equals(pfSenha.getText())) {
+                JOptionPane.showMessageDialog(null, "Verifique a senha novamente!", "Cadastro",
+                        JOptionPane.WARNING_MESSAGE);
+            } else if (pfConfirmar.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor, confirme a senha!", "Cadastro",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                usuario = new User();
+                usuario.setNome(jfNome.getText());
+                usuario.setSenha(pfSenha.getText());
 
-                if (jfNome.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
-                } else if (jfNome.getText().equals("") && pfSenha.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha o Nome e senha!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
-                } else if (pfSenha.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha a senha!", "Cadastro", JOptionPane.WARNING_MESSAGE);
-                } else if (!pfConfirmar.getText().equals(pfSenha.getText())) {
-                    JOptionPane.showMessageDialog(null, "Verifique a senha novamente!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
-                } else if (pfConfirmar.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Por favor, confirme a senha!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
+                if (dao.saveCadastro(usuario)) {
+                    JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+
+                    telaObjetivos.runTela();
+
+                    dispose();
                 } else {
-                    usuario = new User();
-                    usuario.setNome(jfNome.getText());
-                    usuario.setSenha(pfSenha.getText());       
-                    
-                    if (dao.saveCadastro(usuario)) {
-                        JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
-                        tl.runTela();
-                        dispose();
-                    }else{
-                        JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);
-                    }
-
+                    JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);
                 }
-
-            } else if (e.getSource() == btnCancel) {
-                setVisible(false);
-                new TelaMain().runTela();
-
-            } else if (e.getSource() == leave) {
-                System.exit(0);
 
             }
 
         }
+    }
+
+    private class EventoCancelar implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                dispose();
+                new TelaMain().runTela();
+
+        }
+
     }
 
     public void runTela() {

@@ -38,6 +38,25 @@ public class UserDAO {
         }
     }
 
+    public boolean saveObjetivo(User user) {
+
+        String sql = "INSERT into usuario(nome, senha,objetivo) values (?,?,?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, user.getNome());
+            stmt.setString(2, user.getSenha());
+            stmt.setString(3, user.getObjetivo());
+            stmt.execute();
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e, "ERROR BD", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+
     public boolean saveDesempenho(User user) {
 
         String sql = "INSERT into usuario(desempenho) values (?)";
@@ -101,12 +120,12 @@ public class UserDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
         return user;
     }
 
     public boolean updateDesempenho(User desOld, User desNew) {
-        
+
         String sql = "UPDATE usuario set desempenho = ? where nome = ?";
         PreparedStatement stmt = null;
         try {
@@ -114,7 +133,7 @@ public class UserDAO {
             stmt.setDouble(1, desNew.getDesempenho_percentual());
             stmt.setString(2, desOld.getNome());
             stmt.executeUpdate();
-            
+
             return true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e, "ERROR BD\n Erro ao Atualizar", JOptionPane.WARNING_MESSAGE);

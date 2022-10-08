@@ -1,34 +1,34 @@
 create database StudyAPLus;
 use StudyAPlus;
 
-drop table usuario;
-drop table Tarefas;
+drop table if exists usuario;
+drop table if exists Tarefas;
 
 create table Usuario(
-nome varchar(100),
+id int auto_increment,
+nome varchar(100) not null,
 senha varchar(50) not null,
 sobreMim varchar(200) null,
 escolaridade varchar(50),
 objetivo varchar (100),
 desempenho double null,
-primary key(nome)
+primary key(id,nome)
 );
-
-drop table tarefas;
 
 create table Tarefas(
 id int auto_increment,
 User_nome varchar(100),
 titulo varchar(40) not null,
 descricao varchar(300), 
-dataInic date,
-dataFim date,
-importancia boolean,
+dataInic varchar(10),
+dataFim varchar(10),
+importante boolean,
+concluido boolean,
 primary key (id, User_nome),
-foreign key (User_nome) references Usuario(nome)
+foreign key (id,User_nome) references Usuario(id,nome)
 );
 
 select * from tarefas;
-select * from usuario;	
+select * from usuario;
 
 

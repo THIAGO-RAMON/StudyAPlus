@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
+import view.perfil.TelaCriarObjetivos;
+import view.perfil.TelaObjetivos;
 
 import view.perfil.TelaPerfil;
 import view.telasPrograma.TelaDesempenho;
@@ -24,11 +26,12 @@ import static view.telasPrograma.TelaDesempenho.telaDesempenho;
 import static view.perfil.TelaPerfil.telaPerfil;
 import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
 import view.telasPrograma.TelaCriarTarefa;
+import static view.perfil.TelaCriarObjetivos.telaCriarObjetivos;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -88,12 +91,23 @@ public class BarraLateral extends JPanel {
         painelProgresso.addActionListener(eventoAbrirProgresso);
         add(painelProgresso);
 
+        EventoAbrirObjetivos eventoObjetivo = new EventoAbrirObjetivos();
+        
+        painelCriarObj = new JButton("Criar Objetivos");
+        painelCriarObj.setFont(new Font("Arial", 1, 20));
+        painelCriarObj.setBackground(colorButton);
+        painelCriarObj.setBorder(new BordaPersonalizada());
+        painelCriarObj.setBounds(60, 295, 230, 50);
+        painelCriarObj.addActionListener(eventoObjetivo);
+        add(painelCriarObj);
+
         EventoAbrirPerfil eventoAbrirPerfil = new EventoAbrirPerfil();
 
         iconePerfil = new JLabel();
         iconePerfil.setBounds(0, 625, 50, 50);
         iconePerfil.setIcon(new ImageIcon(getClass().getResource("/images/iconePerfil50x50.png")));
         add(iconePerfil);
+        
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
         painelPerfil.setBackground(colorButton);
@@ -101,7 +115,7 @@ public class BarraLateral extends JPanel {
         painelPerfil.setBounds(60, 625, 230, 50);
         painelPerfil.addActionListener(eventoAbrirPerfil);
         add(painelPerfil);
-
+        
     }
 
     @Override
@@ -159,6 +173,28 @@ public class BarraLateral extends JPanel {
                 telaDasTarefas.dispose();
             }
             new TelaCriarTarefa().runTela();
+        }
+
+    }
+
+    private class EventoAbrirObjetivos implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (telaPerfil.isVisible()) {
+                telaPerfil.dispose();
+            }
+            if (telaDesempenho.isVisible()) {
+                telaDesempenho.dispose();
+            }
+            if (telaDasTarefas.isVisible()) {
+                telaDasTarefas.dispose();
+
+            } else if (telaDesempenho.isVisible()) {
+                telaDesempenho.dispose();
+            }
+            telaCriarObjetivos.runTela();
+
         }
 
     }

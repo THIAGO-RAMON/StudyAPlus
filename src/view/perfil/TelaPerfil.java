@@ -97,7 +97,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnAlterar.setText("Deseja alterar suas informações? Clique aqui!");
         btnAlterar.setBorder(null);
         btnAlterar.setBackground(painel1.getBackground());
-        btnAlterar.setBounds(358, 475, 300, 40);
+        btnAlterar.setBounds(358, 643, 300, 40);
         painel1.add(btnAlterar);
     }
 
