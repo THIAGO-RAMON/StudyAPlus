@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.bean.Objetivo;
+import model.bean.User;
 
 /**
  *
@@ -35,7 +36,7 @@ public class ObjetivoDAO {
         try {
             stmt = con.prepareStatement(sql);
             stmt.setInt(1, obj.getId());
-            stmt.setString(2, obj.getNome());
+            stmt.setString(2, obj.getUser().getNome());
             stmt.setString(3, obj.getDescricao());
             stmt.execute();
             return true;
@@ -45,6 +46,38 @@ public class ObjetivoDAO {
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
+    }
+
+    public List<Objetivo> listObjetivo(User user) {
+
+        String sql = "Select descricao from Objetivos where user_nome= (?)";
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        ArrayList<Objetivo> objetivos = new ArrayList<>();
+
+        try {
+
+            stmt = con.prepareCall(sql);
+            stmt.setString(1, user.getNome());
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Objetivo objetivo = new Objetivo();
+
+                objetivo.setUser(user);
+                objetivo.setDescricao(rs.getString("descricao"));
+                objetivo.setData(rs.getString("dataInic"));
+                objetivos.add(objetivo);
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "ERROR_LIST", JOptionPane.WARNING_MESSAGE);
+        }
+
+        return objetivos;
     }
 
 }

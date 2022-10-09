@@ -54,10 +54,12 @@ public class TaskDAO {
     }
 
     public List<Task> listarTarefas(User usuario) {
+        
         String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         ArrayList<Task> tasks = new ArrayList<>();
+        
         try {
 
             stmt = con.prepareCall(sql);

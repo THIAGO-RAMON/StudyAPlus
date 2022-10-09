@@ -99,7 +99,7 @@ public class TelaCriarObjetivos extends TelaPadraoFullScreen {
         }
         
         obj = new Objetivo();
-        obj.setNome(Principal.user.getNome());
+        obj.setUser(Principal.user);
         obj.setDescricao(txt.getText());
         
         if(dao.saveObjetivo(obj)){

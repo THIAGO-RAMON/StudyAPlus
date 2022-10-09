@@ -9,27 +9,36 @@ package model.bean;
  * @author Migas
  */
 public class Objetivo {
-    
-    private String nome;
+
+    private User user;
+
     private int id;
     private String descricao;
+    private String data;
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public Objetivo() {
     }
 
-    public Objetivo(String nome, int id, String descricao) {
-        this.nome = nome;
+    public Objetivo(User user, String descricao) {
+        this.user = user;
         this.id = id;
         this.descricao = descricao;
     }
 
-    
-    public String getNome() {
-        return nome;
+    public User getUser() {
+        return user;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {
@@ -47,7 +56,5 @@ public class Objetivo {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
-    
-    
+
 }

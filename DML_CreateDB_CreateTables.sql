@@ -3,6 +3,7 @@ use StudyAPlus;
 
 drop table if exists usuario;
 drop table if exists Tarefas;
+drop table if exists objetivos;
 
 create table Usuario(
 nome varchar(100) ,
@@ -28,9 +29,10 @@ foreign key (User_nome) references Usuario(nome) on update cascade
 
 create table objetivos(
 id int auto_increment,
-user_nome varchar(100) not null,
+user_nome varchar(100) ,
 descricao varchar(150),
-primary key (id),
+dataInic varchar(10), 
+primary key (id,user_nome),
 foreign key (user_nome) references Usuario(nome)
 );
 
