@@ -41,3 +41,5 @@ select * from tarefas;
 select * from usuario;
 select * from objetivos;
 
+update objetivos set dataInic = '23/12/2006' where descricao= 'a';
+

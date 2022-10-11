@@ -50,7 +50,7 @@ public class ObjetivoDAO {
 
     public List<Objetivo> listObjetivo(User user) {
 
-        String sql = "Select descricao from Objetivos where user_nome= (?)";
+        String sql = "Select descricao, dataInic from Objetivos where user_nome= (?)";
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -68,7 +68,7 @@ public class ObjetivoDAO {
 
                 objetivo.setUser(user);
                 objetivo.setDescricao(rs.getString("descricao"));
-                objetivo.setData(rs.getString("dataInic"));
+                objetivo.setDataInic(rs.getString("dataInic"));
                 objetivos.add(objetivo);
 
             }
@@ -80,4 +80,48 @@ public class ObjetivoDAO {
         return objetivos;
     }
 
+    public boolean updateObjetivo(Objetivo objAntigo, Objetivo objetivoNovo) {
+        String sql = "update Objetivos set descricao= (?), dataInic = (?) where descricao = (?)";
+
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareCall(sql);
+
+            stmt.setString(1, objetivoNovo.getDescricao());
+            stmt.setString(2, objetivoNovo.getDataInic());
+
+            stmt.setString(3, objAntigo.getDescricao());
+
+            stmt.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro na alteração de objetivos\n" + ex, "Error", 0);
+            return false;
+        }
+
+    }
+
+    public boolean deleteTarefa(Objetivo objetivo) {
+
+        String sql = "DELETE FROM Objetivos where User_nome = (?) and descricao = (?)";
+
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, objetivo.getUser().getNome());
+            stmt.setString(2, objetivo.getDescricao());
+
+            stmt.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro deletando a tarefa"+ex, "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+    }
 }

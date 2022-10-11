@@ -14,23 +14,23 @@ public class Objetivo {
 
     private int id;
     private String descricao;
-    private String data;
+    private String dataInic;
 
-    public String getData() {
-        return data;
+    public String getDataInic() {
+        return dataInic;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDataInic(String dataInic) {
+        this.dataInic = dataInic;
     }
 
     public Objetivo() {
     }
 
-    public Objetivo(User user, String descricao) {
+    public Objetivo(User user, String descricao, String dataInic) {
         this.user = user;
-        this.id = id;
         this.descricao = descricao;
+        this.dataInic = dataInic;
     }
 
     public User getUser() {

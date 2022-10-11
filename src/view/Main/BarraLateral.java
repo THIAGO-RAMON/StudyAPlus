@@ -28,11 +28,12 @@ import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
 import view.telasPrograma.TelaCriarTarefa;
 import static view.perfil.TelaCriarObjetivos.telaCriarObjetivos;
 import view.perfil.TelaCriarObjetivos;
+import view.perfil.VisualizarObjetivos;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -93,7 +94,7 @@ public class BarraLateral extends JPanel {
         add(painelProgresso);
 
         EventoAbrirObjetivos eventoObjetivo = new EventoAbrirObjetivos();
-        
+
         painelCriarObj = new JButton("Criar Objetivos");
         painelCriarObj.setFont(new Font("Arial", 1, 20));
         painelCriarObj.setBackground(colorButton);
@@ -108,7 +109,17 @@ public class BarraLateral extends JPanel {
         iconePerfil.setBounds(0, 625, 50, 50);
         iconePerfil.setIcon(new ImageIcon(getClass().getResource("/images/iconePerfil50x50.png")));
         add(iconePerfil);
-        
+
+        EventoObjetivos eventoObjetivos = new EventoObjetivos();
+
+        painelObjetivos = new JButton("Objetivos");
+        painelObjetivos.setFont(new Font("Arial", 1, 20));
+        painelObjetivos.setBackground(colorButton);
+        painelObjetivos.setBorder(new BordaPersonalizada());
+        painelObjetivos.setBounds(60, 350, 230, 50);
+        painelObjetivos.addActionListener(eventoObjetivos);
+        add(painelObjetivos);
+
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
         painelPerfil.setBackground(colorButton);
@@ -116,7 +127,7 @@ public class BarraLateral extends JPanel {
         painelPerfil.setBounds(60, 625, 230, 50);
         painelPerfil.addActionListener(eventoAbrirPerfil);
         add(painelPerfil);
-        
+
     }
 
     @Override
@@ -160,6 +171,27 @@ public class BarraLateral extends JPanel {
 
     }
 
+    private class EventoObjetivos implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (telaDasTarefas.isVisible()) {
+                telaDasTarefas.dispose();
+            }
+            if (telaCriarObjetivos.isVisible()) {
+                telaCriarObjetivos.dispose();
+            }
+            if(telaPerfil.isVisible()){
+                telaPerfil.dispose();
+            }
+            if(telaCriarTarefa.isVisible()){
+                telaCriarTarefa.isVisible();
+            }
+            new VisualizarObjetivos().runTela();
+        }
+
+    }
+
     private class EventoAbrirCriarTarefa implements ActionListener {
 
         @Override
@@ -173,7 +205,7 @@ public class BarraLateral extends JPanel {
             if (telaDasTarefas.isVisible()) {
                 telaDasTarefas.dispose();
             }
-            if(telaCriarObjetivos.isVisible()){
+            if (telaCriarObjetivos.isVisible()) {
                 telaCriarObjetivos.dispose();
             }
             new TelaCriarTarefa().runTela();
@@ -218,7 +250,7 @@ public class BarraLateral extends JPanel {
             if (telaCriarTarefa.isVisible()) {
                 telaCriarTarefa.dispose();
             }
-            if(telaCriarObjetivos.isVisible()){
+            if (telaCriarObjetivos.isVisible()) {
                 telaCriarObjetivos.dispose();
             }
             TelaTarefas.runTela();
@@ -240,7 +272,7 @@ public class BarraLateral extends JPanel {
             if (telaPerfil.isVisible()) {
                 telaPerfil.dispose();
             }
-            if(telaCriarObjetivos.isVisible()){
+            if (telaCriarObjetivos.isVisible()) {
                 telaCriarObjetivos.dispose();
             }
             new TelaDesempenho().runTela();
@@ -263,7 +295,7 @@ public class BarraLateral extends JPanel {
             if (telaCriarTarefa.isVisible()) {
                 telaCriarTarefa.dispose();
             }
-            if(telaCriarObjetivos.isVisible()){
+            if (telaCriarObjetivos.isVisible()) {
                 telaCriarObjetivos.dispose();
             }
             new TelaPerfil().runTela();
