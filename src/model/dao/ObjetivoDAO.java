@@ -31,13 +31,14 @@ public class ObjetivoDAO {
 
     public boolean saveObjetivo(Objetivo obj) {
 
-        String sql = "INSERT into objetivos(id,user_nome,descricao) values (?,?,?)";
+        String sql = "INSERT into objetivos(id,user_nome,descricao, dataInic) values (?,?,?,?)";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
             stmt.setInt(1, obj.getId());
             stmt.setString(2, obj.getUser().getNome());
             stmt.setString(3, obj.getDescricao());
+            stmt.setString(4, obj.getDataInic());
             stmt.execute();
             return true;
         } catch (SQLException e) {
@@ -103,7 +104,7 @@ public class ObjetivoDAO {
 
     }
 
-    public boolean deleteTarefa(Objetivo objetivo) {
+    public boolean deleteObjetivo(Objetivo objetivo) {
 
         String sql = "DELETE FROM Objetivos where User_nome = (?) and descricao = (?)";
 

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -23,6 +24,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
     private JButton btnFoto, btnLogo, leave, btnAlterar, btnAlterar2;
     protected JPanel painel1, painelB;
+    private JFileChooser fileChosser;
     private JLabel lblNome, lblSenha;
     private JTextField txtNome, txtSenha;
     public static Principal principal;
@@ -117,7 +119,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         painel1.setBackground(new Color(207, 227, 225));
         add(painel1);
     }
-
+    
     private class EventoBotao implements ActionListener {
 
         @Override

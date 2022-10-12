@@ -1,11 +1,16 @@
 package view.perfil;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.HeadlessException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,9 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
+import javax.swing.border.AbstractBorder;
 import model.dao.ObjetivoDAO;
 import model.bean.Objetivo;
 import model.bean.User;
@@ -26,19 +33,21 @@ public class VisualizarObjetivos extends JFrame {
 
     private TelaVisualizar telaVisualizar;
     private JPanel painel1;
-    private String colunasLivros[] = {"Objetivos", "Data de Início"};
+    private String colunasLivros[] = {"Objetivos", "Data"};
     private String dados[][] = {};
     private JTable tabela;
     private JButton btnPes, leave;
     private JTextField txtPes;
     private JLabel lblObj;
-    private static VisualizarObjetivos visualizarObjetivos;
+    public static VisualizarObjetivos visualizarObjetivos;
     private DefaultTableModel modeloTabelaObjetivos;
-    private ObjetivoDAO dao;
+    private JScrollPane js;
+    private ObjetivoDAO dao = new ObjetivoDAO();
     private Objetivo objetivo = new Objetivo();
     private User user = Principal.user;
     private int cont = 0;
     private BarraLateral barraLateral;
+    private PainelCriar painelCriar;
 
     public VisualizarObjetivos() {
         config();
@@ -53,25 +62,33 @@ public class VisualizarObjetivos extends JFrame {
         modeloTabelaObjetivos = new DefaultTableModel(dados, colunasLivros);
         tabela = new JTable(modeloTabelaObjetivos);
 
+        js = new JScrollPane(tabela);
+        painel1.add(js);
+
         JScrollPane painelScrollado = new JScrollPane(tabela);
-        painelScrollado.setBounds(350, 200, 900, 400);
+        painelScrollado.setBounds(350, 350, 900, 350);
         painel1.add(painelScrollado);
         objetivosTabela();
 
         lblObj = new JLabel("Seus objetivos");
         lblObj.setFont(new Font("Arial", 1, 20));
-        lblObj.setBounds(350, 170, 200, 30);
+        lblObj.setBounds(350, 315, 200, 30);
         painel1.add(lblObj);
 
         txtPes = new JTextField();
         txtPes.setFont(new Font("Arial", 1, 15));
-        txtPes.setBounds(550, 175, 400, 23);
+        txtPes.setBounds(475, 320, 400, 23);
+        txtPes.setVisible(false);
+        txtPes.addKeyListener(new EventoPesquisar2());
         painel1.add(txtPes);
 
+        EventoPesquisar evtPes = new EventoPesquisar();
         btnPes = new JButton("Pesquisar");
         btnPes.setFont(new Font("Arial", 1, 15));
-        btnPes.setBounds(960, 175, 130, 23);
-        btnPes.addActionListener(new EventoPesquisar());
+        btnPes.setBounds(960, 320, 130, 23);
+        btnPes.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+        btnPes.setBackground(painel1.getBackground());
+        btnPes.addActionListener(evtPes);
         painel1.add(btnPes);
 
         leave = new JButton("X");
@@ -85,14 +102,14 @@ public class VisualizarObjetivos extends JFrame {
         });
 
         painel1.add(leave);
+        generatePanel();
+
     }
 
     private void objetivosTabela() {
-        dao = new ObjetivoDAO();
 
         for (Objetivo o : dao.listObjetivo(user)) {
             modeloTabelaObjetivos.addRow(new Object[]{o.getDescricao(), o.getDataInic()});
-
         }
 
     }
@@ -101,27 +118,69 @@ public class VisualizarObjetivos extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String nome = txtPes.getText();
-            if (nome.length() > 0) {
+            Thread.yield();
+            txtPes.setVisible(true);
+            Runnable run = new Runnable() {
 
-                for (int i = 0; i < modeloTabelaObjetivos.getRowCount(); i++) {
-                    if (nome.equals(modeloTabelaObjetivos.getValueAt(i, 0))) {
-                        telaVisualizar.txtNome.setText(Principal.user.getNome());
-                        telaVisualizar.txtObj.setText(modeloTabelaObjetivos.getValueAt(i, 0).toString());
-                        telaVisualizar.txtData.setText(modeloTabelaObjetivos.getValueAt(i, 1).toString());
-                        
-                        objetivo.setUser(Principal.user);
-                        objetivo.setDescricao(modeloTabelaObjetivos.getValueAt(i, 0).toString());
-                        objetivo.setDataInic(modeloTabelaObjetivos.getValueAt(i, 1).toString());
-                        telaVisualizar.setVisible(true);
-                        break;
+                @Override
+                public void run() {
+                    try {
+                        int contx = txtPes.getX();
+
+                        while (txtPes.getX() != painel1.getWidth() - 750) {
+                            txtPes.setBounds(contx, txtPes.getY(), txtPes.getWidth(), txtPes.getHeight());
+                            contx++;
+                            Thread.sleep(5);
+                        }
+                    } catch (InterruptedException ex) {
+                        System.err.println(ex);
                     }
                 }
+            };
 
-            }
-
+            Thread mover = new Thread(run);
+            mover.start();
         }
 
+    }
+
+    private class EventoPesquisar2 implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int cod = e.getKeyCode();
+            int tecla = KeyEvent.VK_ENTER;
+
+            if (cod == tecla) {
+                String nome = txtPes.getText().trim();
+
+                if (nome.length() > 0) {
+
+                    for (int i = 0; i < modeloTabelaObjetivos.getRowCount(); i++) {
+                        if (nome.equals(modeloTabelaObjetivos.getValueAt(i, 0))) {
+                            telaVisualizar.txtNome.setText(Principal.user.getNome());
+                            telaVisualizar.txtObj.setText(modeloTabelaObjetivos.getValueAt(i, 0).toString());
+                            telaVisualizar.txtData.setText(modeloTabelaObjetivos.getValueAt(i, 1).toString());
+
+                            objetivo.setUser(Principal.user);
+                            objetivo.setDescricao(modeloTabelaObjetivos.getValueAt(i, 0).toString());
+                            objetivo.setDataInic(modeloTabelaObjetivos.getValueAt(i, 1).toString());
+                            telaVisualizar.setVisible(true);
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
     }
 
     private void config() {
@@ -212,6 +271,7 @@ public class VisualizarObjetivos extends JFrame {
             btnAlterar.addActionListener(new EventoAlterar(objetivo));
             painel.add(btnAlterar);
 
+            painel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
         }
 
         private class EventoVoltar implements ActionListener {
@@ -224,11 +284,13 @@ public class VisualizarObjetivos extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (dao.deleteTarefa(objetivo)) {
+                if (dao.deleteObjetivo(objetivo)) {
 
                     JOptionPane.showMessageDialog(null, "Objetivo deletado com sucesso", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
                     painel1.repaint();
                     painel1.revalidate();
+                    visualizarObjetivos.dispose();
+                    new VisualizarObjetivos().runTela();
                     dispose();
                 }
             }
@@ -249,11 +311,13 @@ public class VisualizarObjetivos extends JFrame {
                 Objetivo novoObj = new Objetivo(user, txtObj.getText(), txtData.getText());
 
                 if (dao.updateObjetivo(antigoObj, novoObj)) {
-                    JOptionPane.showMessageDialog(null, "Alteração Realizada com sucesso", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Alteração Realizada com sucesso\n", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 painel1.repaint();
                 painel1.revalidate();
+                visualizarObjetivos.dispose();
+                new VisualizarObjetivos().runTela();
                 dispose();
 
             }
@@ -274,6 +338,156 @@ public class VisualizarObjetivos extends JFrame {
 
     }
 
+    private class PainelCriar extends JPanel {
+
+        private JTextArea txtObj;
+        private JTextField txtData;
+        private JLabel lblTitulo, lblData, lblObj, lblFormato;
+        private JScrollPane jsp;
+        private JButton btnLimpar, btnCriar;
+
+        public PainelCriar() {
+            setSize(450, 600);
+            setLayout(null);
+            configEl();
+
+        }
+
+        private void configEl() {
+            txtObj = new JTextArea();
+            txtObj.setFont(new Font("Arial", 0, 15));
+            jsp = new JScrollPane(txtObj, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            jsp.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+            jsp.setBounds(65, 80, 350, 150);
+            add(jsp);
+
+            lblTitulo = new JLabel("O que deseja alcançar? Tente Explorar seus objetivos com base em seu calendário.");
+            lblTitulo.setFont(new Font("Arial", 1, 18));
+            lblTitulo.setBounds(65, 5, 1150, 30);
+            add(lblTitulo);
+
+            lblObj = new JLabel("Coloque seus objetivos aqui!");
+            lblObj.setFont(new Font("Arial", 1, 15));
+            lblObj.setBounds(66, 50, 300, 30);
+            add(lblObj);
+
+            lblData = new JLabel("Data do objetivo");
+            lblData.setFont(new Font("Arial", 1, 15));
+            lblData.setBounds(600, 50, 300, 30);
+            add(lblData);
+
+            lblFormato = new JLabel("Formato(DD/MM/AAAA)");
+            lblFormato.setFont(new Font("Arial", 1, 10));
+            lblFormato.setBounds(605, 100, 300, 30);
+            add(lblFormato);
+
+            txtData = new JTextField();
+            txtData.setFont(new Font("Arial", 0, 15));
+            txtData.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+            txtData.setBounds(600, 80, 123, 23);
+            add(txtData);
+
+            btnCriar = new JButton("Criar");
+            btnCriar.setFont(new Font("Arial", 0, 12));
+            btnCriar.setBackground(new Color(168, 168, 168));
+            btnCriar.setForeground(Color.BLACK);
+            btnCriar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+            btnCriar.addActionListener(new EventoCriar());
+            btnCriar.setBounds(525, 200, 100, 25);
+            add(btnCriar);
+
+            btnLimpar = new JButton("Limpar");
+            btnLimpar.setFont(new Font("Arial", 0, 12));
+            btnLimpar.setBounds(715, 200, 100, 25);
+            btnLimpar.setForeground(Color.BLACK);
+            btnLimpar.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+            btnLimpar.addActionListener(new EventoLimpar());
+            btnLimpar.setBackground(new Color(168, 168, 168));
+            add(btnLimpar);
+
+        }
+
+        private class EventoLimpar implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtObj.setText("");
+                txtData.setText("");
+            }
+        }
+
+        private class EventoCriar implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveObjetivo();
+            }
+
+        }
+
+        private void saveObjetivo() {
+
+            if (txtObj.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira algum texto!", "Objetivos", 0);
+            } else if (txtData.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira alguma data!", "Objetivos", 0);
+            } else {
+
+                objetivo = new Objetivo();
+                objetivo.setUser(Principal.user);
+                objetivo.setDescricao(txtObj.getText());
+                objetivo.setDataInic(txtData.getText());
+
+                if (dao.saveObjetivo(objetivo)) {
+                    JOptionPane.showMessageDialog(null, "Objetivo salvo com sucesso!", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
+                }
+                txtObj.setText("");
+                txtData.setText("");
+
+                painel1.revalidate();
+                painel1.repaint();
+                visualizarObjetivos.dispose();
+                new VisualizarObjetivos().runTela();
+            }
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+            g.setColor(new Color(168, 168, 168));
+            g.fillRoundRect(0, 0, 900, 250, 30, 30);
+        }
+
+    }
+
+    private void generatePanel() {
+        painelCriar = new PainelCriar();
+        painelCriar.setBounds(350, 50, 900, 250);
+        painelCriar.setBorder(new BordaPainelCriar());
+        painelCriar.setBackground(painel1.getBackground());
+        painel1.add(painelCriar);
+
+    }
+
+    private class BordaPainelCriar extends AbstractBorder {
+
+        private BasicStroke contorno = new BasicStroke(1);
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            super.paintBorder(c, g, x, y, width, height); //To change body of generated methods, choose Tools | Templates.
+
+            Graphics2D g2d = (Graphics2D) g;
+
+            g2d.setColor(Color.black);
+            g2d.setStroke(contorno);
+            g2d.drawRoundRect(x, y, width - 1, height - 1, 30, 30);
+
+        }
+
+    }
+
     public void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -285,7 +499,7 @@ public class VisualizarObjetivos extends JFrame {
     }
 
     public static void main(String[] args) {
-        new VisualizarObjetivos().setVisible(true);
+        new VisualizarObjetivos().runTela();
     }
 
 }

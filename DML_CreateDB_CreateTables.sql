@@ -32,7 +32,7 @@ id int auto_increment,
 user_nome varchar(100) ,
 descricao varchar(150),
 dataInic varchar(10), 
-primary key (id,user_nome),
+primary key (id),
 foreign key (user_nome) references Usuario(nome)
 );
 
@@ -41,5 +41,6 @@ select * from tarefas;
 select * from usuario;
 select * from objetivos;
 
-update objetivos set dataInic = '23/12/2006' where descricao= 'a';
+delete from objetivos;
+update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
 
