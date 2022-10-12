@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 
 import connection.ConnectionFactory;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.bean.User;
 
 public class UserDAO {
@@ -36,6 +38,46 @@ public class UserDAO {
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
+    }
+    
+    public boolean updateImagemUsuario(User user, String ImagePath){
+        
+        
+        String sql = "update usuario set imagem = ? where nome = ?";
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, ImagePath);
+            stmt.setString(2, user.getNome());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro na hora de salvar a imagem do usuario", "ERROR", 0);
+            return false;
+        }
+    }
+    
+    public String getImagemUsuario(User user){
+        
+        String pathImagem = "";
+        
+        String sql="select imagem from usuario where nome = ?";
+        PreparedStatement stmt=null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, user.getNome());
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                pathImagem = rs.getString("Imagem");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro na hora de pegar a imagem do usuario", "ERROR", 0);
+        }
+        
+        return pathImagem;
     }
 
     public List<User> listUsers() {

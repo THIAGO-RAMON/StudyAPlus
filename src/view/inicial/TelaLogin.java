@@ -146,6 +146,8 @@ public class TelaLogin extends TelaPadraoFullScreen {
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
+                new TelaMain().runTela();
+                dispose();
             }
 
         }

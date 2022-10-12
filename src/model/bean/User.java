@@ -7,6 +7,7 @@ public class User {
     private String sobreMim;
     private String escolaridade;
     private double desempenho_percentual;
+    private String img;
 
     /**
      * @return String return the nome
@@ -76,8 +77,14 @@ public class User {
     public void setDesempenho_percentual(double desempenho_percentual) {
         this.desempenho_percentual = desempenho_percentual;
     }
-    
-    
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public User(){
 

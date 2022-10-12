@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -163,12 +164,12 @@ public class BarraLateral extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (telaDasTarefas.isVisible()) {
-                telaDasTarefas.dispose();
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
             }
-            if (telaCriarTarefa.isVisible()) {
-                telaCriarTarefa.isVisible();
-            }
+        
             new VisualizarObjetivos().runTela();
         }
 
@@ -178,17 +179,10 @@ public class BarraLateral extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (telaPerfil.isVisible()) {
-                telaPerfil.dispose();
-            }
-            if (telaDesempenho.isVisible()) {
-                telaDesempenho.dispose();
-            }
-            if (telaDasTarefas.isVisible()) {
-                telaDasTarefas.dispose();
-            }
-            if (visualizarObjetivos.isVisible()) {
-                visualizarObjetivos.dispose();
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
             }
             new TelaCriarTarefa().runTela();
         }
@@ -201,19 +195,12 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            if (telaPerfil.isVisible()) {
-                telaPerfil.dispose();
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
             }
-            if (telaDesempenho.isVisible()) {
-                telaDesempenho.dispose();
-            }
-            if (telaCriarTarefa.isVisible()) {
-                telaCriarTarefa.dispose();
-            }
-            if (visualizarObjetivos.isVisible()) {
-                visualizarObjetivos.dispose();
-            }
-            TelaTarefas.runTela();
+            new TelaTarefas().runTela();
         }
     }
 
@@ -222,19 +209,13 @@ public class BarraLateral extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-
-            if (telaDasTarefas.isVisible()) {
-                telaDasTarefas.dispose();
+            
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
             }
-            if (telaCriarTarefa.isVisible()) {
-                telaCriarTarefa.dispose();
-            }
-            if (telaPerfil.isVisible()) {
-                telaPerfil.dispose();
-            }
-            if (visualizarObjetivos.isVisible()) {
-                visualizarObjetivos.dispose();
-            }
+            
             new TelaDesempenho().runTela();
 
         }
@@ -246,17 +227,10 @@ public class BarraLateral extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
 
-            if (telaDasTarefas.isVisible()) {
-                telaDasTarefas.dispose();
-            }
-            if (telaDesempenho.isVisible()) {
-                telaDesempenho.dispose();
-            }
-            if (telaCriarTarefa.isVisible()) {
-                telaCriarTarefa.dispose();
-            }
-            if (visualizarObjetivos.isVisible()) {
-                visualizarObjetivos.dispose();
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
             }
             
             new TelaPerfil().runTela();

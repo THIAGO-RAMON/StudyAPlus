@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BasicStroke;
+import java.awt.Frame;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +56,7 @@ public class TelaAlterar extends JFrame {
         tfNovoNome = new JTextField();
         tfNovoNome.setBorder(new BordaCantoArrendondado());
         tfNovoNome.setBackground(new Color(218, 217, 215));
-        tfNovoNome.setFont(new Font("Arial", 0, 15));
+        tfNovoNome.setFont(new Font("Arial", 0, 18));
         tfNovoNome.setBounds(10, 110, 400, 30);
         painel1.add(tfNovoNome);
 
@@ -69,7 +70,7 @@ public class TelaAlterar extends JFrame {
         tfNovaSenha = new JPasswordField();
         tfNovaSenha.setBorder(new BordaCantoArrendondado());
         tfNovaSenha.setBackground(new Color(218, 217, 215));
-        tfNovaSenha.setFont(new Font("Arial", 0, 15));
+        tfNovaSenha.setFont(new Font("Arial", 0, 18));
         tfNovaSenha.setBounds(10, 210, 400, 30);
         painel1.add(tfNovaSenha);
 
@@ -83,7 +84,7 @@ public class TelaAlterar extends JFrame {
         tfConfirmarSenha = new JPasswordField();
         tfConfirmarSenha.setBorder(new BordaCantoArrendondado());
         tfConfirmarSenha.setBackground(new Color(218, 217, 215));
-        tfConfirmarSenha.setFont(new Font("Arial", 0, 15));
+        tfConfirmarSenha.setFont(new Font("Arial", 0, 18));
         tfConfirmarSenha.setBounds(10, 310, 400, 30);
         painel1.add(tfConfirmarSenha);
 
@@ -189,13 +190,14 @@ public class TelaAlterar extends JFrame {
                         Principal.user.setSenha(tfNovaSenha.getText());
                     }
                     
-                    telaPerfil.dispose();
-                    telaPerfil.resetPanel();
+                    
+                    Frame frame[] = Frame.getFrames();
+                            
+                    for (int i = 0; i < frame.length; i++) {
+                        frame[i].dispose();
+                    }
+                    
                     new TelaPerfil().runTela();
-                    
-                    dispose();
-                    
-                    
                    
                 } else if (tfNovaSenha.getText().isEmpty()) {
 

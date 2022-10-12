@@ -1,4 +1,4 @@
-create database StudyAPLus;
+#create database StudyAPLus;
 use StudyAPlus;
 
 drop table if exists usuario;
@@ -11,6 +11,7 @@ senha varchar(50) not null,
 sobreMim varchar(200) null,
 escolaridade varchar(50),
 desempenho double null,
+imagem longblob,
 primary key(nome) 
 );
 
