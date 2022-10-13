@@ -28,18 +28,19 @@ import view.telasPrograma.TelaTarefas;
 public class DicasEstudo extends JFrame {
 
     private JPanel painel1, painel2;
-    private JLabel msg, dica;
+    private JLabel msg;
     private JButton btnGerar;
     private static DicasEstudo dicasEstudo;
     private BarraLateral barraLateral;
     private UserDAO userDao = new UserDAO();
     private User usuario = Principal.user;
     private static int posicao = 0;
+    private String dicasDeEstudo[] = {"Se organize.", "Comece devagar", "Comece pelo mais fácil"};
 
     public DicasEstudo() {
         config();
         painel();
-        
+
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
@@ -59,8 +60,11 @@ public class DicasEstudo extends JFrame {
         btnGerar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dica.setText("Se organize.");
-                
+                JLabel dica = new JLabel("Se organize.");
+                dica.setFont(new Font("Arial", 1, 18));
+                dica.setBounds(0, posicao, 400, 30);
+                painel2.add(dica);
+
                 Thread.yield();
 
                 Runnable run = new Runnable() {
@@ -70,10 +74,10 @@ public class DicasEstudo extends JFrame {
                         try {
                             int contx = dica.getX();
 
-                            while (dica.getX() != painel2.getWidth() - 300) {
+                            while (dica.getX() != painel2.getWidth() - 450) {
                                 dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
                                 contx++;
-                                Thread.sleep(6);
+                                Thread.sleep(4);
                             }
                         } catch (InterruptedException ex) {
                             System.err.println(ex);
@@ -83,19 +87,14 @@ public class DicasEstudo extends JFrame {
 
                 Thread mover = new Thread(run);
                 mover.start();
-                posicao+=30;
+                posicao += 30;
             }
+
         });
         painel1.add(btnGerar);
 
-        dica = new JLabel();
-        dica.setFont(new Font("Arial", 1, 18));
-        dica.setBounds(0, posicao, 400, 30);
-        painel2.add(dica);
-        
         verifica();
     }
-    
 
     private void painel() {
         painel1 = new JPanel();
@@ -121,11 +120,10 @@ public class DicasEstudo extends JFrame {
         setUndecorated(true);
     }
 
-
     public static void main(String[] args) {
         new DicasEstudo().setVisible(true);
     }
-    
+
     private class BordaPersonalizada extends AbstractBorder {
 
         @Override
@@ -153,7 +151,7 @@ public class DicasEstudo extends JFrame {
         dicasEstudo = telaTarefasNova;
         dicasEstudo.setVisible(true);
     }
-    
+
     private class verMouse implements MouseListener {
 
         JButton btn;
@@ -185,15 +183,15 @@ public class DicasEstudo extends JFrame {
         }
 
     }
-    
-    private void verifica(){
+
+    private void verifica() {
         double porcentagem = userDao.getPorcentagem(usuario);
-        if(porcentagem > 60.00){
+        if (porcentagem > 60.00) {
             btnGerar.setEnabled(true);
             btnGerar.addMouseListener(new verMouse(btnGerar));
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Seu desempenho não está bom o suficiente.");
-            
+
         }
     }
 
