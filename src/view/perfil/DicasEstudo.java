@@ -1,97 +1,200 @@
 package view.perfil;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
+import model.bean.User;
+import model.dao.UserDAO;
+import view.Main.BarraLateral;
+import view.Main.Principal;
+import view.telasPrograma.TelaDesempenho;
+import view.Main.TelaPadraoFullScreen;
+import view.telasPrograma.TelaTarefas;
 
-public class DicasEstudo extends JFrame{
-    
-    JPanel painel1,painel2;
-    JLabel msg,dica;
-    JButton btnGerar;
-    
-    DicasEstudo(){
+public class DicasEstudo extends JFrame {
+
+    private JPanel painel1, painel2;
+    private JLabel msg, dica;
+    private JButton btnGerar;
+    private static DicasEstudo dicasEstudo;
+    private BarraLateral barraLateral;
+    private UserDAO userDao = new UserDAO();
+    private User usuario = Principal.user;
+    private static int posicao = 0;
+
+    public DicasEstudo() {
         config();
         painel();
         
+        barraLateral = new BarraLateral();
+        barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
+        painel1.add(barraLateral);
+
         msg = new JLabel("Seu desempenho foi bom, gerar uma dica!");
-        msg.setFont(new Font("Arial",1,20));
-        msg.setBounds(50,120,400,30);
+        msg.setFont(new Font("Arial", 1, 20));
+        msg.setBounds(550, 70, 400, 30);
         painel1.add(msg);
-        
+
         btnGerar = new JButton("Gerar dica");
-        btnGerar.setFont(new Font("Arial",1,25));
-        btnGerar.setBounds(180,280,160,40);
+        btnGerar.setFont(new Font("Arial", 1, 22));
+        btnGerar.setBounds(675, 150, 160, 40);
+        btnGerar.setEnabled(false);
+        //btnGerar.addMouseListener(new verMouse(btnGerar));
+        btnGerar.setBorder(new BordaPersonalizada());
+        btnGerar.setBackground(new Color(207, 227, 225));
         btnGerar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dica.setText("Se organize.");
+                
+                Thread.yield();
 
-            Thread.yield();
+                Runnable run = new Runnable() {
 
-            Runnable run = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            int contx = dica.getX();
 
-                @Override
-                public void run() {
-                    try {
-                        int contx = dica.getX();
-
-                        while (dica.getX() != painel2.getWidth() - 400) {
-                            dica.setBounds(contx, 0, dica.getWidth(), dica.getHeight());
-                            contx++;
-                            Thread.sleep(1);
+                            while (dica.getX() != painel2.getWidth() - 300) {
+                                dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
+                                contx++;
+                                Thread.sleep(6);
+                            }
+                        } catch (InterruptedException ex) {
+                            System.err.println(ex);
                         }
-                    } catch (InterruptedException ex) {
-                        System.err.println(ex);
                     }
-                }
-            };
+                };
 
-            Thread mover = new Thread(run);
-            mover.start();
+                Thread mover = new Thread(run);
+                mover.start();
+                posicao+=30;
             }
         });
         painel1.add(btnGerar);
-        
+
         dica = new JLabel();
-        dica.setFont(new Font("Arial",1,18));
-        dica.setBounds(0,0,400,30);
+        dica.setFont(new Font("Arial", 1, 18));
+        dica.setBounds(0, posicao, 400, 30);
         painel2.add(dica);
+        
+        verifica();
     }
     
-    
-    private void painel(){
+
+    private void painel() {
         painel1 = new JPanel();
         painel1.setLayout(null);
-        painel1.setBounds(0,0,1280,720);
-        painel1.setBackground(new Color(200,200,200));
-        painel1.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painel1.setBounds(0, 0, 1280, 720);
+        painel1.setBackground(new Color(207, 227, 225));
+        painel1.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         add(painel1);
-        
+
         painel2 = new JPanel();
         painel2.setLayout(null);
-        painel2.setBounds(600,100,500,500);
-        painel2.setBackground(new Color(200,200,200));
-        painel2.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painel2.setBounds(510, 250, 500, 400);
+        painel2.setBackground(new Color(200, 200, 200));
+        painel2.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         painel1.add(painel2);
     }
-    
-    private void config(){
+
+    private void config() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
-        setSize(1280,720);
+        setSize(1280, 720);
         setLocationRelativeTo(null);
         setUndecorated(true);
     }
-    
+
+
     public static void main(String[] args) {
         new DicasEstudo().setVisible(true);
     }
     
+    private class BordaPersonalizada extends AbstractBorder {
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            // TODO Auto-generated method stub
+            super.paintBorder(c, g, x, y, width, height);
+
+            Graphics2D g2d = (Graphics2D) g;
+
+            g2d.setStroke(new BasicStroke(2));
+            g2d.setColor(Color.BLACK);
+            g2d.drawRoundRect(x, y, width, height, 10, 10);
+
+        }
+
+    }
+
+    public void runTela() {
+        dicasEstudo = new DicasEstudo();
+        if (dicasEstudo.isActive()) {
+            dicasEstudo.dispose();
+        }
+
+        DicasEstudo telaTarefasNova = new DicasEstudo();
+        dicasEstudo = telaTarefasNova;
+        dicasEstudo.setVisible(true);
+    }
+    
+    private class verMouse implements MouseListener {
+
+        JButton btn;
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            btn.setBackground(new Color(161, 207, 203));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            btn.setBackground(new Color(207, 227, 225));
+        }
+
+        public verMouse(JButton e) {
+            this.btn = e;
+        }
+
+    }
+    
+    private void verifica(){
+        double porcentagem = userDao.getPorcentagem(usuario);
+        if(porcentagem > 60.00){
+            btnGerar.setEnabled(true);
+            btnGerar.addMouseListener(new verMouse(btnGerar));
+        }else{
+            JOptionPane.showMessageDialog(null, "Seu desempenho não está bom o suficiente.");
+            
+        }
+    }
+
 }

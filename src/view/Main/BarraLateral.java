@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
+import view.perfil.DicasEstudo;
 import view.perfil.TelaObjetivos;
 
 import view.perfil.TelaPerfil;
@@ -28,11 +29,12 @@ import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
 import static view.perfil.VisualizarObjetivos.visualizarObjetivos;
 import view.perfil.VisualizarObjetivos;
 import view.telasPrograma.TelaCriarTarefa;
+import view.perfil.DicasEstudo;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,painelDicas;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -108,6 +110,17 @@ public class BarraLateral extends JPanel {
         painelObjetivos.setBounds(60, 295, 230, 50);
         painelObjetivos.addActionListener(eventoObjetivos);
         add(painelObjetivos);
+        
+        EventoAbrirDicas evtDicas = new EventoAbrirDicas();
+        
+        
+        painelDicas = new JButton("Dicas de Estudos");
+        painelDicas.setFont(new Font("Arial", 1, 20));
+        painelDicas.setBackground(colorButton);
+        painelDicas.setBorder(new BordaPersonalizada());
+        painelDicas.setBounds(60, 355, 230, 50);
+        painelDicas.addActionListener(evtDicas);
+        add(painelDicas);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
@@ -236,4 +249,20 @@ public class BarraLateral extends JPanel {
             new TelaPerfil().runTela();
         }
     }
+    
+    private class EventoAbrirDicas implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
+            }
+            
+            new DicasEstudo().runTela();
+            
+        }
+    }
+    
 }

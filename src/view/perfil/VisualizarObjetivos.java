@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,7 @@ import model.bean.Objetivo;
 import model.bean.User;
 import view.Main.BarraLateral;
 import view.Main.Principal;
+import view.Main.TelaPadraoFullScreen;
 
 public class VisualizarObjetivos extends JFrame {
 
@@ -140,6 +142,7 @@ public class VisualizarObjetivos extends JFrame {
 
             Thread mover = new Thread(run);
             mover.start();
+            txtPes.requestFocus();
         }
 
     }
@@ -225,14 +228,17 @@ public class VisualizarObjetivos extends JFrame {
             txtNome = new JTextField(Principal.user.getNome());
             txtNome.setBounds(82, 85, 300, 30);
             txtNome.setEditable(false);
+            txtNome.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
             painel.add(txtNome);
 
             txtObj = new JTextField();
             txtObj.setBounds(82, 155, 300, 30);
+            txtObj.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
             painel.add(txtObj);
 
             txtData = new JTextField();
             txtData.setBounds(82, 225, 300, 30);
+            txtData.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
             painel.add(txtData);
 
             txtNome.setFont(new Font("Arial", 0, 15));
@@ -262,12 +268,14 @@ public class VisualizarObjetivos extends JFrame {
             btnVoltar = new JButton("Deletar");
             btnVoltar.setBackground(painel.getBackground());
             btnVoltar.setBounds(255, 300, 125, 25);
+            btnVoltar.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
             btnVoltar.addActionListener(new EventoVoltar(objetivo));
             painel.add(btnVoltar);
 
             btnAlterar = new JButton("Alterar");
             btnAlterar.setBackground(painel.getBackground());
             btnAlterar.setBounds(82, 300, 125, 25);
+            btnAlterar.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
             btnAlterar.addActionListener(new EventoAlterar(objetivo));
             painel.add(btnAlterar);
 
@@ -496,6 +504,25 @@ public class VisualizarObjetivos extends JFrame {
                 visualizarObjetivos.setVisible(true);
             }
         });
+    }
+    
+    public class BordaCantoArrendondado extends AbstractBorder {
+
+        private final BasicStroke CONTORNO = new BasicStroke(2);
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+
+            super.paintBorder(c, g, x, y, width, height);
+
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setStroke(CONTORNO);
+
+            g2d.setColor(Color.black);
+            g2d.drawRoundRect(x, y, width - 1, height - 1, 15, 15);
+
+        }
     }
 
     public static void main(String[] args) {

@@ -29,7 +29,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
     JButton btnBack, btnFoto, leave;
 
     private User usuario = principal.user;
-    private UserDAO daoUser = new UserDAO();
+    private static UserDAO daoUser = new UserDAO();
 
     private double porcentagem;
     
