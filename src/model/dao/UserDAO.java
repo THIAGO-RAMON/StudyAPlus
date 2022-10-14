@@ -42,7 +42,6 @@ public class UserDAO {
     
     public boolean updateImagemUsuario(User user, String ImagePath){
         
-        
         String sql = "update usuario set imagem = ? where nome = ?";
         PreparedStatement stmt = null;
         

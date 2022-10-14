@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import model.bean.User;
 import model.dao.UserDAO;
 import view.Main.Principal;
@@ -58,7 +58,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         tfNome.setBackground(new Color(218, 217, 215));
         tfNome.setBounds(70, 320, 425, 30);
         tfNome.setFont(new Font("Arial", 0, 20));
-        tfNome.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        tfNome.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         tfNome.requestFocus();
 
         painel1.add(tfNome);
@@ -73,7 +73,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         pfSenha.setBackground(new Color(218, 217, 215));
         pfSenha.setBounds(70, 400, 425, 30);
         pfSenha.setFont(new Font("Arial", 0, 20));
-        pfSenha.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        pfSenha.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         painel1.add(pfSenha);
 
         btnOk = new JButton("OK");
@@ -101,17 +101,17 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
         // BOTÕES DE SENHA
         btnVerSenha1 = new JButton();
-        btnVerSenha1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnVerSenha1.setBorder(null);
         btnVerSenha1.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
-        btnVerSenha1.setBackground(new Color(218, 217, 215));
+        btnVerSenha1.setBackground(new Color(168, 168, 168));
         btnVerSenha1.setBounds(505, 401, 33, 30);
         btnVerSenha1.addActionListener(new EventoSenha());
         painel1.add(btnVerSenha1);
 
         btnOcultar1 = new JButton();
-        btnOcultar1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnOcultar1.setBorder(null);
         btnOcultar1.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
-        btnOcultar1.setBackground(new Color(218, 217, 215));
+        btnOcultar1.setBackground(new Color(168, 168, 168));
         btnOcultar1.setBounds(505, 401, 33, 30);
         btnOcultar1.addActionListener(new EventoSenha());
         btnOcultar1.setVisible(false);

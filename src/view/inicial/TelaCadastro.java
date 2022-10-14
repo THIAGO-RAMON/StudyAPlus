@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 import model.bean.User;
 import model.dao.UserDAO;
 import view.Main.Principal;
@@ -57,8 +58,9 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         jfNome = new JTextField();
         jfNome.setBackground(new Color(218, 217, 215));
         jfNome.setBounds(50, 270, 500, 35);
-        jfNome.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        jfNome.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         jfNome.setFont(new Font("Arial", 0, 20));
+        jfNome.requestFocus();
 
         painel1.add(jfNome);
 
@@ -70,8 +72,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         pfSenha = new JPasswordField();
         pfSenha.setBackground(new Color(218, 217, 215));
         pfSenha.setBounds(50, 350, 500, 35);
-        pfSenha.setFont(new Font("Arial", 0, 30));
-        pfSenha.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        pfSenha.setFont(new Font("Arial", 0, 20));
+        pfSenha.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         painel1.add(pfSenha);
 
         lblConfirmar = new JLabel("Confirmar senha:");
@@ -82,8 +84,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         pfConfirmar = new JPasswordField();
         pfConfirmar.setBackground(new Color(218, 217, 215));
         pfConfirmar.setBounds(50, 430, 500, 35);
-        pfConfirmar.setFont(new Font("Arial", 0, 30));
-        pfConfirmar.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        pfConfirmar.setFont(new Font("Arial", 0, 20));
+        pfConfirmar.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 
         painel1.add(pfConfirmar);
 
@@ -120,26 +122,26 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         painel1.add(leave);
 
         btnVerSenha1 = new JButton();
-        btnVerSenha1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnVerSenha1.setBorder(null);
         btnVerSenha1.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
-        btnVerSenha1.setBackground(new Color(218, 217, 215));
+        btnVerSenha1.setBackground(new Color(168,168,168));
         btnVerSenha1.setBounds(565, 353, 35, 30);
         btnVerSenha1.addActionListener(new EventoSenha());
         painel1.add(btnVerSenha1);
-        
+
         btnVerSenha2 = new JButton();
-        btnVerSenha2.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnVerSenha2.setBorder(null);
         btnVerSenha2.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
-        btnVerSenha2.setBackground(new Color(218, 217, 215));
+        btnVerSenha2.setBackground(new Color(168, 168, 168));
         btnVerSenha2.setBounds(565, 433, 35, 30);
         btnVerSenha2.addActionListener(new EventoSenha());
         painel1.add(btnVerSenha2);
 
         btnOcultar1 = new JButton();
 
-        btnOcultar1.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnOcultar1.setBorder(null);
         btnOcultar1.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
-        btnOcultar1.setBackground(new Color(218, 217, 215));
+        btnOcultar1.setBackground(new Color(168, 168, 168));
         btnOcultar1.setBounds(565, 353, 35, 30);
         btnOcultar1.addActionListener(new EventoSenha());
         btnOcultar1.setVisible(false);
@@ -147,9 +149,9 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
         btnOcultar2 = new JButton();
 
-        btnOcultar2.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
+        btnOcultar2.setBorder(null);
         btnOcultar2.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
-        btnOcultar2.setBackground(new Color(218, 217, 215));
+        btnOcultar2.setBackground(new Color(168, 168, 168));
         btnOcultar2.setBounds(565, 433, 35, 30);
         btnOcultar2.addActionListener(new EventoSenha());
         btnOcultar2.setVisible(false);
@@ -221,14 +223,14 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                 } else {
                     usuario = new User();
                     usuario.setNome(jfNome.getText());
-                    usuario.setSenha(pfSenha.getText());   
+                    usuario.setSenha(pfSenha.getText());
                     usuario.setDesempenho_percentual(0);
-                    
+
                     if (dao.saveCadastro(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
                         dispose();
-                    }else{
+                    } else {
                         JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);
                     }
 

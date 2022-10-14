@@ -21,9 +21,6 @@ import model.bean.User;
 import model.dao.UserDAO;
 import view.Main.BarraLateral;
 import view.Main.Principal;
-import view.telasPrograma.TelaDesempenho;
-import view.Main.TelaPadraoFullScreen;
-import view.telasPrograma.TelaTarefas;
 
 public class DicasEstudo extends JFrame {
 
@@ -36,8 +33,12 @@ public class DicasEstudo extends JFrame {
     private User usuario = Principal.user;
     private static int posicao = 0;
     private String dicasDeEstudo[] = {"Se organize.", "Comece devagar", "Comece pelo mais fácil"};
+    private double porcentagem = 0;
 
     public DicasEstudo() {
+
+        porcentagem = userDao.getPorcentagem(usuario);
+
         config();
         painel();
 
@@ -57,43 +58,45 @@ public class DicasEstudo extends JFrame {
         //btnGerar.addMouseListener(new verMouse(btnGerar));
         btnGerar.setBorder(new BordaPersonalizada());
         btnGerar.setBackground(new Color(207, 227, 225));
-        btnGerar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JLabel dica = new JLabel("Se organize.");
-                dica.setFont(new Font("Arial", 1, 18));
-                dica.setBounds(0, posicao, 400, 30);
-                painel2.add(dica);
-
-                Thread.yield();
-
-                Runnable run = new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            int contx = dica.getX();
-
-                            while (dica.getX() != painel2.getWidth() - 450) {
-                                dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
-                                contx++;
-                                Thread.sleep(4);
-                            }
-                        } catch (InterruptedException ex) {
-                            System.err.println(ex);
-                        }
-                    }
-                };
-
-                Thread mover = new Thread(run);
-                mover.start();
-                posicao += 30;
-            }
-
-        });
+        btnGerar.addActionListener(new EventoBotao());
         painel1.add(btnGerar);
 
         verifica();
+    }
+
+    private class EventoBotao implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JLabel dica = new JLabel("Se organize.");
+            dica.setFont(new Font("Arial", 1, 18));
+            dica.setBounds(0, posicao, 400, 30);
+            painel2.add(dica);
+
+            Thread.yield();
+
+            Runnable run = new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        int contx = dica.getX();
+
+                        while (dica.getX() != painel2.getWidth() - 450) {
+                            dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
+                            contx++;
+                            Thread.sleep(4);
+                        }
+                    } catch (InterruptedException ex) {
+                        System.err.println(ex);
+                    }
+                }
+            };
+
+            Thread mover = new Thread(run);
+            mover.start();
+            posicao += 30;
+        }
     }
 
     private void painel() {
@@ -120,10 +123,6 @@ public class DicasEstudo extends JFrame {
         setUndecorated(true);
     }
 
-    public static void main(String[] args) {
-        new DicasEstudo().setVisible(true);
-    }
-
     private class BordaPersonalizada extends AbstractBorder {
 
         @Override
@@ -139,17 +138,6 @@ public class DicasEstudo extends JFrame {
 
         }
 
-    }
-
-    public void runTela() {
-        dicasEstudo = new DicasEstudo();
-        if (dicasEstudo.isActive()) {
-            dicasEstudo.dispose();
-        }
-
-        DicasEstudo telaTarefasNova = new DicasEstudo();
-        dicasEstudo = telaTarefasNova;
-        dicasEstudo.setVisible(true);
     }
 
     private class verMouse implements MouseListener {
@@ -185,14 +173,28 @@ public class DicasEstudo extends JFrame {
     }
 
     private void verifica() {
-        double porcentagem = userDao.getPorcentagem(usuario);
+
         if (porcentagem > 60.00) {
             btnGerar.setEnabled(true);
             btnGerar.addMouseListener(new verMouse(btnGerar));
         } else {
-            JOptionPane.showMessageDialog(null, "Seu desempenho não está bom o suficiente.");
-
+            JOptionPane.showMessageDialog(null, "Seu desempenho não está bom o suficiente.", "Dicas de Estudo", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    public void runTela() {
+        dicasEstudo = new DicasEstudo();
+        if (dicasEstudo.isActive()) {
+            dicasEstudo.dispose();
+        }
+
+        DicasEstudo telaTarefasNova = new DicasEstudo();
+        dicasEstudo = telaTarefasNova;
+        dicasEstudo.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DicasEstudo().runTela();
     }
 
 }

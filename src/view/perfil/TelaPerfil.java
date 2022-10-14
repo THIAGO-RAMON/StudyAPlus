@@ -3,14 +3,11 @@ package view.perfil;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.Image;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 
 import javax.swing.ImageIcon;

@@ -15,19 +15,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
-import view.perfil.DicasEstudo;
-import view.perfil.TelaObjetivos;
 
 import view.perfil.TelaPerfil;
 import view.telasPrograma.TelaDesempenho;
 import view.telasPrograma.TelaTarefas;
 
-import static view.telasPrograma.TelaTarefas.telaDasTarefas;
-import static view.telasPrograma.TelaDesempenho.telaDesempenho;
-import static view.perfil.TelaPerfil.telaPerfil;
-import static view.telasPrograma.TelaCriarTarefa.telaCriarTarefa;
-import static view.perfil.VisualizarObjetivos.visualizarObjetivos;
-import view.perfil.VisualizarObjetivos;
+import view.objetivo.VisualizarObjetivos;
 import view.telasPrograma.TelaCriarTarefa;
 import view.perfil.DicasEstudo;
 

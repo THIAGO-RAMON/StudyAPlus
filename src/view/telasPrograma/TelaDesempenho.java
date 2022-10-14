@@ -10,16 +10,12 @@ import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import model.bean.User;
 import model.dao.UserDAO;
 
 import view.Main.BarraLateral;
-import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
-import view.perfil.TelaPerfil;
 import static view.perfil.TelaPerfil.principal;
 
 public class TelaDesempenho extends TelaPadraoFullScreen {
