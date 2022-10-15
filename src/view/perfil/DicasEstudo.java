@@ -32,8 +32,9 @@ public class DicasEstudo extends JFrame {
     private UserDAO userDao = new UserDAO();
     private User usuario = Principal.user;
     private static int posicao = 0;
-    private String dicasDeEstudo[] = {"Se organize.", "Comece devagar", "Comece pelo mais fácil"};
+    private String dicasDeEstudo[] = {"Crie um plano de estudos.", "Tenha um horário fixo.", "Escreva os conteúdos.","Faça exercícios."};
     private double porcentagem = 0;
+    private static int v =0;
 
     public DicasEstudo() {
 
@@ -68,7 +69,8 @@ public class DicasEstudo extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JLabel dica = new JLabel("Se organize.");
+            try{
+            JLabel dica = new JLabel(dicasDeEstudo[v++]);
             dica.setFont(new Font("Arial", 1, 18));
             dica.setBounds(0, posicao, 400, 30);
             painel2.add(dica);
@@ -96,6 +98,9 @@ public class DicasEstudo extends JFrame {
             Thread mover = new Thread(run);
             mover.start();
             posicao += 30;
+            }catch(ArrayIndexOutOfBoundsException ex){
+                System.err.println(ex);
+            }
         }
     }
 

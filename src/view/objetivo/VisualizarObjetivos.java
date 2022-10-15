@@ -78,6 +78,7 @@ public class VisualizarObjetivos extends JFrame {
 
         JScrollPane painelScrollado = new JScrollPane(tabela);
         painelScrollado.setBounds(350, 350, 900, 350);
+        painelScrollado.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painel1.add(painelScrollado);
         objetivosTabela();
 
@@ -90,6 +91,7 @@ public class VisualizarObjetivos extends JFrame {
         txtPes.setFont(new Font("Arial", 1, 15));
         txtPes.setBounds(475, 320, 400, 23);
         txtPes.setVisible(false);
+        txtPes.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         txtPes.addKeyListener(new EventoPesquisar2());
         painel1.add(txtPes);
 
@@ -140,7 +142,7 @@ public class VisualizarObjetivos extends JFrame {
                         while (txtPes.getX() != painel1.getWidth() - 750) {
                             txtPes.setBounds(contx, txtPes.getY(), txtPes.getWidth(), txtPes.getHeight());
                             contx++;
-                            Thread.sleep(5);
+                            Thread.sleep(7);
                         }
                     } catch (InterruptedException ex) {
                         System.err.println(ex);
