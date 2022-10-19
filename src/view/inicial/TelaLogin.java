@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -74,6 +76,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         pfSenha.setBounds(70, 400, 425, 30);
         pfSenha.setFont(new Font("Arial", 0, 20));
         pfSenha.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+        pfSenha.addKeyListener(new EventoTecla());
         painel1.add(pfSenha);
 
         btnOk = new JButton("OK");
@@ -86,7 +89,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
         painel1.add(btnOk);
 
         btnCancel = new JButton("VOLTAR");
-        btnCancel.addActionListener(new EventoCancelar() );
+        btnCancel.addActionListener(new EventoCancelar());
 
         btnCancel.setFont(new Font("Arial", 1, 20));
         btnCancel.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
@@ -119,17 +122,64 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
     }
 
+    private class EventoTecla implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int code = e.getKeyCode();
+            int tecla = KeyEvent.VK_ENTER;
+
+            if (code == tecla) {
+                String nome = tfNome.getText().trim();
+                boolean b = false;
+
+                for (User user : dao.listUsers()) {
+
+                    if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
+
+                        principal.user = user;
+                        b = true;
+
+                        break;
+                    }
+
+                }
+
+                if (b) {
+                    JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
+                    new TelaTarefas().runTela();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
+                    new TelaMain().runTela();
+                    dispose();
+                }
+
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+
+    }
+
     private class EventoConfirmar implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            String nome = tfNome.getText().trim();
             boolean b = false;
 
             for (User user : dao.listUsers()) {
 
                 if (e.getSource() == btnOk) {
 
-                    if (tfNome.getText().equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
+                    if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
                         principal.user = user;
                         b = true;

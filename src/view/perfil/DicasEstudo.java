@@ -3,6 +3,7 @@ package view.perfil;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,6 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,11 +42,13 @@ public class DicasEstudo extends JFrame {
     private UserDAO userDao = new UserDAO();
     private User usuario = Principal.user;
     private static int posicao = 0;
-    private String dicasDeEstudo[] = {"Crie um plano de estudos.", "Tenha um horário fixo.", "Escreva os conteúdos.","Faça exercícios."};
+    private String dicasDeEstudo[] = {"Crie um plano de estudos.", "Tenha um horário fixo.", "Escreva os conteúdos.", "Faça exercícios.", "https://www.napratica.org.br/dicas-para-estudar-melhor-ciencia/"};
     private double porcentagem = 0;
-    private static int v =0;
+    private static int v = 0;
 
     public DicasEstudo() {
+        
+        v=0;
 
         porcentagem = userDao.getPorcentagem(usuario);
 
@@ -69,39 +81,83 @@ public class DicasEstudo extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try{
-            JLabel dica = new JLabel(dicasDeEstudo[v++]);
-            dica.setFont(new Font("Arial", 1, 18));
-            dica.setBounds(0, posicao, 400, 30);
-            painel2.add(dica);
+            try {
+                JLabel dica = new JLabel(dicasDeEstudo[v++]);
+                dica.setFont(new Font("Arial", 1, 18));
+                dica.setBounds(0, posicao, 400, 30);
+                painel2.add(dica);
 
-            Thread.yield();
+                Thread.yield();
 
-            Runnable run = new Runnable() {
+                Runnable run = new Runnable() {
 
-                @Override
-                public void run() {
-                    try {
-                        int contx = dica.getX();
+                    @Override
+                    public void run() {
+                        try {
+                            int contx = dica.getX();
 
-                        while (dica.getX() != painel2.getWidth() - 450) {
-                            dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
-                            contx++;
-                            Thread.sleep(4);
+                            while (dica.getX() != painel2.getWidth() - 450) {
+                                dica.setBounds(contx, posicao, dica.getWidth(), dica.getHeight());
+                                contx++;
+                                Thread.sleep(4);
+                            }
+                        } catch (InterruptedException ex) {
+                            System.err.println(ex);
                         }
-                    } catch (InterruptedException ex) {
-                        System.err.println(ex);
                     }
-                }
-            };
+                };
 
-            Thread mover = new Thread(run);
-            mover.start();
-            posicao += 30;
-            }catch(ArrayIndexOutOfBoundsException ex){
+                Thread mover = new Thread(run);
+                mover.start();
+                posicao += 30;
+
+                if (dica.getText().equals("https://www.napratica.org.br/dicas-para-estudar-melhor-ciencia/")) {
+                    
+                    Map<TextAttribute, Object> atributos = new HashMap<TextAttribute, Object>();
+                    atributos.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+
+                    dica.setFont(new Font("Arial", 2, 13).deriveFont(atributos));
+                    dica.setForeground(new Color(39, 146, 231));
+                    dica.addMouseListener(new EventoMouse());
+                }
+
+            } catch (ArrayIndexOutOfBoundsException ex) {
                 System.err.println(ex);
             }
+
         }
+    }
+
+    private class EventoMouse implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+            try {
+                URI link = new URI("https://www.napratica.org.br/dicas-para-estudar-melhor-ciencia/");
+                Desktop.getDesktop().browse(link);
+            } catch (Exception ex) {
+
+            }
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
     }
 
     private void painel() {

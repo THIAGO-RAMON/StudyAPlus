@@ -24,10 +24,11 @@ import model.dao.UserDAO;
 import view.Main.BarraLateral;
 import view.Main.Principal;
 import view.Main.TelaPadraoFullScreen;
+import view.inicial.TelaMain;
 
 public class TelaPerfil extends TelaPadraoFullScreen {
 
-    private JButton btnFoto, btnLogo, leave, btnAlterarUsuario, btnAlterar2, btnEdit;
+    private JButton btnFoto, btnLogo, leave, btnAlterarUsuario, btnLogout, btnAlterar2, btnEdit;
     protected JPanel painel1, painelB;
 
     private JPanel painelConfigs;
@@ -104,7 +105,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnEdit.setBounds(580, barraLateral.getY() + 90, 50, 50);
         btnEdit.setBorder(null);
         painel1.add(btnEdit);
-        
+
         configPainelConfigs();
 
         leave = new JButton("X");
@@ -141,7 +142,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     private void configPainelConfigs() {
         painelConfigs = new JPanel();
         painelConfigs.setLayout(null);
-        painelConfigs.setSize(125, 90);
+        painelConfigs.setSize(125, 120);
         painelConfigs.setBackground(new Color(168, 168, 168));
 
         EventoBotao eventoBotao = new EventoBotao();
@@ -165,6 +166,15 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnAlterarFotoPerfil.setForeground(Color.white);
         btnAlterarFotoPerfil.setBounds(5, 45, 115, 30);
         painelConfigs.add(btnAlterarFotoPerfil);
+
+        btnLogout = new JButton("Logout");
+        btnLogout.addActionListener(new EventoLogout());
+        btnLogout.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        btnLogout.setFont(new Font("Arial", 0, 14));
+        btnLogout.setBackground(painel1.getBackground().darker());
+        btnLogout.setForeground(Color.white);
+        btnLogout.setBounds(5, 85, 115, 30);
+        painelConfigs.add(btnLogout);
 
     }
 
@@ -234,6 +244,16 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
         }
 
+    }
+    
+    private class EventoLogout implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new TelaMain().runTela();
+            dispose();
+        }
+        
     }
 
     private class EventoTrocarFotoPerfil implements ActionListener {

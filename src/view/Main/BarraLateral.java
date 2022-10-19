@@ -26,7 +26,7 @@ import view.perfil.DicasEstudo;
 
 public class BarraLateral extends JPanel {
 
-    private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso;
+    private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas;
     private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,painelDicas;
     private Color colorButton = Color.WHITE;
 
@@ -55,6 +55,7 @@ public class BarraLateral extends JPanel {
         painelTarefas.setBorder(new BordaPersonalizada());
         painelTarefas.setBounds(60, 115, 230, 50);
         painelTarefas.addActionListener(eventoTarefas);
+        btnLogo.addActionListener(eventoTarefas);
         add(painelTarefas);
 
         EventoAbrirCriarTarefa evtCriar = new EventoAbrirCriarTarefa();
@@ -104,6 +105,11 @@ public class BarraLateral extends JPanel {
         painelObjetivos.addActionListener(eventoObjetivos);
         add(painelObjetivos);
         
+        iconeObjetivo = new JLabel();
+        iconeObjetivo.setBounds(0, 295, 50, 50);
+        iconeObjetivo.setIcon(new ImageIcon(getClass().getResource("/images/objetivos.png")));
+        add(iconeObjetivo);
+        
         EventoAbrirDicas evtDicas = new EventoAbrirDicas();
         
         
@@ -114,6 +120,11 @@ public class BarraLateral extends JPanel {
         painelDicas.setBounds(60, 355, 230, 50);
         painelDicas.addActionListener(evtDicas);
         add(painelDicas);
+        
+        iconeDicas = new JLabel();
+        iconeDicas.setBounds(0, 355, 50, 50);
+        iconeDicas.setIcon(new ImageIcon(getClass().getResource("/images/dicas.png")));
+        add(iconeDicas);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));

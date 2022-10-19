@@ -74,6 +74,7 @@ public class TaskDAO {
                 task.setDescricao(rs.getString("descricao"));
                 task.setDataInic(rs.getString("dataInic"));
                 task.setDataFim(rs.getString("dataFim"));
+                task.setImportante(rs.getBoolean("importante"));
                 task.setConcluido(rs.getBoolean("concluido"));
                 tasks.add(task);
 

@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -263,6 +261,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         private Task tarefaAntiga;
         private TelaTarefas.PainelInfoTarefas painel;
+        private boolean isAlteravel = false;
 
         public EventoAlterarTarefa(Task tarefaAntiga, PainelInfoTarefas painel) {
             this.tarefaAntiga = tarefaAntiga;
@@ -287,16 +286,29 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
                 if (importante.equalsIgnoreCase("Sim")) {
                     importanteBol = true;
+                    isAlteravel = true;
                 } else if (importante.equalsIgnoreCase("Não")) {
                     importanteBol = false;
+                    isAlteravel = true;
                 } else {
                     JOptionPane.showMessageDialog(null, "Preencha o campo importante com:\n \"Sim\" ou \"Não\"", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    isAlteravel = false;
                 }
 
-                Task tarefaNova = new Task(user, titulo, descricao, dataInicio, dataFim, importanteBol, concluido);
+                if (isAlteravel) {
+                    Task tarefaNova = new Task(user, titulo, descricao, dataInicio, dataFim, importanteBol, concluido);
 
-                if (daoTarefas.updateTarefa(tarefaAntiga, tarefaNova)) {
-                    JOptionPane.showMessageDialog(null, "Tarefa alterada com sucesso", "Alterar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+                    if (daoTarefas.updateTarefa(tarefaAntiga, tarefaNova)) {
+                        JOptionPane.showMessageDialog(null, "Tarefa alterada com sucesso", "Alterar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+
+                        runTask();
+
+                        new TelaTarefas().runTela();
+
+                        painelPrincipal.revalidate();
+                        painelPrincipal.repaint();
+                    }
                 }
             }
         }
@@ -372,7 +384,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         if (painelInternoConc.getComponentCount() != 0) {
             hasComponentConcluido = true;
         }
-        
+
         atualizarPercentual();
     }
 
@@ -560,25 +572,24 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         }
 
     }
-    
-    private void atualizarPercentual(){
-        
+
+    private void atualizarPercentual() {
+
         double porcentagem;
-        if(!(concluidos.isEmpty())){
+        if (!(concluidos.isEmpty())) {
             double qtdTarefasConcluida = concluidos.size();
             double qtdTarefas = tarefas.size();
-            
-            porcentagem = (qtdTarefasConcluida/qtdTarefas)*100;
-            
-            if(daoUser.updateDesempenho(user, porcentagem)){
-                System.out.println("Percentual de Atividade atualizado");
+
+            porcentagem = (qtdTarefasConcluida / qtdTarefas) * 100;
+
+            if (daoUser.updateDesempenho(user, porcentagem)) {
             }
-            
-        }else{
+
+        } else {
             porcentagem = 0;
-            if(daoUser.updateDesempenho(user, porcentagem));
+            if (daoUser.updateDesempenho(user, porcentagem));
         }
-        
+
     }
 
     private void generatePainelTarefas() {
@@ -610,6 +621,8 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         private JButton btnAlterar, btnCancelar, btnExcluir;
 
         private JScrollPane painelTextArea;
+
+        private boolean isImportante = false;
 
         public PainelInfoTarefas() {
         }
@@ -662,10 +675,12 @@ public class TelaTarefas extends TelaPadraoFullScreen {
             descricaoTarefa = new JTextArea(tarefa.getDescricao().trim());
             dataInicioTarefa = new JTextField(tarefa.getDataInic());
             dataFimTarefa = new JTextField(tarefa.getDataFim());
+            importanteTarefa = new JTextField();
+
             if (tarefa.isImportante()) {
-                importanteTarefa = new JTextField("Sim");
-            } else {
-                importanteTarefa = new JTextField("Não");
+                importanteTarefa.setText("Sim");
+            } else if (!(tarefa.isImportante())) {
+                importanteTarefa.setText("Não");
             }
 
             tituloTarefa.setBorder(BorderFactory.createMatteBorder(2, 3, 2, 3, Color.BLACK));

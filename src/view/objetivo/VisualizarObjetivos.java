@@ -72,13 +72,13 @@ public class VisualizarObjetivos extends JFrame {
         tabela = new JTable(modeloTabelaObjetivos);
         tabela.addMouseListener(new EventoMouse());
         tabela.setFont(new Font("Arial", 0, 14));
-        
+
         js = new JScrollPane(tabela);
         painel1.add(js);
 
         JScrollPane painelScrollado = new JScrollPane(tabela);
         painelScrollado.setBounds(350, 350, 900, 350);
-        painelScrollado.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painelScrollado.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         painel1.add(painelScrollado);
         objetivosTabela();
 
@@ -91,7 +91,7 @@ public class VisualizarObjetivos extends JFrame {
         txtPes.setFont(new Font("Arial", 1, 15));
         txtPes.setBounds(475, 320, 400, 23);
         txtPes.setVisible(false);
-        txtPes.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        txtPes.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         txtPes.addKeyListener(new EventoPesquisar2());
         painel1.add(txtPes);
 
@@ -199,25 +199,30 @@ public class VisualizarObjetivos extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            int linha = tabela.getSelectedRow();
 
-            objetivo.setUser(Principal.user);
-            objetivo.setDescricao(modeloTabelaObjetivos.getValueAt(linha, 0).toString());
-            objetivo.setDataInic(modeloTabelaObjetivos.getValueAt(linha, 1).toString());
+            if (e.getClickCount() == 2 && !e.isConsumed()) {
+                e.consume();
+                int linha = tabela.getSelectedRow();
 
-            telaVisualizar.txtNome.setText(Principal.user.getNome());
-            telaVisualizar.txtObj.setText(modeloTabelaObjetivos.getValueAt(linha, 0).toString());
-            telaVisualizar.txtData.setText(modeloTabelaObjetivos.getValueAt(linha, 1).toString());
-            telaVisualizar.setVisible(true);
+                objetivo.setUser(Principal.user);
+                objetivo.setDescricao(modeloTabelaObjetivos.getValueAt(linha, 0).toString());
+                objetivo.setDataInic(modeloTabelaObjetivos.getValueAt(linha, 1).toString());
+
+                telaVisualizar.txtNome.setText(Principal.user.getNome());
+                telaVisualizar.txtObj.setText(modeloTabelaObjetivos.getValueAt(linha, 0).toString());
+                telaVisualizar.txtData.setText(modeloTabelaObjetivos.getValueAt(linha, 1).toString());
+                telaVisualizar.setVisible(true);
+            }
+
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+
         }
 
         @Override
@@ -470,7 +475,7 @@ public class VisualizarObjetivos extends JFrame {
                     JOptionPane.showMessageDialog(null, "Por favor, insira algum texto!", "Objetivos", 0);
                 } else if (txtData.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, insira alguma data!", "Objetivos", 0);
-                    
+
                 } else if (Principal.user.getNome() != null) {
 
                     objetivo = new Objetivo();
@@ -491,7 +496,7 @@ public class VisualizarObjetivos extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Nenhum usuário cadastrado", "Criar Objetivo", 0);
                 }
-                
+
             } else {
                 JOptionPane.showMessageDialog(null, "Dados da Data Incompatíveis", "Criar Objetivos", 0);
             }

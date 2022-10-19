@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -196,9 +195,6 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         boolean importante = isImportante;
 
-        java.sql.Date dataInicioSQL;
-        java.sql.Date dataFimSQL;
-
         if (txtTitulo.getText() == "" || txtDataInicio.getText() == "" || txtDataFim.getText() == "") {
             JOptionPane.showMessageDialog(null, "Preencha o Campos *", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else if (vefData(txtDataFim) == false || vefData(txtDataInicio) == false) {
@@ -214,6 +210,8 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
             if (dao.saveTarefa(tarefa)) {
                 JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso", "Criar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                new TelaTarefas().runTela();
             }
         }
 

@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 
 import connection.ConnectionFactory;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.bean.User;
 
 public class UserDAO {
