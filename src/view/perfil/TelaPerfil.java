@@ -52,8 +52,8 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     FileNameExtensionFilter filtro;
 
     private BarraLateral barraLateral;
-    private JLabel lblNome, lblSenha, lblSobreMim;
-    private JTextField txtNome, txtSenha;
+    private JLabel lblNome, lblSenha, lblSobreMim,lblIdade;
+    private JTextField txtNome, txtSenha,txtIdade;
     public static Principal principal;
     private User user = principal.user;
     private UserDAO daoUser = new UserDAO();
@@ -106,6 +106,20 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setBorder(new BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
+        
+        lblIdade = new JLabel("IDADE:");
+        lblIdade.setFont(new Font("Arial", 1, 28));
+        lblIdade.setBounds(358, 525, 130, 40);
+        painel1.add(lblIdade);
+        
+        txtIdade = new JTextField();
+        txtIdade.setBounds(358, 575, 300, 30);
+        txtIdade.setFont(new Font("Arial", 0, 24));
+        txtIdade.setBackground(new Color(218, 217, 215));
+        txtIdade.setText("" + Principal.user.getIdade());
+        txtIdade.setBorder(new BordaCantoArrendondado());
+        txtIdade.setEditable(false);
+        painel1.add(txtIdade);
 
         lblSobreMim = new JLabel("SOBRE MIM:");
         lblSobreMim.setFont(new Font("Arial", 1, 28));
@@ -414,7 +428,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     }
 
     public static void main(String[] args) {
-        telaPerfil.runTela();
+        new TelaPerfil().setVisible(true);
     }
 
 }

@@ -4,10 +4,12 @@ public class User {
     
     private String nome;
     private String senha;
+    private int idade;
     private String sobreMim;
     private String escolaridade;
     private double desempenho_percentual;
     private String img;
+
 
     /**
      * @return String return the nome
@@ -35,6 +37,19 @@ public class User {
      */
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    /**
+     * @return Integer return the idade
+     */
+    public int getIdade() {
+        return idade;
+    }
+
+    /**
+     * @param idade the senha to set
+     */
+    public void setIdade(int idade) {
+        this.idade= idade;
     }
 
     /**

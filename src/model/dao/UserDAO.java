@@ -22,13 +22,14 @@ public class UserDAO {
 
     public boolean saveCadastro(User user) {
 
-        String sql = "INSERT into usuario(nome, senha, sobreMim) values (?,?,?)";
+        String sql = "INSERT into usuario(nome, senha, sobreMim,idade) values (?,?,?,?)";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, user.getNome());
             stmt.setString(2, user.getSenha());
             stmt.setString(3, user.getSobreMim());
+            stmt.setInt(4,user.getIdade());
             stmt.execute();
             return true;
         } catch (SQLException e) {
@@ -96,6 +97,7 @@ public class UserDAO {
                 user.setNome(rs.getString("nome"));
                 user.setSenha(rs.getString("senha"));
                 user.setSobreMim(rs.getString("sobreMim"));
+                user.setIdade(rs.getInt("idade"));
                 usuarios.add(user);
             }
         } catch (SQLException e) {
@@ -152,13 +154,14 @@ public class UserDAO {
 
     public boolean updateUser(User userOld, User userNew) {
 
-        String sql = "UPDATE usuario set nome = ? , senha =? where nome = ?";
+        String sql = "UPDATE usuario set nome = ? , senha =?, idade = ? where nome = ?";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, userNew.getNome());
             stmt.setString(2, userNew.getSenha());
-            stmt.setString(3, userOld.getNome());
+            stmt.setInt(3, userNew.getIdade());
+            stmt.setString(4, userOld.getNome());
             stmt.executeUpdate();
 
             return true;

@@ -27,8 +27,8 @@ import view.Main.TelaPadraoFullScreen;
 
 public class TelaCadastro extends TelaPadraoFullScreen {
 
-    private JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar;
-    private JTextField jfNome;
+    private JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar,lblIdade;
+    private JTextField jfNome,jfIdade;
     private JPasswordField pfSenha, pfConfirmar;
     private JButton btnOk, btnCancel, leave, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2;
     private PainelPadrao painel1;
@@ -90,11 +90,24 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         pfConfirmar.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         pfConfirmar.addKeyListener(new EventoTecla());
         painel1.add(pfConfirmar);
+        
+        lblIdade = new JLabel("Idade:");
+        lblIdade.setFont(new Font("Arial",0,30));
+        lblIdade.setBounds(50,480,150,30);
+        painel1.add(lblIdade);
+        
+        jfIdade =new JTextField();
+        jfIdade.setBackground(new Color(218, 217, 215));
+        jfIdade.setBounds(50, 520, 90, 35);
+        jfIdade.setFont(new Font("Arial", 0, 20));
+        jfIdade.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+        jfIdade.addKeyListener(new EventoTecla());
+        painel1.add(jfIdade);
 
         btnOk = new JButton("OK");
         btnOk.setBackground(new Color(168, 168, 168));
         btnOk.setFont(new Font("Arial", 1, 20));
-        btnOk.setBounds(50, 505, 200, 50);
+        btnOk.setBounds(50, 590, 200, 50);
         btnOk.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         EventoConfimar evt = new EventoConfimar();
         btnOk.addActionListener(evt);
@@ -103,10 +116,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         btnCancel = new JButton("VOLTAR");
         btnCancel.setFont(new Font("Arial", 1, 20));
         btnCancel.setBackground(new Color(168, 168, 168));
-
         btnCancel.addActionListener(evt);
-
-        btnCancel.setBounds(350, 505, 200, 50);
+        btnCancel.setBounds(350, 590, 200, 50);
         btnCancel.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         painel1.add(btnCancel);
 
@@ -117,9 +128,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
-
         leave.addActionListener(evt);
-
         leave.setBounds(getWidth() - 60, 0, 60, 30);
         painel1.add(leave);
 
@@ -191,6 +200,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario = new User();
                     usuario.setNome(jfNome.getText().trim());
                     usuario.setSenha(pfSenha.getText());
+                    usuario.setIdade(Integer.parseInt(jfIdade.getText()));
                     usuario.setDesempenho_percentual(0);
 
                     if (dao.saveCadastro(usuario)) {
@@ -321,7 +331,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
             g.fillRoundRect(0, 0, 1280, 69, 10, 10);
 
             g.setColor(new Color(168, 168, 168));
-            g.fillRoundRect(25, 190, 600, 400, 35, 35);
+            g.fillRoundRect(25, 190, 600, 500, 35, 35);
 
             g.setColor(Color.black);
             g.fillRect(640, 70, 1, 650);
