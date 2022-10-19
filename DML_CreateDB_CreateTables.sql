@@ -8,7 +8,7 @@ drop table if exists objetivos;
 create table Usuario(
 nome varchar(100) ,
 senha varchar(50) not null,
-idade int not null
+idade int not null,
 sobreMim varchar(500) null,
 escolaridade varchar(50),
 desempenho double null,
