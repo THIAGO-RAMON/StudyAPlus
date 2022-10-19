@@ -22,12 +22,13 @@ public class UserDAO {
 
     public boolean saveCadastro(User user) {
 
-        String sql = "INSERT into usuario(nome, senha) values (?,?)";
+        String sql = "INSERT into usuario(nome, senha, sobreMim) values (?,?,?)";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, user.getNome());
             stmt.setString(2, user.getSenha());
+            stmt.setString(3, user.getSobreMim());
             stmt.execute();
             return true;
         } catch (SQLException e) {
@@ -94,6 +95,7 @@ public class UserDAO {
                 User user = new User();
                 user.setNome(rs.getString("nome"));
                 user.setSenha(rs.getString("senha"));
+                user.setSobreMim(rs.getString("sobreMim"));
                 usuarios.add(user);
             }
         } catch (SQLException e) {
@@ -168,4 +170,22 @@ public class UserDAO {
         }
     }
 
+    public boolean updateSobreMim(User user) {
+
+        String sql = "UPDATE usuario set sobreMim = ? where nome = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, user.getSobreMim());
+            stmt.setString(2, user.getNome());
+            stmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e, "ERROR BD\n Erro ao Atualizar", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
 }

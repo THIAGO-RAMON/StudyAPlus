@@ -276,6 +276,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario = new User();
                     usuario.setNome(jfNome.getText());
                     usuario.setSenha(pfSenha.getText());
+                    usuario.setSobreMim("");
                     usuario.setDesempenho_percentual(0);
 
                     if (dao.saveCadastro(usuario)) {

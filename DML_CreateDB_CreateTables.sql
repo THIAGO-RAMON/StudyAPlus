@@ -8,7 +8,7 @@ drop table if exists objetivos;
 create table Usuario(
 nome varchar(100) ,
 senha varchar(50) not null,
-sobreMim varchar(200) null,
+sobreMim varchar(500) null,
 escolaridade varchar(50),
 desempenho double null,
 imagem longblob,
@@ -37,11 +37,9 @@ primary key (id),
 foreign key (user_nome) references Usuario(nome)
 );
 
-
 select * from tarefas;
 select * from usuario;
 select * from objetivos;
 
-delete from objetivos;
 update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
 

@@ -7,7 +7,7 @@ import view.telasPrograma.TelaTarefas;
 
 public class Principal {    
     
-    public static TelaMain tl = new TelaMain();f
+    public static TelaMain tl = new TelaMain();
 //    public static TelaTarefas tela = new TelaTarefas();
     public static User user = new User();
     

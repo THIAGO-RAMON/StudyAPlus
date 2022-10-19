@@ -7,6 +7,7 @@ import java.awt.Image;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerListener;
 import java.io.File;
 import javax.swing.BorderFactory;
 
@@ -14,9 +15,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.bean.User;
 import model.dao.UserDAO;
@@ -28,28 +37,34 @@ import view.inicial.TelaMain;
 
 public class TelaPerfil extends TelaPadraoFullScreen {
 
-    private JButton btnFoto, btnLogo, leave, btnAlterarUsuario, btnLogout, btnAlterar2, btnEdit;
+    private JButton btnFoto, btnLogo, leave, btnAlterarUsuario, btnLogout, btnAlterar2, btnEdit, btnEditSobreMim,
+            btnCancelarSobreMim;
+    private JTextArea txtSobreMim;
     protected JPanel painel1, painelB;
 
     private JPanel painelConfigs;
     private JButton btnAlterarFotoPerfil;
     private static int NUM_CLICKS_PAINELCONFIGS = 0;
+    private boolean alteradoSobreMim = false;
+    private static int alterarSobreMim = 0;
 
     private JFileChooser fileChosser;
     FileNameExtensionFilter filtro;
 
     private BarraLateral barraLateral;
-    private JLabel lblNome, lblSenha;
+    private JLabel lblNome, lblSenha, lblSobreMim;
     private JTextField txtNome, txtSenha;
     public static Principal principal;
     private User user = principal.user;
     private UserDAO daoUser = new UserDAO();
 
     private Thread thread1;
+    private Thread thread2; // Para a verificação do SobreMim
 
     public static TelaPerfil telaPerfil;
 
     public TelaPerfil() {
+
         // Configurações de tela
         painel1();
         barraLateral = new BarraLateral();
@@ -92,6 +107,43 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
 
+        lblSobreMim = new JLabel("SOBRE MIM:");
+        lblSobreMim.setFont(new Font("Arial", 1, 28));
+        lblSobreMim.setBounds(800, 325, 200, 40);
+        painel1.add(lblSobreMim);
+
+        txtSobreMim = new JTextArea(Principal.user.getSobreMim());
+        txtSobreMim.setLineWrap(true);
+        txtSobreMim.setBackground(new Color(218, 217, 215));
+        txtSobreMim.setFont(new Font("Arial", 0, 20));
+        txtSobreMim.setBorder(new BordaCantoArrendondado());
+        txtSobreMim.getDocument().addDocumentListener(new ShowAlterarSobreMim());
+
+        JScrollPane painelSobreMim = new JScrollPane(txtSobreMim);
+        painelSobreMim.setBounds(800, 375, 400, 140);
+        painelSobreMim.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        painel1.add(painelSobreMim);
+
+        btnEditSobreMim = new JButton("Alterar");
+        btnEditSobreMim.setBounds(810, 540, 165, 40);
+        btnEditSobreMim.setBorder(new BordaCantoArrendondado());
+        btnEditSobreMim.setBackground(new Color(218, 217, 215));
+        btnEditSobreMim.addActionListener(new AlterarSobreMim());
+        btnEditSobreMim.setFont(new Font("Arial", 1, 20));
+        btnEditSobreMim.setVisible(false);
+
+        painel1.add(btnEditSobreMim);
+
+        btnCancelarSobreMim = new JButton("Cancelar");
+        btnCancelarSobreMim.setBounds(1025, 540, 165, 40);
+        btnCancelarSobreMim.setBorder(new BordaCantoArrendondado());
+        btnCancelarSobreMim.addActionListener(new CancelarSobreMim());
+        btnCancelarSobreMim.setBackground(new Color(218, 217, 215));
+        btnCancelarSobreMim.setFont(new Font("Arial", 1, 20));
+        btnCancelarSobreMim.setVisible(false);
+
+        painel1.add(btnCancelarSobreMim);
+
         // Botões
         btnFoto = new JButton();
         btnFoto.setBackground(new Color(168, 168, 168));
@@ -122,15 +174,6 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     }
 
     // Metodos 
-    private void configTela() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1200, 650);
-        setLayout(null);
-        setLocationRelativeTo(null);
-        setUndecorated(true);
-        setBackground(Color.black);
-    }
-
     private void painel1() {
         painel1 = new JPanel();
         painel1.setLayout(null);
@@ -245,15 +288,76 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         }
 
     }
-    
-    private class EventoLogout implements ActionListener{
+
+    private class EventoLogout implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             new TelaMain().runTela();
             dispose();
         }
+
+    }
+
+    private class ShowAlterarSobreMim implements DocumentListener {
+
+        private void vefAlterado(){
+            String textoOriginal = user.getSobreMim();
+
+            if (textoOriginal.equals(txtSobreMim.getText())) {
+                btnEditSobreMim.setVisible(false);
+                btnCancelarSobreMim.setVisible(false);
+            } else {
+                btnEditSobreMim.setVisible(true);
+                btnCancelarSobreMim.setVisible(true);
+            }
+        }
         
+        @Override
+        public void insertUpdate(DocumentEvent de) {
+            vefAlterado();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent de) {
+            vefAlterado();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent de) {
+            vefAlterado();
+        }
+
+    }
+
+    private class AlterarSobreMim implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            int i = JOptionPane.showConfirmDialog(null, "Deseja Alterar o Sobre Mim?", "Alterando Sobre Mim", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (i == 0) {
+
+                User usuario = user;
+                usuario.setSobreMim(txtSobreMim.getText());
+
+                if (daoUser.updateSobreMim(usuario)) {
+                    dispose();
+                    new TelaPerfil().runTela();
+                }
+            }
+        }
+    }
+
+    private class CancelarSobreMim implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            txtSobreMim.setText(user.getSobreMim());
+            btnEditSobreMim.setVisible(false);
+            btnCancelarSobreMim.setVisible(false);
+        }
+
     }
 
     private class EventoTrocarFotoPerfil implements ActionListener {
