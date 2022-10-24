@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.LineBorder;
 
 import view.perfil.TelaPerfil;
 import view.telasPrograma.TelaDesempenho;
@@ -23,11 +24,12 @@ import view.telasPrograma.TelaTarefas;
 import view.objetivo.VisualizarObjetivos;
 import view.telasPrograma.TelaCriarTarefa;
 import view.perfil.DicasEstudo;
+import view.telasPrograma.TelaMetodologia;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,painelDicas;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,painelDicas,painelMetodologias;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -52,7 +54,7 @@ public class BarraLateral extends JPanel {
         painelTarefas = new JButton("Tarefas");
         painelTarefas.setFont(new Font("Arial", 1, 20));
         painelTarefas.setBackground(colorButton);
-        painelTarefas.setBorder(new BordaPersonalizada());
+        painelTarefas.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelTarefas.setBounds(60, 115, 230, 50);
         painelTarefas.addActionListener(eventoTarefas);
         btnLogo.addActionListener(eventoTarefas);
@@ -68,7 +70,7 @@ public class BarraLateral extends JPanel {
         painelCriarTarefa = new JButton("Criar Tarefa");
         painelCriarTarefa.setFont(new Font("Arial", 1, 20));
         painelCriarTarefa.setBackground(colorButton);
-        painelCriarTarefa.setBorder(new BordaPersonalizada());
+        painelCriarTarefa.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelCriarTarefa.setBounds(60, 175, 230, 50);
         painelCriarTarefa.addActionListener(evtCriar);
         add(painelCriarTarefa);
@@ -83,7 +85,7 @@ public class BarraLateral extends JPanel {
         painelProgresso = new JButton("Desempenho");
         painelProgresso.setFont(new Font("Arial", 1, 20));
         painelProgresso.setBackground(colorButton);
-        painelProgresso.setBorder(new BordaPersonalizada());
+        painelProgresso.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelProgresso.setBounds(60, 235, 230, 50);
         painelProgresso.addActionListener(eventoAbrirProgresso);
         add(painelProgresso);
@@ -100,7 +102,7 @@ public class BarraLateral extends JPanel {
         painelObjetivos = new JButton("Objetivos");
         painelObjetivos.setFont(new Font("Arial", 1, 20));
         painelObjetivos.setBackground(colorButton);
-        painelObjetivos.setBorder(new BordaPersonalizada());
+        painelObjetivos.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelObjetivos.setBounds(60, 295, 230, 50);
         painelObjetivos.addActionListener(eventoObjetivos);
         add(painelObjetivos);
@@ -116,7 +118,7 @@ public class BarraLateral extends JPanel {
         painelDicas = new JButton("Dicas de Estudos");
         painelDicas.setFont(new Font("Arial", 1, 20));
         painelDicas.setBackground(colorButton);
-        painelDicas.setBorder(new BordaPersonalizada());
+        painelDicas.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelDicas.setBounds(60, 355, 230, 50);
         painelDicas.addActionListener(evtDicas);
         add(painelDicas);
@@ -125,11 +127,21 @@ public class BarraLateral extends JPanel {
         iconeDicas.setBounds(0, 355, 50, 50);
         iconeDicas.setIcon(new ImageIcon(getClass().getResource("/images/dicas.png")));
         add(iconeDicas);
+        
+        AbrirMetodologias evtMetodologias = new AbrirMetodologias();
+        
+        painelMetodologias = new JButton("Metodologias");
+        painelMetodologias.setFont(new Font("Arial", 1, 20));
+        painelMetodologias.setBackground(colorButton);
+        painelMetodologias.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painelMetodologias.setBounds(60, 415, 230, 50);
+        painelMetodologias.addActionListener(evtMetodologias);
+        add(painelMetodologias);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
         painelPerfil.setBackground(colorButton);
-        painelPerfil.setBorder(new BordaPersonalizada());
+        painelPerfil.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelPerfil.setBounds(60, 625, 230, 50);
         painelPerfil.addActionListener(eventoAbrirPerfil);
         add(painelPerfil);
@@ -265,6 +277,21 @@ public class BarraLateral extends JPanel {
             }
             
             new DicasEstudo().runTela();
+            
+        }
+    }
+    
+    private class AbrirMetodologias implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+             Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
+            }
+            
+            new TelaMetodologia().runTela();
             
         }
     }

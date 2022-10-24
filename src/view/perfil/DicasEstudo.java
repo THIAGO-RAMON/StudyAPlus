@@ -36,7 +36,7 @@ public class DicasEstudo extends JFrame {
 
     private JPanel painel1, painel2;
     private JLabel msg;
-    private JButton btnGerar;
+    private JButton btnGerar,leave;
     private static DicasEstudo dicasEstudo;
     private BarraLateral barraLateral;
     private UserDAO userDao = new UserDAO();
@@ -54,6 +54,17 @@ public class DicasEstudo extends JFrame {
 
         config();
         painel();
+        
+        leave = new JButton("X");
+        leave.setBackground(new Color(223, 63, 16));
+        leave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
+        painel1.add(leave);
 
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());

@@ -30,8 +30,8 @@ import static view.perfil.TelaPerfil.telaPerfil;
 public class TelaAlterar extends JFrame {
 
     private JButton btnConfirmar, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2, leave;
-    private JLabel lbl, lblNovoNome, lblNovaSenha, lblConfirmarSenha;
-    private JTextField tfNovoNome;
+    private JLabel lbl, lblNovoNome,lblNovaIdade, lblNovaSenha, lblConfirmarSenha;
+    private JTextField tfNovoNome,txtNovaIdade;
     private JPasswordField tfNovaSenha, tfConfirmarSenha;
     private JPanel painel1;
     private Principal principal;
@@ -50,20 +50,20 @@ public class TelaAlterar extends JFrame {
 
         lblNovoNome = new JLabel("NOME:");
         lblNovoNome.setFont(new Font("Arial", 1, 20));
-        lblNovoNome.setBounds(10, 70, 150, 30);
+        lblNovoNome.setBounds(10, 50, 150, 30);
         painel1.add(lblNovoNome);
 
         tfNovoNome = new JTextField();
         tfNovoNome.setBorder(new BordaCantoArrendondado());
         tfNovoNome.setBackground(new Color(218, 217, 215));
         tfNovoNome.setFont(new Font("Arial", 0, 18));
-        tfNovoNome.setBounds(10, 110, 400, 30);
+        tfNovoNome.setBounds(10, 90, 400, 30);
         painel1.add(tfNovoNome);
 
         // Label Senha
         lblNovaSenha = new JLabel("SENHA:");
         lblNovaSenha.setFont(new Font("Arial", 1, 20));
-        lblNovaSenha.setBounds(10, 170, 150, 30);
+        lblNovaSenha.setBounds(10, 150, 150, 30);
         painel1.add(lblNovaSenha);
 
         // TextField Senha
@@ -71,13 +71,13 @@ public class TelaAlterar extends JFrame {
         tfNovaSenha.setBorder(new BordaCantoArrendondado());
         tfNovaSenha.setBackground(new Color(218, 217, 215));
         tfNovaSenha.setFont(new Font("Arial", 0, 18));
-        tfNovaSenha.setBounds(10, 210, 400, 30);
+        tfNovaSenha.setBounds(10, 190, 400, 30);
         painel1.add(tfNovaSenha);
 
         // Label Confimar Senha
         lblConfirmarSenha = new JLabel("CONFIRMAR SENHA:");
         lblConfirmarSenha.setFont(new Font("Arial", 1, 20));
-        lblConfirmarSenha.setBounds(10, 270, 400, 30);
+        lblConfirmarSenha.setBounds(10, 250, 400, 30);
         painel1.add(lblConfirmarSenha);
 
         // TextField Confimar Senha
@@ -85,8 +85,22 @@ public class TelaAlterar extends JFrame {
         tfConfirmarSenha.setBorder(new BordaCantoArrendondado());
         tfConfirmarSenha.setBackground(new Color(218, 217, 215));
         tfConfirmarSenha.setFont(new Font("Arial", 0, 18));
-        tfConfirmarSenha.setBounds(10, 310, 400, 30);
+        tfConfirmarSenha.setBounds(10, 290, 400, 30);
         painel1.add(tfConfirmarSenha);
+        
+        //label confirmar nova idade
+        lblNovaIdade = new JLabel("CONFIRMAR IDADE:");
+        lblNovaIdade.setFont(new Font("Arial", 1, 20));
+        lblNovaIdade.setBounds(10, 340, 400, 30);
+        painel1.add(lblNovaIdade);
+        
+        // txt confirmar nova idade
+         txtNovaIdade = new JTextField();
+        txtNovaIdade.setBorder(new BordaCantoArrendondado());
+        txtNovaIdade.setBackground(new Color(218, 217, 215));
+        txtNovaIdade.setFont(new Font("Arial", 0, 18));
+        txtNovaIdade.setBounds(10, 380, 60, 30);
+        painel1.add(txtNovaIdade);
 
         // buttons
         EventoBotao evt = new EventoBotao();
@@ -101,7 +115,7 @@ public class TelaAlterar extends JFrame {
         btnVerSenha1.setBorder(new BordaCantoArrendondado());
         btnVerSenha1.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
         btnVerSenha1.setBackground(new Color(218, 217, 215));
-        btnVerSenha1.setBounds(415, 210, 35, 30);
+        btnVerSenha1.setBounds(415, 190, 35, 30);
         btnVerSenha1.addActionListener(evt);
         painel1.add(btnVerSenha1);
 
@@ -109,7 +123,7 @@ public class TelaAlterar extends JFrame {
         btnVerSenha2.setBorder(new BordaCantoArrendondado());
         btnVerSenha2.setIcon(new ImageIcon(getClass().getResource("/images/senhaVisible (1).png")));
         btnVerSenha2.setBackground(new Color(218, 217, 215));
-        btnVerSenha2.setBounds(415, 310, 35, 30);
+        btnVerSenha2.setBounds(415, 290, 35, 30);
         btnVerSenha2.addActionListener(evt);
         painel1.add(btnVerSenha2);
 
@@ -182,6 +196,7 @@ public class TelaAlterar extends JFrame {
                     User userNew = new User();
                     userNew.setNome(tfNovoNome.getText());
                     userNew.setSenha(tfNovaSenha.getText());
+                    userNew.setIdade(Integer.parseInt(txtNovaIdade.getText()));
 
                     if (dao.updateUser(userPrincipal, userNew)) {
                         JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
