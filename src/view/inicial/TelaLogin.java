@@ -19,9 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import model.bean.User;
 import model.dao.UserDAO;
-import view.Main.Principal;
-
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.Principal;
+import view.auxiliares.TelaPadraoFullScreen;
 import view.telasPrograma.TelaTarefas;
 
 public class TelaLogin extends TelaPadraoFullScreen {

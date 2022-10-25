@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.TelaPadraoFullScreen;
 import view.telasPrograma.TelaTarefas;
 
 public class TelaObjetivos extends TelaPadraoFullScreen {

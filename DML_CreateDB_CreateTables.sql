@@ -1,9 +1,9 @@
 #create database StudyAPLus;
 use StudyAPlus;
 
-drop table if exists usuario;
-drop table if exists Tarefas;
 drop table if exists objetivos;
+drop table if exists Tarefas;
+drop table if exists usuario;
 
 create table Usuario(
 nome varchar(100) ,

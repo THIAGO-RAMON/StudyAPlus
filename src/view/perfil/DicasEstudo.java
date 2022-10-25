@@ -29,8 +29,8 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import model.bean.User;
 import model.dao.UserDAO;
-import view.Main.BarraLateral;
-import view.Main.Principal;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.Principal;
 
 public class DicasEstudo extends JFrame {
 

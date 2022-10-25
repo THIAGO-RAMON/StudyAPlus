@@ -9,8 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import model.bean.User;
-import view.Main.BarraLateral;
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.Principal;
+import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaMetodologia extends TelaPadraoFullScreen {
 
@@ -19,9 +20,9 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
     JButton leave;
     TelaMetodologia metodologia;
     JLabel lblmsg, lblmsg2, lblExtra;
+    User user = Principal.user;
 
     public TelaMetodologia() {
-        AlgoritmoEstudo();
         configPainel();
 
         barraLateral = new BarraLateral();
@@ -56,6 +57,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
         lblmsg2.setBounds(20, 50, 600, 30);
         painel2.add(lblmsg2);
 
+        AlgoritmoEstudo();
     }
 
     private void configPainel() {
@@ -85,13 +87,12 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
     }
 
     private void AlgoritmoEstudo() {
-        User user = new User();
 
         if (user.getIdade() < 15) {
             lblExtra.setText("ensino fundamental,");
-        } else if (user.getIdade() >= 15 && user.getIdade()<= 17) {
+        } else if (user.getIdade() >= 15 && user.getIdade() <= 17) {
             lblExtra.setText("ensino médio,");
-        }else if(user.getIdade() >17){
+        } else if (user.getIdade() > 17) {
             lblExtra.setText("ensino superior");
         }
     }

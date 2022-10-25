@@ -29,8 +29,8 @@ import javax.swing.border.AbstractBorder;
 import model.dao.ObjetivoDAO;
 import model.bean.Objetivo;
 import model.bean.User;
-import view.Main.BarraLateral;
-import view.Main.Principal;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.Principal;
 
 public class VisualizarObjetivos extends JFrame {
 

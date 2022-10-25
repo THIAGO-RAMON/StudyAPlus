@@ -14,7 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaMain extends TelaPadraoFullScreen {
 

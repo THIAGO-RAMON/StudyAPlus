@@ -1,6 +1,6 @@
 package view.inicial;
 
-import static view.Main.Principal.tl;
+import static view.auxiliares.Principal.tl;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -20,10 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import model.bean.User;
 import model.dao.UserDAO;
-import view.Main.Principal;
-import static view.Main.Principal.tl;
-
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.Principal;
+import static view.auxiliares.Principal.tl;
+import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaCadastro extends TelaPadraoFullScreen {
 
@@ -200,6 +199,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario = new User();
                     usuario.setNome(jfNome.getText().trim());
                     usuario.setSenha(pfSenha.getText());
+                    usuario.setSobreMim("");
                     usuario.setIdade(Integer.parseInt(jfIdade.getText()));
                     usuario.setDesempenho_percentual(0);
 
@@ -284,11 +284,13 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                             JOptionPane.WARNING_MESSAGE);
                 } else {
                     usuario = new User();
-                    usuario.setNome(jfNome.getText());
-                    usuario.setSenha(pfSenha.getText());
+                    usuario.setNome(jfNome.getText().trim());
+                    usuario.setSenha(pfSenha.getText().trim());
                     usuario.setSobreMim("");
+                    usuario.setIdade(Integer.parseInt(jfIdade.getText()));
                     usuario.setDesempenho_percentual(0);
-
+                    
+                    
                     if (dao.saveCadastro(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();

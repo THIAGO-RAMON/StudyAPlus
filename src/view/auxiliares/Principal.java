@@ -1,4 +1,4 @@
-package view.Main;
+package view.auxiliares;
 
 import model.bean.User;
 

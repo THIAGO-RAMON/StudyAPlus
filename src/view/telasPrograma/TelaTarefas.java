@@ -26,9 +26,9 @@ import model.dao.TaskDAO;
 import model.dao.UserDAO;
 import net.miginfocom.swing.MigLayout;
 
-import view.Main.BarraLateral;
-import view.Main.Principal;
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.Principal;
+import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaTarefas extends TelaPadraoFullScreen {
 

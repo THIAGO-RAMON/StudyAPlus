@@ -30,9 +30,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import model.bean.User;
 import model.dao.UserDAO;
 
-import view.Main.BarraLateral;
-import view.Main.Principal;
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.Principal;
+import view.auxiliares.TelaPadraoFullScreen;
 import view.inicial.TelaMain;
 
 public class TelaPerfil extends TelaPadraoFullScreen {

@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import model.bean.User;
 import model.dao.UserDAO;
 
-import view.Main.BarraLateral;
-import view.Main.TelaPadraoFullScreen;
+import view.auxiliares.BarraLateral;
+import view.auxiliares.TelaPadraoFullScreen;
 import static view.perfil.TelaPerfil.principal;
 
 public class TelaDesempenho extends TelaPadraoFullScreen {
