@@ -1,12 +1,19 @@
 package view.telasPrograma;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import model.bean.User;
 import view.auxiliares.BarraLateral;
@@ -15,15 +22,17 @@ import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaMetodologia extends TelaPadraoFullScreen {
 
-    JPanel painel1, painel2;
-    BarraLateral barraLateral;
-    JButton leave;
-    TelaMetodologia metodologia;
-    JLabel lblmsg, lblmsg2, lblExtra;
-    User user = Principal.user;
+    private JPanel painel1, painel2, painelFundamental, painelMedio, painelSuperior;
+    private JTextArea txtFund,txtMedio,txtSuperior;
+    private BarraLateral barraLateral;
+    private JButton leave,alterarFund,alterarMedio,alterarSup;
+    private TelaMetodologia metodologia;
+    private JLabel lblmsg, lblmsg2, lblExtra;
+    private User user = Principal.user;
 
     public TelaMetodologia() {
         configPainel();
+        paineisMetodos();
 
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
@@ -43,20 +52,78 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
         lblmsg = new JLabel();
         lblmsg.setText("Sua idade é de um estudante do");
         lblmsg.setFont(new Font("Arial", 1, 20));
-        lblmsg.setBounds(20, 20, 310, 30);
+        lblmsg.setBounds(20, 10, 310, 30);
         painel2.add(lblmsg);
 
         lblExtra = new JLabel();
         lblExtra.setFont(new Font("Arial", 1, 20));
-        lblExtra.setBounds(335, 20, 200, 30);
+        lblExtra.setBounds(330,10, 200, 30);
         painel2.add(lblExtra);
 
         lblmsg2 = new JLabel();
         lblmsg2.setText("é recomendado que utilize esta metodologia.");
         lblmsg2.setFont(new Font("Arial", 1, 20));
-        lblmsg2.setBounds(20, 50, 600, 30);
+        lblmsg2.setBounds(20, 40, 600, 30);
         painel2.add(lblmsg2);
 
+        //painel Fundamental
+        
+        txtFund = new JTextArea();
+        txtFund.setText("\n     Use estas metodologias: Teste prático, Autoexpliacação e Autointerrogação.\n\n\n\n\n       Consiste em 3 passos, o primeiro é o do teste prático, que simplismente é realizar práticas sobre o que\n       está querendo ser aprendido. Isso pode ser feito por meio de exercícios, repetições ou vídeos. \n\n       O segundo passo é a autoexplicação, onde basta você se imaginar como professor e começar a explicar \n       para si mesmo em voz alta, pois quando se fala em voz alta é mais fácil de compreender o raciocínio.\n\n       O terceiro passo é a autointerrogação, este passo é similar ao segungo passo, também consiste em \n       usar a voz alta, a diferença é que não irá ser explicado nada, apenas será levantado perguntas sobre \n       o tema.");
+        txtFund.setFont(new Font("Arial",0,15));
+        txtFund.setEditable(false);
+        txtFund.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        txtFund.setBackground(new Color(200,200,200));
+        txtFund.setBounds(0,0,760,400);
+        painelFundamental.add(txtFund);
+        
+        alterarFund = new JButton("Alterar");
+        alterarFund.setVisible(false);
+        alterarFund.setEnabled(false);
+        alterarFund.addActionListener(new AlterarFundamental());
+        alterarFund.setBackground(new Color(200,200,200));
+        alterarFund.setBorder(new BordaCantoArrendondado());
+        alterarFund.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        painel2.add(alterarFund);
+        
+        //painel Medio
+        txtMedio = new JTextArea();
+        txtMedio.setText("\n     Use o método Robinson (EPL2R)");
+        txtMedio.setFont(new Font("Arial",0,15));
+        txtMedio.setEditable(false);
+        txtMedio.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        txtMedio.setBackground(new Color(200,200,200));
+        txtMedio.setBounds(0,0,760,400);
+        painelMedio.add(txtMedio);
+        
+        alterarMedio = new JButton("Alterar");
+        alterarMedio.setVisible(false);
+        alterarMedio.setEnabled(false);
+        alterarMedio.addActionListener(new AlterarMedio());
+        alterarMedio.setBackground(new Color(200,200,200));
+        alterarMedio.setBorder(new BordaCantoArrendondado());
+        alterarMedio.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        painel2.add(alterarMedio);
+        
+        // painel ensino superior
+        txtSuperior = new JTextArea();
+        txtSuperior.setText("\n     Use o método Pomodoro");
+        txtSuperior.setFont(new Font("Arial",0,15));
+        txtSuperior.setEditable(false);
+        txtSuperior.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        txtSuperior.setBackground(new Color(200,200,200));
+        txtSuperior.setBounds(0,0,760,400);
+        painelSuperior.add(txtSuperior);
+        
+        alterarSup = new JButton("Alterar");
+        alterarSup.setVisible(false);
+        alterarSup.setEnabled(false);
+        alterarSup.addActionListener(new AlterarSuperior());
+        alterarSup.setBackground(new Color(200,200,200));
+        alterarSup.setBorder(new BordaCantoArrendondado());
+        alterarSup.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        painel2.add(alterarSup);
+        
         AlgoritmoEstudo();
     }
 
@@ -75,6 +142,32 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
         painel1.add(painel2);
     }
 
+    private void paineisMetodos() {
+        painelFundamental = new JPanel();
+        painelFundamental.setVisible(false);
+        painelFundamental.setLayout(null);
+        painelFundamental.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        painelFundamental.setBounds(20, 80, 760, 400);
+        painelFundamental.setBackground(new Color(200, 200, 200));
+        painel2.add(painelFundamental);
+
+        painelMedio = new JPanel();
+        painelMedio.setVisible(false);
+        painelMedio.setLayout(null);
+        painelMedio.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        painelMedio.setBounds(20, 80, 760, 400);
+        painelMedio.setBackground(new Color(200, 200, 200));
+        painel2.add(painelMedio);
+
+        painelSuperior = new JPanel();
+        painelSuperior.setVisible(false);
+        painelSuperior.setLayout(null);
+        painelSuperior.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        painelSuperior.setBounds(20, 80, 760, 400);
+        painelSuperior.setBackground(new Color(200, 200, 200));
+        painel2.add(painelSuperior);
+    }
+
     public void runTela() {
         metodologia = new TelaMetodologia();
         if (metodologia.isActive()) {
@@ -90,13 +183,73 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
 
         if (user.getIdade() < 15) {
             lblExtra.setText("ensino fundamental,");
+            painelFundamental.setVisible(true);
+            painelMedio.setVisible(false);
+            painelSuperior.setVisible(false);
+            
+            alterarFund.setVisible(true);
+            alterarFund.setEnabled(true);
         } else if (user.getIdade() >= 15 && user.getIdade() <= 17) {
             lblExtra.setText("ensino médio,");
+            painelFundamental.setVisible(false);
+            painelMedio.setVisible(true);
+            painelSuperior.setVisible(false);
+            
+            alterarMedio.setVisible(true);
+            alterarMedio.setEnabled(true);
         } else if (user.getIdade() > 17) {
             lblExtra.setText("ensino superior");
+            painelFundamental.setVisible(false);
+            painelMedio.setVisible(false);
+            painelSuperior.setVisible(true);
+            
+            alterarSup.setVisible(true);
+            alterarSup.setEnabled(true);
         }
     }
     
+    private class AlterarFundamental implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            txtFund.setEditable(true);
+        }
+    }
+    
+    private class AlterarMedio implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            txtMedio.setEditable(true);
+        }
+    }
+    
+    private class AlterarSuperior implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            txtSuperior.setEditable(true);
+        }
+    }
+    
+    public class BordaCantoArrendondado extends AbstractBorder {
+
+        private final BasicStroke CONTORNO = new BasicStroke(2);
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+
+            super.paintBorder(c, g, x, y, width, height);
+
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setStroke(CONTORNO);
+
+            g2d.setColor(Color.black);
+            g2d.drawRoundRect(x, y, width - 1, height - 1, 15, 15);
+
+        }
+    }
 
     public static void main(String[] args) {
         new TelaMetodologia().setVisible(true);
