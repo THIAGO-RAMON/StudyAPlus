@@ -31,14 +31,13 @@ public class ObjetivoDAO {
 
     public boolean saveObjetivo(Objetivo obj) {
 
-        String sql = "INSERT into objetivos(id,user_nome,descricao, dataInic) values (?,?,?,?)";
+        String sql = "INSERT into objetivos(user_nome,descricao, dataInic) values (?,?,?)";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
-            stmt.setInt(1, obj.getId());
-            stmt.setString(2, obj.getUser().getNome());
-            stmt.setString(3, obj.getDescricao());
-            stmt.setString(4, obj.getDataInic());
+            stmt.setString(1, obj.getUser().getNome());
+            stmt.setString(2, obj.getDescricao());
+            stmt.setString(3, obj.getDataInic());
             stmt.execute();
             return true;
         } catch (SQLException e) {

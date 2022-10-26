@@ -1,5 +1,6 @@
 package view.objetivo;
 
+import controller.ObjetivoController;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -51,6 +52,8 @@ public class VisualizarObjetivos extends JFrame {
     private int cont = 0;
     private BarraLateral barraLateral;
     private PainelCriar painelCriar;
+
+    private ObjetivoController cc;
 
     public VisualizarObjetivos() {
         config();
@@ -120,7 +123,6 @@ public class VisualizarObjetivos extends JFrame {
     }
 
     private void objetivosTabela() {
-
         for (Objetivo o : dao.listObjetivo(user)) {
             modeloTabelaObjetivos.addRow(new Object[]{o.getDescricao(), o.getDataInic()});
         }
@@ -324,9 +326,9 @@ public class VisualizarObjetivos extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?", "Objetivo", JOptionPane.WARNING_MESSAGE);
-
+                cc= new ObjetivoController();
                 if (i == 0) {
-                    if (dao.deleteObjetivo(objetivo)) {
+                    if (cc.deleteObjetivo(objetivo)) {
 
                         JOptionPane.showMessageDialog(null, "Objetivo deletado com sucesso", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
                         painel1.repaint();
@@ -350,10 +352,10 @@ public class VisualizarObjetivos extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                cc = new ObjetivoController();
                 Objetivo novoObj = new Objetivo(user, txtObj.getText(), txtData.getText());
 
-                if (dao.updateObjetivo(antigoObj, novoObj)) {
+                if (cc.updateObj(antigoObj, novoObj)) {
                     JOptionPane.showMessageDialog(null, "Alteração Realizada com sucesso\n", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
                 }
 
@@ -469,7 +471,7 @@ public class VisualizarObjetivos extends JFrame {
         }
 
         private void saveObjetivo() {
-
+            cc = new ObjetivoController();
             if (vefData(txtData)) {
                 if (txtObj.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, insira algum texto!", "Objetivos", 0);
@@ -483,9 +485,9 @@ public class VisualizarObjetivos extends JFrame {
                     objetivo.setDescricao(txtObj.getText());
                     objetivo.setDataInic(txtData.getText());
 
-                    if (dao.saveObjetivo(objetivo)) {
-                        JOptionPane.showMessageDialog(null, "Objetivo salvo com sucesso!", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
-                    }
+                    cc.saveObj(Principal.user, txtObj.getText(), txtData.getText());
+                    JOptionPane.showMessageDialog(null, "Objetivo salvo com sucesso!", "Objetivos", JOptionPane.INFORMATION_MESSAGE);
+
                     txtObj.setText("");
                     txtData.setText("");
 

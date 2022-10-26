@@ -96,6 +96,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
             lblExtra.setText("ensino superior");
         }
     }
+    
 
     public static void main(String[] args) {
         new TelaMetodologia().setVisible(true);

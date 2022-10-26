@@ -42,7 +42,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen{
     
     private class painelRecompensas extends JPanel{
 
-        private recompensas[] = {};
+        //private recompensas[] = {};
         
         public painelRecompensas() {
             setLayout(null);
