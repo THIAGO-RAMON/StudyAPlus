@@ -1,5 +1,6 @@
 package view.inicial;
 
+import controller.UserController;
 import static view.auxiliares.Principal.tl;
 
 import java.awt.Color;
@@ -19,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 import view.auxiliares.Principal;
 import static view.auxiliares.Principal.tl;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -33,6 +34,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     private PainelPadrao painel1;
     private User usuario;
     private UserDAO dao = new UserDAO();
+    private UserController cc;
+    
     public static Principal principal;
 
     TelaCadastro() {
@@ -179,6 +182,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         public void keyPressed(KeyEvent e) {
             int code = e.getKeyCode();
             int tecla = KeyEvent.VK_ENTER;
+            cc = new UserController();
 
             if (code == tecla) {
 
@@ -203,7 +207,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario.setIdade(Integer.parseInt(jfIdade.getText()));
                     usuario.setDesempenho_percentual(0);
 
-                    if (dao.saveCadastro(usuario)) {
+                    if (cc.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
                         dispose();
@@ -268,7 +272,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == btnOk) {
-
+                cc= new UserController();
+                
                 if (jfNome.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
                 } else if (jfNome.getText().equals("") && pfSenha.getText().equals("")) {
@@ -291,7 +296,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario.setDesempenho_percentual(0);
                     
                     
-                    if (dao.saveCadastro(usuario)) {
+                    if (cc.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
                         dispose();

@@ -1,5 +1,6 @@
 package view.telasPrograma;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 
 import view.auxiliares.BarraLateral;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -26,6 +27,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
 
     private User usuario = principal.user;
     private static UserDAO daoUser = new UserDAO();
+    private UserController cc;
 
     private double porcentagem;
     
@@ -132,7 +134,8 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
     }
     
     private void runDesempenho() {
-        porcentagem = daoUser.getPorcentagem(usuario);
+        cc = new UserController();
+        porcentagem = cc.getDesempenho(usuario);
     }
     
     public void runTela() {

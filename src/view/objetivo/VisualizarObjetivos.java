@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.AbstractBorder;
-import model.dao.ObjetivoDAO;
+import dao.ObjetivoDAO;
 import model.bean.Objetivo;
 import model.bean.User;
 import view.auxiliares.BarraLateral;
@@ -123,7 +123,9 @@ public class VisualizarObjetivos extends JFrame {
     }
 
     private void objetivosTabela() {
-        for (Objetivo o : dao.listObjetivo(user)) {
+        cc= new ObjetivoController();
+        
+        for (Objetivo o : cc.listObj(user)) {
             modeloTabelaObjetivos.addRow(new Object[]{o.getDescricao(), o.getDataInic()});
         }
     }

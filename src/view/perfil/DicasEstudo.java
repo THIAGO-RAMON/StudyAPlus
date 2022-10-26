@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 

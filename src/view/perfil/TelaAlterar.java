@@ -1,5 +1,6 @@
 package view.perfil;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -23,7 +24,7 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.AbstractBorder;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 import view.auxiliares.Principal;
 import static view.perfil.TelaPerfil.telaPerfil;
 
@@ -36,6 +37,8 @@ public class TelaAlterar extends JFrame {
     private JPanel painel1;
     private Principal principal;
     private User userPrincipal = principal.user;
+    private UserController cc;
+    
     private UserDAO dao = new UserDAO();
     
     public TelaAlterar() {
@@ -181,7 +184,8 @@ public class TelaAlterar extends JFrame {
             // TODO Auto-generated method stub
 
             if (e.getSource() == btnConfirmar) {
-
+                cc =new UserController();
+                
                 if (tfNovoNome.getText().isEmpty()) {
 
                     JOptionPane.showMessageDialog(null, "Erro! Preencha o nome.", "Atenção",
@@ -198,7 +202,7 @@ public class TelaAlterar extends JFrame {
                     userNew.setSenha(tfNovaSenha.getText());
                     userNew.setIdade(Integer.parseInt(txtNovaIdade.getText()));
 
-                    if (dao.updateUser(userPrincipal, userNew)) {
+                    if (cc.updateUser(userPrincipal, userNew)) {
                         JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
                         principal.user = userNew;
                         Principal.user.setNome(tfNovoNome.getText());

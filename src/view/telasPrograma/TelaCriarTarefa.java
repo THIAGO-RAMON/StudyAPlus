@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
 import model.bean.Task;
 import model.bean.User;
-import model.dao.TaskDAO;
+import dao.TaskDAO;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;

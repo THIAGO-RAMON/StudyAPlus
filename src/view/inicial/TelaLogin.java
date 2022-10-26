@@ -1,5 +1,6 @@
 package view.inicial;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,7 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
 import view.telasPrograma.TelaTarefas;
@@ -32,6 +33,8 @@ public class TelaLogin extends TelaPadraoFullScreen {
     private PainelGraphics painel1;
     private User usuario = new User();
     private UserDAO dao = new UserDAO();
+    private UserController cc;
+    
     public static Principal principal;
 
     TelaLogin() {
@@ -131,12 +134,13 @@ public class TelaLogin extends TelaPadraoFullScreen {
         public void keyPressed(KeyEvent e) {
             int code = e.getKeyCode();
             int tecla = KeyEvent.VK_ENTER;
-
+            cc = new UserController();
+            
             if (code == tecla) {
                 String nome = tfNome.getText().trim();
                 boolean b = false;
 
-                for (User user : dao.listUsers()) {
+                for (User user : cc.listUser()) {
 
                     if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
@@ -173,8 +177,9 @@ public class TelaLogin extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
             String nome = tfNome.getText().trim();
             boolean b = false;
-
-            for (User user : dao.listUsers()) {
+            cc= new UserController();
+            
+            for (User user : cc.listUser()) {
 
                 if (e.getSource() == btnOk) {
 

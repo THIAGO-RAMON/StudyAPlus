@@ -7,7 +7,7 @@ package controller;
 import java.util.List;
 import model.bean.Objetivo;
 import model.bean.User;
-import model.dao.ObjetivoDAO;
+import dao.ObjetivoDAO;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ObjetivoController {
         return new ObjetivoDAO().deleteObjetivo(objetivo);
     }
 
-    public List listObj(User user) {
+    public List<Objetivo> listObj(User user) {
         ObjetivoDAO dao = new ObjetivoDAO();
 
         return dao.listObjetivo(user);

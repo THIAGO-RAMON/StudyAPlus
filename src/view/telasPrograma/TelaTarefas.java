@@ -1,5 +1,6 @@
 package view.telasPrograma;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -22,8 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import model.bean.Task;
 import model.bean.User;
-import model.dao.TaskDAO;
-import model.dao.UserDAO;
+import dao.TaskDAO;
+import dao.UserDAO;
 import net.miginfocom.swing.MigLayout;
 
 import view.auxiliares.BarraLateral;
@@ -59,6 +60,8 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
 
     public static TelaTarefas telaDasTarefas;
+    
+    private UserController cc;
 
     public static int XTAREFALBL = 90, XCBTAREFA = 60, XBTNRMOVE = 700;
     public static int YTAREFALBL = 60, YCBTAREFA = 60, YBTNREMOVE = 60;
@@ -574,20 +577,22 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     }
 
     private void atualizarPercentual() {
-
+        
         double porcentagem;
+        cc =new UserController();
+                
         if (!(concluidos.isEmpty())) {
             double qtdTarefasConcluida = concluidos.size();
             double qtdTarefas = tarefas.size();
 
             porcentagem = (qtdTarefasConcluida / qtdTarefas) * 100;
 
-            if (daoUser.updateDesempenho(user, porcentagem)) {
+            if (cc.updateDesempenho(user, porcentagem)) {
             }
 
         } else {
             porcentagem = 0;
-            if (daoUser.updateDesempenho(user, porcentagem));
+            if (cc.updateDesempenho(user, porcentagem));
         }
 
     }

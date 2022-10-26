@@ -1,5 +1,6 @@
 package view.perfil;
 
+import controller.UserController;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.EventQueue;
@@ -28,7 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.bean.User;
-import model.dao.UserDAO;
+import dao.UserDAO;
 
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
@@ -52,10 +53,11 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     FileNameExtensionFilter filtro;
 
     private BarraLateral barraLateral;
-    private JLabel lblNome, lblSenha, lblSobreMim,lblIdade;
-    private JTextField txtNome, txtSenha,txtIdade;
+    private JLabel lblNome, lblSenha, lblSobreMim, lblIdade;
+    private JTextField txtNome, txtSenha, txtIdade;
     public static Principal principal;
     private User user = principal.user;
+    private UserController cc;
     private UserDAO daoUser = new UserDAO();
 
     private Thread thread1;
@@ -106,12 +108,12 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setBorder(new BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
-        
+
         lblIdade = new JLabel("IDADE:");
         lblIdade.setFont(new Font("Arial", 1, 28));
         lblIdade.setBounds(358, 525, 130, 40);
         painel1.add(lblIdade);
-        
+
         txtIdade = new JTextField();
         txtIdade.setBounds(358, 575, 300, 30);
         txtIdade.setFont(new Font("Arial", 0, 24));
@@ -315,7 +317,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
     private class ShowAlterarSobreMim implements DocumentListener {
 
-        private void vefAlterado(){
+        private void vefAlterado() {
             String textoOriginal = user.getSobreMim();
 
             if (textoOriginal.equals(txtSobreMim.getText())) {
@@ -326,7 +328,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
                 btnCancelarSobreMim.setVisible(true);
             }
         }
-        
+
         @Override
         public void insertUpdate(DocumentEvent de) {
             vefAlterado();
@@ -349,13 +351,13 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         @Override
         public void actionPerformed(ActionEvent ae) {
             int i = JOptionPane.showConfirmDialog(null, "Deseja Alterar o Sobre Mim?", "Alterando Sobre Mim", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+            cc = new UserController();
             if (i == 0) {
 
                 User usuario = user;
                 usuario.setSobreMim(txtSobreMim.getText());
 
-                if (daoUser.updateSobreMim(usuario)) {
+                if (cc.updateSobreMim(usuario)) {
                     dispose();
                     new TelaPerfil().runTela();
                 }
@@ -383,11 +385,11 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             fileChosser.addChoosableFileFilter(filtro);
 
             int resultado = fileChosser.showSaveDialog(null);
-
+            cc = new UserController();
             if (resultado == JFileChooser.APPROVE_OPTION) {
                 File arquivoSelecionado = fileChosser.getSelectedFile();
                 String ImagePath = arquivoSelecionado.getAbsolutePath();
-                if (daoUser.updateImagemUsuario(user, ImagePath)) {
+                if (cc.updateImage(user, ImagePath)) {
                     dispose();
                     new TelaPerfil().runTela();
                 }
