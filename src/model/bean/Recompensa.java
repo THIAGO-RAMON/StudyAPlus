@@ -4,8 +4,6 @@
  */
 package model.bean;
 
-import javax.swing.ImageIcon;
-
 /**
  *
  * @author Migas
@@ -15,6 +13,7 @@ public class Recompensa {
     private String nome;
     private String descricao;
     private String img;
+    private boolean habilitado;
 
     public String getNome() {
         return nome;
@@ -40,13 +39,22 @@ public class Recompensa {
         this.img = img;
     }
 
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
     public Recompensa() {
     }
 
     public Recompensa(String nome, String descricao, String imgPath) {
         this.nome = nome;
         this.descricao = descricao;
-        this.img = img;
+        this.img = imgPath;
+        this.habilitado = false;
     }
     
 }

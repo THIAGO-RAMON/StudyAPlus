@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view.auxiliares;
 
 import java.awt.Color;
@@ -12,7 +8,7 @@ import model.bean.Recompensa;
 
 /**
  *
- * @author Migas
+ * @author Thiago Ramon
  */
 public class RecompensasTemplate extends JPanel{
 
@@ -21,7 +17,7 @@ public class RecompensasTemplate extends JPanel{
     private boolean isHabilitado;
     
     public RecompensasTemplate(Recompensa recompensa, boolean isHabilitado) {
-        configPainel();
+        configPainelTemplate();
         
         this.recompensa = recompensa;
         this.isHabilitado = isHabilitado;
@@ -33,7 +29,7 @@ public class RecompensasTemplate extends JPanel{
         }
     }
     
-    private void configPainel(){
+    private void configPainelTemplate(){
         setPreferredSize(new Dimension(125, 125));
         setLayout(null);
         setBorder(null);

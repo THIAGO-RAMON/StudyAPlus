@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package view.auxiliares;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -15,24 +12,26 @@ import model.bean.Recompensa;
 
 /**
  *
- * @author Migas
+ * @author Thiago Ramon
  */
 public class CardRecompensas extends RecompensasTemplate{
    
     private JLabel imagemRecompensa;
     private JLabel nomeRecompensa;
     private JButton verMais;
-    FileNameExtensionFilter filtro;
+    private FileNameExtensionFilter filtro;
     
     public CardRecompensas(Recompensa recompensa, boolean isHabilitado) {
         super(recompensa, isHabilitado);
+        setBackground(new Color(168, 168, 168));
         configFilterFileChosser();
         configPainel();
     }
 
     private void configPainel(){
-        imagemRecompensa = new JLabel(resizeImage(recompensa.getImg()));
-        imagemRecompensa.setBounds((this.getWidth()/2)-75, 10, 75, 75);
+        imagemRecompensa = new JLabel();
+        imagemRecompensa.setBounds(20, 10, 85, 85);
+        imagemRecompensa.setIcon(resizeImage(recompensa.getImg()));
         add(imagemRecompensa);
         
         nomeRecompensa = new JLabel(recompensa.getNome());
@@ -51,7 +50,7 @@ public class CardRecompensas extends RecompensasTemplate{
     private ImageIcon resizeImage(String imagemPath) {
         ImageIcon minhaImagem = new ImageIcon(imagemPath);
         Image img = minhaImagem.getImage();
-        Image imgNew = img.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+        Image imgNew = img.getScaledInstance(imagemRecompensa.getWidth(), imagemRecompensa.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon imagem = new ImageIcon(imgNew);
         return imagem;
     }
