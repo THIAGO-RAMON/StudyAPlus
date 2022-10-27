@@ -38,6 +38,15 @@ primary key (id),
 foreign key (user_nome) references Usuario(nome)
 );
 
+create table recompensa(
+	id int auto_increment,
+    user_nome varchar(100) not null,
+    nome varchar(30) not null,
+    descricao varchar(200) not null,
+    imagem longblob,
+    habibilitado boolean
+);
+
 select * from tarefas;
 select * from usuario;
 select * from objetivos;
