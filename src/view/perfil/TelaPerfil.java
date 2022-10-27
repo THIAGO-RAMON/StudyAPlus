@@ -30,6 +30,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.bean.User;
 import dao.UserDAO;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.io.FileReader;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
@@ -39,7 +46,7 @@ import view.inicial.TelaMain;
 public class TelaPerfil extends TelaPadraoFullScreen {
 
     private JButton btnFoto, btnLogo, leave, btnAlterarUsuario, btnLogout, btnAlterar2, btnEdit, btnEditSobreMim,
-            btnCancelarSobreMim;
+            btnCancelarSobreMim, btnSobreNos;
     private JTextArea txtSobreMim;
     protected JPanel painel1, painelB;
 
@@ -48,6 +55,9 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     private static int NUM_CLICKS_PAINELCONFIGS = 0;
     private boolean alteradoSobreMim = false;
     private static int alterarSobreMim = 0;
+    private static int NUM_CLICKS_SOBRENOS = 0;
+    private SobreNos sobreNos;
+    JScrollPane painelSobreMim, painelSobreNos;
 
     private JFileChooser fileChosser;
     FileNameExtensionFilter filtro;
@@ -135,10 +145,22 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSobreMim.setBorder(new BordaCantoArrendondado());
         txtSobreMim.getDocument().addDocumentListener(new ShowAlterarSobreMim());
 
-        JScrollPane painelSobreMim = new JScrollPane(txtSobreMim);
+        painelSobreMim = new JScrollPane(txtSobreMim);
         painelSobreMim.setBounds(800, 375, 400, 140);
         painelSobreMim.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        painelSobreMim.setBorder(null);
         painel1.add(painelSobreMim);
+        
+        sobreNos = new SobreNos();
+        sobreNos.setPreferredSize(new Dimension(500, 1350));
+        sobreNos.setBorder(null);
+        
+        painelSobreNos = new JScrollPane(sobreNos);
+        painelSobreNos.setBounds(770, barraLateral.getY() + 160, 500, 500);
+        painelSobreNos.setVisible(false);
+        painelSobreNos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        painelSobreNos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        painel1.add(painelSobreNos);
 
         btnEditSobreMim = new JButton("Alterar");
         btnEditSobreMim.setBounds(810, 540, 165, 40);
@@ -201,7 +223,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     private void configPainelConfigs() {
         painelConfigs = new JPanel();
         painelConfigs.setLayout(null);
-        painelConfigs.setSize(125, 120);
+        painelConfigs.setSize(125, 171);
         painelConfigs.setBackground(new Color(168, 168, 168));
 
         EventoBotao eventoBotao = new EventoBotao();
@@ -234,6 +256,15 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         btnLogout.setForeground(Color.white);
         btnLogout.setBounds(5, 85, 115, 30);
         painelConfigs.add(btnLogout);
+        
+        btnSobreNos = new JButton("Sobre nos");
+        btnSobreNos.addActionListener(new MostrarSobreNos());
+        btnSobreNos.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        btnSobreNos.setFont(new Font("Arial", 0, 14));
+        btnSobreNos.setBackground(painel1.getBackground().darker());
+        btnSobreNos.setForeground(Color.white);
+        btnSobreNos.setBounds(5, 125, 115, 30);
+        painelConfigs.add(btnSobreNos);
 
     }
 
@@ -345,6 +376,28 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         }
 
     }
+    
+    private class MostrarSobreNos implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (NUM_CLICKS_SOBRENOS % 2 == 0) {
+                painelSobreNos.setVisible(true);
+                txtSobreMim.setVisible(false);
+                lblSobreMim.setVisible(false);
+                painelSobreMim.setVisible(false);
+                resetPanel();
+            } else {
+                painelSobreNos.setVisible(false);
+                txtSobreMim.setVisible(true);
+                lblSobreMim.setVisible(true);
+                painelSobreMim.setVisible(true);
+                resetPanel();
+            }
+            NUM_CLICKS_SOBRENOS++;
+        }
+
+    }
 
     private class AlterarSobreMim implements ActionListener {
 
@@ -394,6 +447,205 @@ public class TelaPerfil extends TelaPadraoFullScreen {
                     new TelaPerfil().runTela();
                 }
             }
+        }
+    }
+    
+    private class CloseSobreNos implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (sobreNos != null) {
+                painelSobreNos.setVisible(false);
+                txtSobreMim.setVisible(true);
+                lblSobreMim.setVisible(true);
+                painelSobreMim.setVisible(true);
+                resetPanel();
+            }
+        }
+
+    }
+
+    private class SobreNos extends JPanel {
+
+        private JPanel painelSobreNos;
+        private Card cardPedro, cardFelipe, cardMiguel, cardRamon;
+        private Card cardInformações;
+        private Informações textoInformações;
+        private JLabel lblTitulo;
+        private JLabel lblNome1, lblNome2, lblNome3, lblNome4;
+        private JLabel email1, email2, email3, email4;
+
+        private JScrollPane painelScroll, painelScrollInformacoes;
+        private JPanel painelExternoScroll;
+        private JButton close;
+
+        public SobreNos() {
+
+            painelSobreNos = new JPanel(null);
+            painelSobreNos.setPreferredSize(new Dimension(500, 1350));
+
+            painelScroll = new JScrollPane(painelSobreNos, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            painelScroll.setSize(500, 500);
+            painelScroll.setBorder(null);
+            configPainel();
+
+            painelExternoScroll = new JPanel(new GridLayout(1, 1));
+            painelExternoScroll.setBounds(0, 0, 500, 500);
+            painelExternoScroll.setBorder(null);
+            painelExternoScroll.add(painelScroll);
+
+            add(painelExternoScroll);
+
+        }
+
+        private void configPainel() {
+            lblTitulo = new JLabel("INTEGRANTES");
+            lblTitulo.setFont(new Font("Arial", 1, 32));
+            lblTitulo.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+            lblTitulo.setBounds((painelScroll.getWidth() / 2) - 125, 30, 250, 30);
+            lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+            lblTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
+
+            painelSobreNos.add(lblTitulo);
+
+            close = new JButton("X");
+            close.setBackground(new Color(223, 63, 16));
+            close.addActionListener(new CloseSobreNos());
+            close.setBounds(painelSobreNos.getWidth() - 30, 0, 30, 30);
+
+            painelSobreNos.add(close);
+
+            cardPedro = new Card(200, 300);
+            cardPedro.setBounds(20, 70, cardPedro.getWidth(), cardPedro.getHeight());
+
+            lblNome1 = new JLabel("Pedro Uhlmann");
+            lblNome1.setBounds(50, 200, 100, 30);
+            lblNome1.setFont(new Font("Arial", 0, 14));
+            cardPedro.add(lblNome1);
+
+            email1 = new JLabel("2021321129@ifam.edu.br");
+            email1.setBounds(30, 230, 200, 30);
+            email1.setFont(new Font("Arial", 0, 12));
+            cardPedro.add(email1);
+
+            painelSobreNos.add(cardPedro);
+
+            cardFelipe = new Card(200, 300);
+            cardFelipe.setBounds(270, 70, cardPedro.getWidth(), cardPedro.getHeight());
+
+            lblNome2 = new JLabel("Felipe Gabriel");
+            lblNome2.setBounds(50, 200, 100, 30);
+            lblNome2.setFont(new Font("Arial", 0, 14));
+            cardFelipe.add(lblNome2);
+
+            email2 = new JLabel("2021334440@ifam.edu.br");
+            email2.setBounds(30, 230, 200, 30);
+            email2.setFont(new Font("Arial", 0, 12));
+            cardFelipe.add(email2);
+
+            painelSobreNos.add(cardFelipe);
+
+            cardMiguel = new Card(200, 300);
+            cardMiguel.setBounds(20, 400, cardPedro.getWidth(), cardPedro.getHeight());
+
+            lblNome3 = new JLabel("Miguel Arcanjo");
+            lblNome3.setBounds(50, 200, 100, 30);
+            lblNome3.setFont(new Font("Arial", 0, 14));
+            cardMiguel.add(lblNome3);
+
+            email3 = new JLabel("2021333513@ifam.edu.br");
+            email3.setBounds(30, 230, 200, 30);
+            email3.setFont(new Font("Arial", 0, 12));
+            cardMiguel.add(email3);
+
+            painelSobreNos.add(cardMiguel);
+
+            cardRamon = new Card(200, 300);
+            cardRamon.setBounds(270, 400, cardPedro.getWidth(), cardPedro.getHeight());
+
+            lblNome4 = new JLabel("Thiago Ramon");
+            lblNome4.setBounds(50, 200, 100, 30);
+            lblNome4.setFont(new Font("Arial", 0, 14));
+            cardRamon.add(lblNome4);
+
+            email4 = new JLabel("2021321684@ifam.edu.br");
+            email4.setBounds(30, 230, 200, 30);
+            email4.setFont(new Font("Arial", 0, 12));
+            cardRamon.add(email4);
+
+            painelSobreNos.add(cardRamon);
+
+            cardInformações = new Card(460, 1150);
+            cardInformações.setPreferredSize(new Dimension(cardInformações.getWidth(), cardInformações.getHeight()));
+
+            textoInformações = new Informações(460, 590, new Color(207, 227, 225));
+            textoInformações.setBounds(10, 10, cardInformações.getWidth() - 25, cardInformações.getHeight() - 20);
+            loadHtml(textoInformações);
+
+            textoInformações.setEditable(false);
+            textoInformações.setBorder(null);
+
+            cardInformações.add(textoInformações);
+
+            painelScrollInformacoes = new JScrollPane(cardInformações);
+            painelScrollInformacoes.setBounds(10, 730, cardInformações.getWidth() + 10, 610);
+            painelScrollInformacoes.setBackground(painelSobreNos.getBackground());
+            painelScrollInformacoes.setBorder(null);
+            painelScrollInformacoes.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+            painelSobreNos.add(painelScrollInformacoes);
+        }
+
+        private class Card extends JPanel {
+
+            public Card(int widht, int height) {
+                setSize(widht, height);
+                setLayout(null);
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+
+                Graphics2D g2d = (Graphics2D) g;
+
+                g2d.setColor(Color.black);
+                g2d.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 30, 30);
+
+                g2d.setColor(new Color(207, 227, 225));
+                g2d.fillRoundRect(0, 0, this.getWidth() - 4, this.getHeight() - 4, 20, 20);
+
+            }
+
+        }
+
+        private class Informações extends JTextPane {
+
+            public Informações(int width, int height, Color background) {
+                this.setSize(width, height);
+                this.setBackground(background);
+                this.setContentType("text/html");
+            }
+
+        }
+
+        private void loadHtml(JTextPane textPane) {
+
+            FileReader leitor = null;
+            try {
+                String projectPath = System.getProperty("user.dir");
+                String path = projectPath + "\\files\\HTMLInformacoes.txt";
+                File file = new File(path);
+                leitor = new FileReader(file);
+
+                while (leitor.read() != -1) {
+                    textPane.read(leitor, null);
+                }
+
+                leitor.close();
+            } catch (Exception ex) {
+            }
+
         }
     }
 
