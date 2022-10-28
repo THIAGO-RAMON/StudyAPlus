@@ -25,11 +25,13 @@ import view.objetivo.VisualizarObjetivos;
 import view.telasPrograma.TelaCriarTarefa;
 import view.perfil.DicasEstudo;
 import view.telasPrograma.TelaMetodologia;
+import view.telasPrograma.TelaRecompensas;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas;
-    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,painelDicas,painelMetodologias;
+    private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,
+                    painelDicas,painelMetodologias,painelRecompensas;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -137,6 +139,16 @@ public class BarraLateral extends JPanel {
         painelMetodologias.setBounds(60, 415, 230, 50);
         painelMetodologias.addActionListener(evtMetodologias);
         add(painelMetodologias);
+        
+        AbrirRecompensas evtRecompensas = new AbrirRecompensas();
+        
+        painelRecompensas = new JButton("Recompensas");
+        painelRecompensas.setFont(new Font("Arial", 1, 20));
+        painelRecompensas.setBackground(colorButton);
+        painelRecompensas.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painelRecompensas.setBounds(60, 475, 230, 50);
+        painelRecompensas.addActionListener(evtRecompensas);
+        add(painelRecompensas);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
@@ -292,6 +304,21 @@ public class BarraLateral extends JPanel {
             }
             
             new TelaMetodologia().runTela();
+            
+        }
+    }
+    
+    private class AbrirRecompensas implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+             Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
+            }
+            
+            new TelaRecompensas().runTela();
             
         }
     }

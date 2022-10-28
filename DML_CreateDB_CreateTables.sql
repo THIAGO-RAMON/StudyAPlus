@@ -1,6 +1,7 @@
 #create database StudyAPLus;
 use StudyAPlus;
 
+drop table if exists recompensa;
 drop table if exists objetivos;
 drop table if exists Tarefas;
 drop table if exists usuario;
@@ -35,7 +36,7 @@ user_nome varchar(100) ,
 descricao varchar(150),
 dataInic varchar(10), 
 primary key (id),
-foreign key (user_nome) references Usuario(nome)
+foreign key (user_nome) references Usuario(nome) on update cascade
 );
 
 create table recompensa(
@@ -44,12 +45,15 @@ create table recompensa(
     nome varchar(30) not null,
     descricao varchar(200) not null,
     imagem longblob,
-    habibilitado boolean
+    habilitado boolean,
+    primary key(id),
+    foreign key (user_nome) references Usuario(nome) on update cascade
 );
 
 select * from tarefas;
 select * from usuario;
 select * from objetivos;
+select * from recompensa;
 
 update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
 

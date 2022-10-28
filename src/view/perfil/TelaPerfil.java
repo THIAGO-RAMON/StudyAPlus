@@ -634,7 +634,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             FileReader leitor = null;
             try {
                 String projectPath = System.getProperty("user.dir");
-                String path = projectPath + "\\files\\HTMLInformacoes.txt";
+                String path = projectPath + "\\etc\\HTMLInformacoes.txt";
                 File file = new File(path);
                 leitor = new FileReader(file);
 

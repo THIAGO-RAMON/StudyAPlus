@@ -11,7 +11,6 @@ package model.bean;
 public class Objetivo {
 
     private User user;
-
     private int id;
     private String descricao;
     private String dataInic;

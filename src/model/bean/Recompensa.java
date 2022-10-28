@@ -14,6 +14,7 @@ public class Recompensa {
     private String descricao;
     private String img;
     private boolean habilitado;
+    private User user;
 
     public String getNome() {
         return nome;
@@ -47,10 +48,19 @@ public class Recompensa {
         this.habilitado = habilitado;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Recompensa() {
     }
 
-    public Recompensa(String nome, String descricao, String imgPath) {
+    public Recompensa(User user, String nome, String descricao, String imgPath) {
+        this.user = user;
         this.nome = nome;
         this.descricao = descricao;
         this.img = imgPath;

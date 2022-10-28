@@ -1,0 +1,74 @@
+
+<html>
+  <head>
+
+    <style>
+      * {
+        margin: 0%;
+        padding: 0%;
+
+        font-family: Arial, Helvetica, sans-serif;
+
+      }
+
+      .topico{
+        font-weight: 600;
+        font-size: 22px;
+      }
+
+
+
+    </style>
+  </head>
+  <body>
+    <h1>StudyA+</h1>
+    <br>
+    <p>
+      Bem vindo ao StudyA+, um app que possibilita a pessoa ter mais organização
+      de<br />seu tempo para que tenha sucesso em seus objetivos tantos
+      escolares como<br />escolares.<br><br>
+    </p>
+    <p>
+      <h3 class="topico">Objetivos</h3>
+      <li>O usuario possa estabelecer metas para si</li>
+      <li>Que com o nosso software o usuario consiga cumprir metas</li>
+      <li>O usuario possa melhor administrar o seu tempo</li>
+      <li>O usuario consiga organizar seus afazeres</li>
+      <li>Que o usuario possa aprender e entender como organizar o seu tempo</li>
+      <br>
+    </p>
+
+    <p>
+      <h3 class="topico">Ideia</h3>
+      <p>
+        A ideia veio como uma solução para uma situação que foi encontrada por varios<br>
+        colegas, onde os mesmos se encontram com uma dificuldade para a organização do<br>
+        seu tempo, consequentemente diminuindo o seu desempenho e escolar e aumentando<br>
+        a ansiedade deles ao longo de todo o tempo escolar.
+        <br>
+        <br>
+      </p>
+
+      <p>
+        Depois de 2 anos de pandemia ocasionado pelo Covid, tentamos trazer uma solução<br>
+        para a vida do estudante, e também para outros interessados. Utilizando da gameficação<br>
+        também como estimulo para o usuario.
+      </p>  
+
+      <br>
+    </p>
+
+    <p>
+      <h3 class="topico">Colaboradores</h3>
+      <li>Felipe Gabriel Soares Valente</li>
+      <li>Pedro Uhlmann de Lima</li>
+      <li>Miguel Arcanjo Brasil de Lima</li>
+      <li>Thiago Ramon Martins Barros</li>
+
+      <br>
+      <h3 class = "topico">Orientador</h3>
+      <li>Emmerson Santa Rita da Silva</li>
+    </p>
+  </body>
+</html>
+

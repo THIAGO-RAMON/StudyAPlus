@@ -4,10 +4,12 @@
  */
 package view.telasPrograma;
 
-import controller.ControllerRecompensas;
+import controller.RecompensaController;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,14 +30,15 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
     private JScrollPane painelBloqueados, painelDesbloqueados;
     private BarraLateral barraLateral;
     private Recompensa recompensa;
+    private RecompensaController recompensaController;
+    
+    private static TelaRecompensas telaRecompensas = new TelaRecompensas();
 
     public TelaRecompensas() {
         configPainel();
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painelPrincipal.add(barraLateral);
-
-        ControllerRecompensas.loadRecompensas();
 
         painelBloqueado = new JPanel(new MigLayout());
         painelBloqueado.setPreferredSize(new Dimension(960, 120));
@@ -53,23 +56,22 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelPrincipal.add(lblBloqueado);
 
         painelBloqueados = new JScrollPane(painelBloqueado);
-        painelBloqueados.setBounds(315, 130, 960, 200);
+        painelBloqueados.setBounds(315, 130, 960, 240);
         painelBloqueados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         painelBloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelBloqueados);
 
         lblDesbloqueado = new JLabel("Desbloqueados");
         lblDesbloqueado.setFont(new Font("Arial", 1, 32));
-        lblDesbloqueado.setBounds(315, 360, 300, 30);
+        lblDesbloqueado.setBounds(315, 400, 300, 30);
         painelPrincipal.add(lblDesbloqueado);
 
         painelDesbloqueados = new JScrollPane(painelDesbloqueado);
-        painelDesbloqueados.setBounds(315, 390, 960, 200);
+        painelDesbloqueados.setBounds(315, 430, 960, 240);
         painelDesbloqueados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         painelDesbloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelDesbloqueados);
 
-        System.out.println(System.getProperty("user.dir"));
     }
 
     private void configPainel() {
@@ -81,10 +83,12 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         add(painelPrincipal);
 
     }
-
+    
     private void getRecompensas() {
 
-        for (Recompensa recompensa1 : ControllerRecompensas.recompensas) {
+        recompensaController = new RecompensaController();
+        
+        for (Recompensa recompensa1 : recompensaController.listRecompensa()) {
 
             if (recompensa1.isHabilitado()) {
                 CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
@@ -96,6 +100,22 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
             
         }
 
+    }
+    
+    public static void runTela() {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                telaRecompensas = new TelaRecompensas();
+                if (telaRecompensas.isActive()) {
+                    telaRecompensas.dispose();
+                }
+
+                TelaRecompensas telaRecompensaNova = new TelaRecompensas();
+                telaRecompensas = telaRecompensaNova;
+                telaRecompensas.setVisible(true);
+            }
+        });
     }
 
     public static void main(String[] args) {

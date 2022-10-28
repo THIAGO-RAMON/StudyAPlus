@@ -1,7 +1,7 @@
 package view.inicial;
 
+import controller.RecompensaController;
 import controller.UserController;
-import static view.auxiliares.Principal.tl;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -34,7 +34,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     private PainelPadrao painel1;
     private User usuario;
     private UserDAO dao = new UserDAO();
-    private UserController cc;
+    private UserController userController;
+    private RecompensaController recompensaController;
     
     public static Principal principal;
 
@@ -182,7 +183,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         public void keyPressed(KeyEvent e) {
             int code = e.getKeyCode();
             int tecla = KeyEvent.VK_ENTER;
-            cc = new UserController();
+            userController = new UserController();
+            recompensaController = new RecompensaController();
 
             if (code == tecla) {
 
@@ -207,8 +209,9 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario.setIdade(Integer.parseInt(jfIdade.getText()));
                     usuario.setDesempenho_percentual(0);
 
-                    if (cc.saveUser(usuario)) {
+                    if (userController.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+                        recompensaController.loadRecompensas(usuario);
                         tl.runTela();
                         dispose();
                     } else {
@@ -272,7 +275,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == btnOk) {
-                cc= new UserController();
+                userController= new UserController();
+                recompensaController = new RecompensaController();
                 
                 if (jfNome.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
@@ -296,9 +300,10 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     usuario.setDesempenho_percentual(0);
                     
                     
-                    if (cc.saveUser(usuario)) {
+                    if (userController.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
+                        recompensaController.loadRecompensas(usuario);
                         dispose();
                     } else {
                         JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);

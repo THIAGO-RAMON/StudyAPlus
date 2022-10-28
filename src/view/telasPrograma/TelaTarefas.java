@@ -60,7 +60,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
 
     public static TelaTarefas telaDasTarefas;
-    
+
     private UserController cc;
 
     public static int XTAREFALBL = 90, XCBTAREFA = 60, XBTNRMOVE = 700;
@@ -98,7 +98,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
                 System.exit(0);
             }
         });
-
         leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
         painelPrincipal.add(leave);
 
@@ -577,10 +576,10 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     }
 
     private void atualizarPercentual() {
-        
+
         double porcentagem;
-        cc =new UserController();
-                
+        cc = new UserController();
+
         if (!(concluidos.isEmpty())) {
             double qtdTarefasConcluida = concluidos.size();
             double qtdTarefas = tarefas.size();
