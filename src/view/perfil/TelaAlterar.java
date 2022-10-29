@@ -135,7 +135,7 @@ public class TelaAlterar extends JFrame {
         btnOcultar1.setBorder(new BordaCantoArrendondado());
         btnOcultar1.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
         btnOcultar1.setBackground(new Color(218, 217, 215));
-        btnOcultar1.setBounds(415, 210, 35, 30);
+        btnOcultar1.setBounds(415, 190, 35, 30);
         btnOcultar1.addActionListener(new EventoBotao());
         btnOcultar1.setVisible(false);
         painel1.add(btnOcultar1);
@@ -145,7 +145,7 @@ public class TelaAlterar extends JFrame {
         btnOcultar2.setBorder(new BordaCantoArrendondado());
         btnOcultar2.setIcon(new ImageIcon(getClass().getResource("/images/visible (1).png")));
         btnOcultar2.setBackground(new Color(218, 217, 215));
-        btnOcultar2.setBounds(415, 310, 35, 30);
+        btnOcultar2.setBounds(415, 290, 35, 30);
         btnOcultar2.addActionListener(new EventoBotao());
         btnOcultar2.setVisible(false);
         painel1.add(btnOcultar2);

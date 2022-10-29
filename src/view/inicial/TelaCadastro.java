@@ -343,7 +343,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
             g.fillRoundRect(0, 0, 1280, 69, 10, 10);
 
             g.setColor(new Color(168, 168, 168));
-            g.fillRoundRect(25, 190, 600, 500, 35, 35);
+            g.fillRoundRect(20, 150, 600, 500, 35, 35);
 
             g.setColor(Color.black);
             g.fillRect(640, 70, 1, 650);

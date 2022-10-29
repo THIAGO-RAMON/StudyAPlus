@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
@@ -67,63 +68,84 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
         painel2.add(lblmsg2);
 
         //painel Fundamental
-        
         txtFund = new JTextArea();
         txtFund.setText("\n     Use estas metodologias: Teste prático, Autoexpliacação e Autointerrogação.\n\n\n\n\n       Consiste em 3 passos, o primeiro é o do teste prático, que simplismente é realizar práticas sobre o que\n       está querendo ser aprendido. Isso pode ser feito por meio de exercícios, repetições ou vídeos. \n\n       O segundo passo é a autoexplicação, onde basta você se imaginar como professor e começar a explicar \n       para si mesmo em voz alta, pois quando se fala em voz alta é mais fácil de compreender o raciocínio.\n\n       O terceiro passo é a autointerrogação, este passo é similar ao segungo passo, também consiste em \n       usar a voz alta, a diferença é que não irá ser explicado nada, apenas será levantado perguntas sobre \n       o tema.");
-        txtFund.setFont(new Font("Arial",0,15));
+        txtFund.setFont(new Font("Arial", 0, 15));
         txtFund.setEditable(false);
-        txtFund.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
-        txtFund.setBackground(new Color(200,200,200));
-        txtFund.setBounds(0,0,760,400);
-        painelFundamental.add(txtFund);
-        
+        txtFund.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        txtFund.setBackground(new Color(200, 200, 200));
+        JScrollPane jscFund = new JScrollPane(txtFund);
+        jscFund.setBackground(new Color(200,200,200));
+        jscFund.setBounds(0, 0, 760, 400);
+        painelFundamental.add(jscFund);
+
         alterarFund = new JButton("Alterar");
         alterarFund.setVisible(false);
         alterarFund.setEnabled(false);
         alterarFund.addActionListener(new AlterarFundamental());
-        alterarFund.setBackground(new Color(200,200,200));
-        alterarFund.setBorder(new BordaCantoArrendondado());
-        alterarFund.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        alterarFund.setBackground(new Color(200, 200, 200));
+        alterarFund.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        alterarFund.setBounds((painel2.getWidth() / 2) - 75, 530, 150, 30);
         painel2.add(alterarFund);
-        
+
         //painel Medio
         txtMedio = new JTextArea();
-        txtMedio.setText("\n     Use o método Robinson (EPL2R)");
-        txtMedio.setFont(new Font("Arial",0,15));
+        txtMedio.setText("\n     Use o método Robinson (EPL2R).\n\n       Para entender esta metodologia é preciso saber o que significa EPL2R:"
+                + "\n\n\n      * E: Explorar. \n      *P: Perguntar. \n      *L: Ler. \n      *2R: Rememorar e Repassar."
+                + "\n\n\n     Cada um desses tópicos equivale à uma etapa, a primeira é explorar tudo sobre o conteúdo desejado, reunindo"
+                + "\n     todas as informaçõoes possíveis. Isso é necessário para a segunda etapa que é investigar para gerar as pergun-"
+                + "\n     tas e levantar dúvidas para serem respondidas. A terceira etapa consiste em uma leitura mais aprofundada do"
+                + "\n     conteúdo, percorrendo com mais cuidado e atenção as linhas de leitura. O ultimo passo é o R de rememorar, "
+                + "\n     onde o intuito de fixar o que foi aprendido e depois repassar para ter ainda mais certeza."
+        );
+
+        txtMedio.setFont(new Font("Arial", 0, 15));
         txtMedio.setEditable(false);
-        txtMedio.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
-        txtMedio.setBackground(new Color(200,200,200));
-        txtMedio.setBounds(0,0,760,400);
-        painelMedio.add(txtMedio);
-        
+        txtMedio.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        txtMedio.setBackground(new Color(200, 200, 200));
+        JScrollPane jscMedio = new JScrollPane(txtMedio);
+        jscMedio.setBackground(new Color(200,200,200));
+        jscMedio.setBounds(0, 0, 760, 400);
+        painelMedio.add(jscMedio);
+
         alterarMedio = new JButton("Alterar");
         alterarMedio.setVisible(false);
         alterarMedio.setEnabled(false);
         alterarMedio.addActionListener(new AlterarMedio());
-        alterarMedio.setBackground(new Color(200,200,200));
-        alterarMedio.setBorder(new BordaCantoArrendondado());
-        alterarMedio.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        alterarMedio.setBackground(new Color(200, 200, 200));
+        alterarMedio.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        alterarMedio.setBounds((painel2.getWidth() / 2) - 75, 530, 150, 30);
         painel2.add(alterarMedio);
-        
+
         // painel ensino superior
         txtSuperior = new JTextArea();
-        txtSuperior.setText("\n     Use o método Pomodoro");
-        txtSuperior.setFont(new Font("Arial",0,15));
+        txtSuperior.setText("\n     Use o método Pomodoro.\n\n\n      A técnica pomodoro é, na verdade, um método de gestão em tempo, e uma das mais conhecidas. Pode ser "
+                + "\n      aplicada para diversas finalidades inclusive nos estudos, onde mostra grande resultados. Ela consiste em es-"
+                + "\n      tabelecer 25 minutos para exercícios da atividade e 15 minutos de descanso. Ou seja, estudo na maior parte"
+                + "\n      do tempo, e usa outro período para recuperar o fôlego e esse ciclo é repetido."
+                + "\n\n      Para colocar em prática esta técnica, é recomendado utilizar um conometro e fica aberto a alterações no tem-"
+                + "\n      po. O ideal é que intercale sempre entre os períodos de dedicação com os de descanso, mas os minutos de-"
+                + "\n      pende de quem aplica."
+        );
+
+        txtSuperior.setFont(new Font("Arial", 0, 15));
         txtSuperior.setEditable(false);
-        txtSuperior.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
-        txtSuperior.setBackground(new Color(200,200,200));
-        txtSuperior.setBounds(0,0,760,400);
-        painelSuperior.add(txtSuperior);
-        
+        txtSuperior.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        txtSuperior.setBackground(new Color(200, 200, 200));
+        JScrollPane jscSup = new JScrollPane(txtSuperior);
+        jscSup.setBackground(new Color(200,200,200));
+        jscSup.setBounds(0, 0, 760, 400);
+        painelSuperior.add(jscSup);
+
         alterarSup = new JButton("Alterar");
         alterarSup.setVisible(false);
         alterarSup.setEnabled(false);
         alterarSup.addActionListener(new AlterarSuperior());
-        alterarSup.setBackground(new Color(200,200,200));
-        alterarSup.setBorder(new BordaCantoArrendondado());
-        alterarSup.setBounds((painel2.getWidth()/2)-75,530,150,30);
+        alterarSup.setBackground(new Color(200, 200, 200));
+        alterarSup.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        alterarSup.setBounds((painel2.getWidth() / 2) - 75, 530, 150, 30);
         painel2.add(alterarSup);
-        
+
         AlgoritmoEstudo();
     }
 
