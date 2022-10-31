@@ -28,8 +28,8 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.AbstractBorder;
 import dao.ObjetivoDAO;
-import model.bean.Objetivo;
-import model.bean.User;
+import model.Objetivo;
+import model.User;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 

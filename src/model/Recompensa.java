@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model.bean;
+package model;
 
 /**
  *
@@ -15,6 +15,7 @@ public class Recompensa {
     private String img;
     private boolean habilitado;
     private User user;
+    private Desafio desafio;
 
     public String getNome() {
         return nome;
@@ -56,15 +57,26 @@ public class Recompensa {
         this.user = user;
     }
 
+    public Desafio getDesafio() {
+        return desafio;
+    }
+
+    public void setDesafio(Desafio desafio) {
+        this.desafio = desafio;
+    }
+    
     public Recompensa() {
     }
 
-    public Recompensa(User user, String nome, String descricao, String imgPath) {
-        this.user = user;
+    public Recompensa(User user, Desafio desafio, String nome, String descricao, String img, boolean habilitado) {
         this.nome = nome;
         this.descricao = descricao;
-        this.img = imgPath;
+        this.img = img;
         this.habilitado = false;
+        this.user = user;
+        this.desafio = desafio;
     }
+    
+    
     
 }

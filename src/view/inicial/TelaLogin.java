@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import model.bean.User;
+import model.User;
 import dao.UserDAO;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;

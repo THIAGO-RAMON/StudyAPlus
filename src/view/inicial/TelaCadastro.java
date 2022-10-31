@@ -1,5 +1,6 @@
 package view.inicial;
 
+import controller.DesafioController;
 import controller.RecompensaController;
 import controller.UserController;
 
@@ -19,8 +20,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import model.bean.User;
+import model.User;
 import dao.UserDAO;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import view.auxiliares.Principal;
 import static view.auxiliares.Principal.tl;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -35,6 +39,7 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     private User usuario;
     private UserDAO dao = new UserDAO();
     private UserController userController;
+    private DesafioController desafioController;
     private RecompensaController recompensaController;
     
     public static Principal principal;

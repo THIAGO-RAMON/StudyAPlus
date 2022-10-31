@@ -21,8 +21,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import model.bean.Task;
-import model.bean.User;
+import model.Task;
+import model.User;
 import dao.TaskDAO;
 import dao.UserDAO;
 import net.miginfocom.swing.MigLayout;
@@ -60,6 +60,8 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
 
     public static TelaTarefas telaDasTarefas;
+    
+    private JButton teste;
 
     private UserController cc;
 
@@ -101,6 +103,10 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
         painelPrincipal.add(leave);
 
+        teste = new JButton("TESTE");
+        teste.setBounds(painelPrincipal.getWidth()-150, 40, 150, 50);
+        painelPrincipal.add(teste);
+        
         generateConcluido();
 
         generatePendente();

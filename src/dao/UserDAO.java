@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 import connection.ConnectionFactory;
 import java.util.ArrayList;
-import model.bean.User;
+import model.User;
 
 public class UserDAO {
 

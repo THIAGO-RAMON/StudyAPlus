@@ -1,6 +1,6 @@
 package view.auxiliares;
 
-import model.bean.User;
+import model.User;
 
 import view.inicial.TelaMain;
 import view.telasPrograma.TelaTarefas;

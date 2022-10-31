@@ -1,3 +1,5 @@
-D:\ProjetoEmmerson\Versionamentos\StudyAPlusV12\etc\Recompensas\images\CarroVoador.jpeg
-D:\ProjetoEmmerson\Versionamentos\StudyAPlusV12\etc\Recompensas\images\vasco.png
-D:\ProjetoEmmerson\Versionamentos\StudyAPlusV12\etc\Recompensas\images\paulin.jpg
+\etc\Recompensas\images\BONÉ.png
+\etc\Recompensas\images\OCULOS.png
+\etc\Recompensas\images\CHAPEU DE PIRATA.png
+\etc\Recompensas\images\CHAPEU DE BRUXA.png
+\etc\Recompensas\images\COROA.png

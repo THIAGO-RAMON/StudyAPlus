@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.bean.Recompensa;
-import model.bean.User;
+import model.Desafio;
+import model.Recompensa;
+import model.User;
 
 /**
  *
@@ -30,7 +31,7 @@ public class RecompensasDAO {
 
     public void insertRecompensa(Recompensa recompensa) {
 
-        String sql = "insert into recompensa(id, user_nome, nome, descricao, imagem, habilitado) values (DEFAULT, ?, ?, ?, ?, ?)";
+        String sql = "insert into recompensa(id, user_nome, id_desafio, nome, descricao, imagem, habilitado) values (DEFAULT, ?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = null;
 
@@ -39,10 +40,11 @@ public class RecompensasDAO {
             stmt = con.prepareStatement(sql);
 
             stmt.setString(1, recompensa.getUser().getNome());
-            stmt.setString(2, recompensa.getNome());
-            stmt.setString(3, recompensa.getDescricao());
-            stmt.setString(4, recompensa.getImg());
-            stmt.setBoolean(5, recompensa.isHabilitado());
+            stmt.setInt(2, recompensa.getDesafio().getId());
+            stmt.setString(3, recompensa.getNome());
+            stmt.setString(4, recompensa.getDescricao());
+            stmt.setString(5, recompensa.getImg());
+            stmt.setBoolean(6, recompensa.isHabilitado());
 
             stmt.executeUpdate();
 
@@ -68,6 +70,7 @@ public class RecompensasDAO {
             while (rs.next()) {
                 Recompensa recompensa = new Recompensa();
                 recompensa.setUser(usuario);
+                recompensa.getDesafio().setId(rs.getInt("id_desafio"));
                 recompensa.setNome(rs.getString("nome"));
                 recompensa.setDescricao(rs.getString("descricao"));
                 recompensa.setImg(rs.getString("imagem"));
@@ -82,17 +85,18 @@ public class RecompensasDAO {
         return recompensas;
     }
 
-    public boolean setRecompensaHabilitadoTrue(User usuario, Recompensa recompensa) {
+    public boolean setRecompensaHabilitadoTrue(User usuario, Desafio desafio, Recompensa recompensa) {
 
-        String sql = "update recompensa set habilitado = ? where user_nome = ? and nome = ?";
+        String sql = "update recompensa set habilitado = ? where user_nome = ? and id_desafio = ? and nome = ?";
 
         PreparedStatement stmt = null;
 
         try {
             stmt = con.prepareStatement(sql);
             stmt.setBoolean(1, true);
-            stmt.setString(2, usuario.getNome());
-            stmt.setString(3, recompensa.getNome());
+            stmt.setInt(2, desafio.getId());
+            stmt.setString(3, usuario.getNome());
+            stmt.setString(4, recompensa.getNome());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {

@@ -1,13 +1,17 @@
 package controller;
 
 import dao.RecompensasDAO;
+import dao.TaskDAO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.bean.Recompensa;
-import model.bean.User;
+import model.Desafio;
+import model.Recompensa;
+import model.Task;
+import model.User;
 import view.auxiliares.Principal;
 
 /**
@@ -18,7 +22,15 @@ public class RecompensaController {
 
     private User usuario = Principal.user;
 
+    private DesafioController controllerDesafio = new DesafioController();
+    private ArrayList<Desafio> desafios = null;
+
     private String fileProject = System.getProperty("user.dir");
+    private TaskDAO daoTarefas = new TaskDAO();
+    private ArrayList<Task> tarefas = (ArrayList<Task>) daoTarefas.listarTarefas(usuario);
+    
+    private ArrayList<Recompensa> recompensas = new ArrayList<>();
+    
 
     private RecompensasDAO dao = new RecompensasDAO();
 
@@ -26,6 +38,10 @@ public class RecompensaController {
     public void loadRecompensas(User usuario) {
 
         try {
+            controllerDesafio.loadDesafios(usuario);
+            
+            desafios = (ArrayList<Desafio>) controllerDesafio.listarDesafios();
+            
             String pathNome = fileProject + "\\etc\\Recompensas\\nomeRecompensas.txt";
             File fileNome = new File(pathNome);
 
@@ -45,12 +61,16 @@ public class RecompensaController {
 
             String nome = lerNome.readLine();
             String descricao = lerDecricao.readLine();
-            String imagem = lerImage.readLine();
+            String imagem = fileProject+lerImage.readLine();
+
+            int i = 0;
 
             while (nome != null && descricao != null && imagem != null) {
 
+                Desafio desafio = desafios.get(i);
                 Recompensa recompensa = new Recompensa();
                 recompensa.setUser(usuario);
+                recompensa.setDesafio(desafio);
                 recompensa.setNome(nome);
                 recompensa.setDescricao(descricao);
                 recompensa.setImg(imagem);
@@ -58,6 +78,7 @@ public class RecompensaController {
 
                 dao.insertRecompensa(recompensa);
 
+                i++;
                 nome = lerNome.readLine();
                 descricao = lerDecricao.readLine();
                 imagem = lerImage.readLine();
@@ -82,13 +103,83 @@ public class RecompensaController {
         }
     }
 
-    public void atualizarRecompensa(Recompensa recompensa, boolean habilitado) {
+    public void atualizarRecompensa(Recompensa recompensa, Desafio desafio) {
 
-        if (habilitado) {
-            if (dao.setRecompensaHabilitadoTrue(usuario, recompensa)) {
-                System.out.println("Desbloqueado com sucesso");
-            } else {
+        if (dao.setRecompensaHabilitadoTrue(usuario, desafio, recompensa)) {
+            System.out.println("Desbloqueado com sucesso");
+        }
+    }
+    
+    public void vefRecompensas() throws SQLException, DesafioCumprido {
+
+        desafios = (ArrayList<Desafio>) controllerDesafio.listarDesafios();
+        recompensas = (ArrayList<Recompensa>) listRecompensa();
+
+        //Verifica o Desafio criar 3 tarefas
+        if (daoTarefas.qtdsTarefa() >= 3) {
+            Recompensa recompensa = recompensas.get(0);
+            if (recompensa.isHabilitado()) {
+                Desafio desafio = desafios.get(0);
+                atualizarRecompensa(recompensa, desafio);
+                throw new DesafioCumprido();
             }
+        }
+
+        // Verifica o cumprimento de 1 Tarefa
+        for (Task tarefa : tarefas) {
+            if (tarefa.isConcluido()) {
+                Recompensa recompensa = recompensas.get(1);
+                if (recompensa.isHabilitado()) {
+                    Desafio desafio = desafios.get(1);
+                    atualizarRecompensa(recompensa, desafio);
+                    throw new DesafioCumprido();
+                }
+            }
+        }
+
+        // Verifica a criação de 10 Tarefa
+        if (daoTarefas.qtdsTarefa() >= 10) {
+            Recompensa recompensa = recompensas.get(2);
+            if (recompensa.isHabilitado()) {
+                Desafio desafio = desafios.get(2);
+                atualizarRecompensa(recompensa, desafio);
+                throw new DesafioCumprido();
+            }
+        }
+
+        // Verifica o cumprimento de 5 tarefas
+        int qtdTarefasCumpridas = 0;
+
+        for (Task tarefa : tarefas) {
+            if (tarefa.isConcluido()) {
+                qtdTarefasCumpridas++;
+            }
+        }
+
+        if (qtdTarefasCumpridas >= 5) {
+            Recompensa recompensa = recompensas.get(3);
+            if (recompensa.isHabilitado()) {
+                Desafio desafio = desafios.get(3);
+                atualizarRecompensa(recompensa, desafio);
+                throw new DesafioCumprido();
+            }
+        }
+
+        // Tenha um desempenho superior a 70%	
+        if (usuario.getDesempenho_percentual() >= 70) {
+            Recompensa recompensa = recompensas.get(4);
+            if (recompensa.isHabilitado()) {
+                Desafio desafio = desafios.get(4);
+                atualizarRecompensa(recompensa, desafio);
+                throw new DesafioCumprido();
+            }
+        }
+
+    }
+
+    private class DesafioCumprido extends Exception {
+
+        public DesafioCumprido() {
         }
 
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import model.bean.Recompensa;
+import model.Recompensa;
 import net.miginfocom.swing.MigLayout;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.CardRecompensas;

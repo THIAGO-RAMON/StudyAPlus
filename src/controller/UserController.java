@@ -6,7 +6,7 @@ package controller;
 
 import dao.UserDAO;
 import java.util.List;
-import model.bean.User;
+import model.User;
 
 /**
  *

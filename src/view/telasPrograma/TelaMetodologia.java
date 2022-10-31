@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
-import model.bean.User;
+import model.User;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;

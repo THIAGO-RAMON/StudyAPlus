@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.bean.Task;
-import model.bean.User;
+import model.Task;
+import model.User;
 
 /**
  *
@@ -54,15 +54,15 @@ public class TaskDAO {
     }
 
     public List<Task> listarTarefas(User usuario) {
-        
+
         String sql = "Select * from Tarefas where user_nome = (?)";
         PreparedStatement stmt = null;
         ResultSet rs = null;
         ArrayList<Task> tasks = new ArrayList<>();
-        
+
         try {
 
-            stmt = con.prepareCall(sql);
+            stmt = con.prepareStatement(sql);
             stmt.setString(1, usuario.getNome());
             rs = stmt.executeQuery();
 
@@ -82,39 +82,39 @@ public class TaskDAO {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error na hora de listar as tarefas", "ERROR", JOptionPane.WARNING_MESSAGE);
-        } 
+        }
 
         return tasks;
 
     }
-    
-    public boolean updateTarefa(Task tarefaAntiga, Task tarefaNova){
+
+    public boolean updateTarefa(Task tarefaAntiga, Task tarefaNova) {
         String sql = "update tarefas set titulo = ?, descricao = ?, dataInic = ?, dataFim = ?, importante = ? where User_nome = ? and titulo = ?";
-        
+
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = con.prepareCall(sql);
-            
+
             stmt.setString(1, tarefaNova.getTitulo());
             stmt.setString(2, tarefaNova.getDescricao());
             stmt.setString(3, tarefaNova.getDataInic());
             stmt.setString(4, tarefaNova.getDataFim());
             stmt.setBoolean(5, tarefaNova.isImportante());
-            
+
             stmt.setString(6, tarefaAntiga.getUser().getNome());
             stmt.setString(7, tarefaAntiga.getTitulo());
-            
+
             stmt.executeUpdate();
-            
+
             return true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa\n"+ex, "Error", 0);
+            JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa\n" + ex, "Error", 0);
             return false;
         }
-        
+
     }
-    
+
     public boolean updateTarefaConcluido(Task tarefa) {
         String sql = "UPDATE tarefas set concluido = 1 where titulo = ?";
         PreparedStatement stmt = null;
@@ -128,7 +128,7 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
-        } 
+        }
 
     }
 
@@ -146,30 +146,44 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
-        } 
+        }
 
     }
 
-    public boolean deleteTarefa(Task tarefa){
-        
+    public boolean deleteTarefa(Task tarefa) {
+
         String sql = "DELETE FROM tarefas where User_nome = ? and titulo = ?";
-        
+
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = con.prepareStatement(sql);
-            
+
             stmt.setString(1, tarefa.getUser().getNome());
             stmt.setString(2, tarefa.getTitulo());
-            
+
             stmt.executeUpdate();
-            
+
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro deletando a tarefa", "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
     }
-    
+
+    public int qtdsTarefa() throws SQLException {
+
+        String sql = "select count(*) from tarefas";
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        stmt = con.prepareStatement(sql);
+        rs = stmt.executeQuery();
+        rs.next();
+        return Integer.parseInt(rs.getString(1));
+
+    }
+
 }

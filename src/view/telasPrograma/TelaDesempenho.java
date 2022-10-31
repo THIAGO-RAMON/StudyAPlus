@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import model.bean.User;
+import model.User;
 import dao.UserDAO;
 
 import view.auxiliares.BarraLateral;

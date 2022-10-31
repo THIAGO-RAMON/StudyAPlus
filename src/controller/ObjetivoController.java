@@ -5,8 +5,8 @@
 package controller;
 
 import java.util.List;
-import model.bean.Objetivo;
-import model.bean.User;
+import model.Objetivo;
+import model.User;
 import dao.ObjetivoDAO;
 
 /**

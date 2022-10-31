@@ -28,7 +28,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import model.bean.User;
+import model.User;
 import dao.UserDAO;
 import java.awt.Dimension;
 import java.awt.Graphics;

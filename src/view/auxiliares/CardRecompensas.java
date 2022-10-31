@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import model.bean.Recompensa;
+import model.Recompensa;
 
 /**
  *

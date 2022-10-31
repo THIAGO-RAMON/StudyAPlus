@@ -23,7 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.AbstractBorder;
-import model.bean.User;
+import model.User;
 import dao.UserDAO;
 import view.auxiliares.Principal;
 import static view.perfil.TelaPerfil.telaPerfil;
