@@ -3,7 +3,6 @@ package view.auxiliares;
 import model.User;
 
 import view.inicial.TelaMain;
-import view.telasPrograma.TelaTarefas;
 
 public class Principal {    
     

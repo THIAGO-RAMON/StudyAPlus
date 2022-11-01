@@ -1,5 +1,6 @@
 package view.telasPrograma;
 
+import controller.RecompensaController;
 import controller.UserController;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -25,9 +26,13 @@ import model.Task;
 import model.User;
 import dao.TaskDAO;
 import dao.UserDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
 
 import view.auxiliares.BarraLateral;
+import view.auxiliares.MensagemDesafio;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
 
@@ -42,6 +47,8 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     private HashMap<JButton, Task> pendentes = new HashMap<>();
     private HashMap<JButton, Task> concluidos = new HashMap<>();
+
+    private MensagemDesafio mensagemDesafio;
 
     private final TaskDAO daoTarefas = new TaskDAO();
     private UserDAO daoUser = new UserDAO();
@@ -59,9 +66,9 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private boolean isCreatedTarefaPendente = false, hasComponentPendente = false, isOpenPendente = false;
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
 
+    private RecompensaController controllerRecompensa = new RecompensaController();
+
     public static TelaTarefas telaDasTarefas;
-    
-    private JButton teste;
 
     private UserController cc;
 
@@ -103,12 +110,16 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
         painelPrincipal.add(leave);
 
-        teste = new JButton("TESTE");
-        teste.setBounds(painelPrincipal.getWidth()-150, 40, 150, 50);
-        painelPrincipal.add(teste);
+        //mensagemDesafio = new MensagemDesafio(painelPrincipal.getBackground());
+        //mensagemDesafio.setBounds(painelPrincipal.getWidth() - 150, 40, 150, 50);
+        //mensagemDesafio.setVisible(false);
+        //painelPrincipal.add(mensagemDesafio);
+
+        //Thread thread = new Thread(vefRecompensa);
+        //thread.run();
         
         generateConcluido();
-
+        
         generatePendente();
     }
 
@@ -185,6 +196,37 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         }
 
     }
+
+    private Runnable vefRecompensa = new Runnable() {
+        @Override
+        public void run() {
+
+            boolean run = true;
+
+            while (run) {
+                try {
+                    controllerRecompensa.vefRecompensas();
+                } catch (SQLException ex) {
+                    System.err.println(ex);
+                } catch (RecompensaController.DesafioCumprido ex) {
+                    mensagemDesafio.setVisible(true);
+                    try {
+                        mensagemDesafio.loadMensagem(mensagemDesafio.getX(), mensagemDesafio.getY(), painelPrincipal, mensagemDesafio);
+                    } catch (InterruptedException ex1) {
+                        System.err.println(ex);
+                    }
+                    run = false;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
+                }
+
+            }
+
+        }
+    };
 
     private void telaConcVisivel() {
         painelExternoConc = new JPanel(new MigLayout());

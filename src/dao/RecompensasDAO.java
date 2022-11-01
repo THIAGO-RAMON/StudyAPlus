@@ -29,9 +29,9 @@ public class RecompensasDAO {
         con = ConnectionFactory.getConnection();
     }
 
-    public void insertRecompensa(Recompensa recompensa) {
+    public void insertRecompensa(Desafio desafio, Recompensa recompensa) {
 
-        String sql = "insert into recompensa(id, user_nome, id_desafio, nome, descricao, imagem, habilitado) values (DEFAULT, ?, ?, ?, ?, ?)";
+        String sql = "insert into recompensa(id_desafio, user_nome, nome, descricao, imagem, habilitado) values (?, ?, ?, ?, ?,?)";
 
         PreparedStatement stmt = null;
 
@@ -39,14 +39,14 @@ public class RecompensasDAO {
 
             stmt = con.prepareStatement(sql);
 
-            stmt.setString(1, recompensa.getUser().getNome());
-            stmt.setInt(2, recompensa.getDesafio().getId());
+            stmt.setInt(1, recompensa.getDesafio().getId());
+            stmt.setString(2, recompensa.getUser().getNome());
             stmt.setString(3, recompensa.getNome());
             stmt.setString(4, recompensa.getDescricao());
             stmt.setString(5, recompensa.getImg());
             stmt.setBoolean(6, recompensa.isHabilitado());
 
-            stmt.executeUpdate();
+            stmt.execute();
 
         } catch (SQLException ex) {
             System.err.println(ex);
@@ -68,9 +68,14 @@ public class RecompensasDAO {
             rs = stmt.executeQuery();
 
             while (rs.next()) {
+                
+                Desafio desafio = new Desafio();
+                
+                desafio.setId(rs.getInt("id_desafio"));
+                
                 Recompensa recompensa = new Recompensa();
                 recompensa.setUser(usuario);
-                recompensa.getDesafio().setId(rs.getInt("id_desafio"));
+                recompensa.setDesafio(desafio);
                 recompensa.setNome(rs.getString("nome"));
                 recompensa.setDescricao(rs.getString("descricao"));
                 recompensa.setImg(rs.getString("imagem"));

@@ -1,15 +1,21 @@
 package view.inicial;
 
+import controller.RecompensaController;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import view.auxiliares.MensagemDesafio;
 
 import view.auxiliares.TelaPadraoFullScreen;
 
@@ -19,7 +25,8 @@ public class TelaMain extends TelaPadraoFullScreen {
     JButton cadastrar, logar, leave;
     PainelPadrao painel1;
     String nome, senha;
-
+    static MensagemDesafio mensagemDesafio;
+    
     public TelaMain(String nome, String senha) {
         configTela();
         InserirIcone ic = new InserirIcone();
@@ -160,7 +167,45 @@ public class TelaMain extends TelaPadraoFullScreen {
         });
 
     }
+
+    public void runMesg(){
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                mensagemDesafio = new MensagemDesafio(new Color(168,168,168));
+                mensagemDesafio.setVisible(true);
+            }
+        });
+    }
     
+    public void runDesafios() {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(1000);
+
+                    RecompensaController recompensaController = new RecompensaController();
+
+                    recompensaController.vefRecompensas();
+
+                } catch (InterruptedException ex) {
+                    JOptionPane.showMessageDialog(null, "Error" + ex);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error MySQL" + ex);
+
+                } catch (RecompensaController.DesafioCumprido ex) {
+                    runMesg();
+                    
+                    
+                    
+                }
+
+            }
+        });
+    }
+
     public static void main(String[] args) {
         new TelaMain().runTela();
     }
@@ -207,7 +252,6 @@ public class TelaMain extends TelaPadraoFullScreen {
             }
 
         }
-
 
     }
 }

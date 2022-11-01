@@ -30,8 +30,6 @@ public class DesafioController {
     private ArrayList<Desafio> desafios = null;
     private ArrayList<Recompensa> recompensas = null;
 
-    private User user = Principal.user;
-
     public void insertDesafios(Desafio desafio) {
         String sql = "insert into desafio(id,user_nome,titulo) values (DEFAULT, ?, ?)";
 
@@ -42,7 +40,7 @@ public class DesafioController {
         }
     }
 
-    public List<Desafio> listarDesafios() {
+    public List<Desafio> listarDesafios(User usuario) {
 
         String sql = "select * from desafio";
 
@@ -57,8 +55,9 @@ public class DesafioController {
 
             while (rs.next()) {
                 Desafio desafio = new Desafio();
+                desafio.setId(rs.getInt("id"));
                 desafio.setTitulo(rs.getString("titulo"));
-                desafio.setUser(user);
+                desafio.setUser(usuario);
 
                 desafios.add(desafio);
             }

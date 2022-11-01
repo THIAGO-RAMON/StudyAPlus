@@ -39,7 +39,6 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     private User usuario;
     private UserDAO dao = new UserDAO();
     private UserController userController;
-    private DesafioController desafioController;
     private RecompensaController recompensaController;
     
     public static Principal principal;
@@ -216,7 +215,6 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
                     if (userController.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
-                        recompensaController.loadRecompensas(usuario);
                         tl.runTela();
                         dispose();
                     } else {
@@ -308,7 +306,6 @@ public class TelaCadastro extends TelaPadraoFullScreen {
                     if (userController.saveUser(usuario)) {
                         JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
                         tl.runTela();
-                        recompensaController.loadRecompensas(usuario);
                         dispose();
                     } else {
                         JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);

@@ -4,8 +4,15 @@
  */
 package view.auxiliares;
 
+import controller.RecompensaController;
+import dao.RecompensasDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -17,6 +24,7 @@ import javax.swing.SwingConstants;
 public class MensagemDesafio extends MensagemTemplate {
 
     private JLabel lblDesafioCumprido;
+    private RecompensaController recompensaController;
 
     public MensagemDesafio(Color colorBackgroundTela) {
         super(150, 50, new Color(142, 226, 227));
@@ -34,16 +42,28 @@ public class MensagemDesafio extends MensagemTemplate {
         add(lblDesafioCumprido);
     }
 
-    public void loadMensagem(int x, int y, JPanel painelBack, JPanel thisPainel) throws InterruptedException, MensagemApareceu {
+    public void desafioCumprido() {
+        recompensaController = new RecompensaController();
         
+        try {
+            recompensaController.vefRecompensas();
+        } catch (SQLException ex) {
+        } catch (RecompensaController.DesafioCumprido ex) {
+            
+        }
+        
+        
+    }
+
+    public void loadMensagem(int x, int y, JPanel painelBack, JPanel thisPainel) throws InterruptedException{
+
         painelBack.setBounds(x, y, thisPainel.getWidth(), thisPainel.getHeight());
         painelBack.add(thisPainel);
-        
+
         Thread thread = new Thread(new AparecerMensagem(x, y, painelBack, thisPainel));
         thread.run();
         thread.join();
-        
-        throw new MensagemApareceu();
+
     }
 
     private class AparecerMensagem implements Runnable {
@@ -75,11 +95,11 @@ public class MensagemDesafio extends MensagemTemplate {
         }
     }
 
-    private class MensagemApareceu extends Exception{
+    private class MensagemApareceu extends Exception {
 
         public MensagemApareceu() {
         }
-        
+
     }
-    
+
 }

@@ -1,5 +1,6 @@
 package view.inicial;
 
+import controller.RecompensaController;
 import controller.UserController;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -20,6 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import model.User;
 import dao.UserDAO;
+import java.util.ArrayList;
+import model.Recompensa;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
 import view.telasPrograma.TelaTarefas;
@@ -33,8 +36,10 @@ public class TelaLogin extends TelaPadraoFullScreen {
     private PainelGraphics painel1;
     private User usuario = new User();
     private UserDAO dao = new UserDAO();
+    private RecompensaController recompensaController = new RecompensaController();
+    private ArrayList<Recompensa> recompensas = (ArrayList<Recompensa>) recompensaController.listRecompensa(usuario);
     private UserController cc;
-    
+
     public static Principal principal;
 
     TelaLogin() {
@@ -135,7 +140,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
             int code = e.getKeyCode();
             int tecla = KeyEvent.VK_ENTER;
             cc = new UserController();
-            
+
             if (code == tecla) {
                 String nome = tfNome.getText().trim();
                 boolean b = false;
@@ -144,7 +149,10 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
                     if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
-                        principal.user = user;
+                        Principal.user = user;
+                        if (recompensas == null) {
+                            recompensaController.loadRecompensas(Principal.user);
+                        }
                         b = true;
 
                         break;
@@ -177,15 +185,18 @@ public class TelaLogin extends TelaPadraoFullScreen {
         public void actionPerformed(ActionEvent e) {
             String nome = tfNome.getText().trim();
             boolean b = false;
-            cc= new UserController();
-            
+            cc = new UserController();
+
             for (User user : cc.listUser()) {
 
                 if (e.getSource() == btnOk) {
 
                     if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
-                        principal.user = user;
+                        Principal.user = user;
+                        if (recompensas == null) {
+                            recompensaController.loadRecompensas(Principal.user);
+                        }
                         b = true;
 
                         break;

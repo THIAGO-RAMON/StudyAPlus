@@ -5,18 +5,25 @@
 package view.telasPrograma;
 
 import controller.RecompensaController;
+import controller.RecompensaController.DesafioCumprido;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import model.Recompensa;
+import model.User;
 import net.miginfocom.swing.MigLayout;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.CardRecompensas;
+import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
 
 /**
@@ -32,6 +39,8 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
     private Recompensa recompensa;
     private RecompensaController recompensaController;
     
+    private User user = Principal.user;
+    
     private static TelaRecompensas telaRecompensas = new TelaRecompensas();
 
     public TelaRecompensas() {
@@ -46,9 +55,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
 
         painelDesbloqueado = new JPanel(new MigLayout());
         painelDesbloqueado.setPreferredSize(new Dimension(960, 120));
-        painelDesbloqueado.setBackground(new Color(168, 168, 168));
-
-        getRecompensas();
+        painelDesbloqueado.setBackground(new Color(168, 168, 168));     
 
         lblBloqueado = new JLabel("Bloqueados");
         lblBloqueado.setFont(new Font("Arial", 1, 32));
@@ -72,6 +79,8 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelDesbloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelDesbloqueados);
 
+        getRecompensas();
+        
     }
 
     private void configPainel() {
@@ -88,7 +97,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
 
         recompensaController = new RecompensaController();
         
-        for (Recompensa recompensa1 : recompensaController.listRecompensa()) {
+        for (Recompensa recompensa1 : recompensaController.listRecompensa(user)) {
 
             if (recompensa1.isHabilitado()) {
                 CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
@@ -101,6 +110,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         }
 
     }
+    
     
     public static void runTela() {
         EventQueue.invokeLater(new Runnable() {
