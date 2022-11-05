@@ -25,13 +25,14 @@ import view.objetivo.VisualizarObjetivos;
 import view.telasPrograma.TelaCriarTarefa;
 import view.perfil.DicasEstudo;
 import view.telasPrograma.TelaMetodologia;
+import view.telasPrograma.TelaMyDolly;
 import view.telasPrograma.TelaRecompensas;
 
 public class BarraLateral extends JPanel {
 
     private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas;
     private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,
-                    painelDicas,painelMetodologias,painelRecompensas;
+                    painelDicas,painelMetodologias,painelRecompensas,painelMyDolly;
     private Color colorButton = Color.WHITE;
 
     public BarraLateral() {
@@ -149,6 +150,16 @@ public class BarraLateral extends JPanel {
         painelRecompensas.setBounds(60, 475, 230, 50);
         painelRecompensas.addActionListener(evtRecompensas);
         add(painelRecompensas);
+        
+        AbrirMyDolly evtMyDolly = new AbrirMyDolly();
+        
+        painelMyDolly = new JButton("My Dolly");
+        painelMyDolly.setFont(new Font("Arial", 1, 20));
+        painelMyDolly.setBackground(colorButton);
+        painelMyDolly.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painelMyDolly.setBounds(60, 535, 230, 50);
+        painelMyDolly.addActionListener(evtMyDolly);
+        add(painelMyDolly);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));
@@ -323,4 +334,17 @@ public class BarraLateral extends JPanel {
         }
     }
     
+    private class AbrirMyDolly implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+             Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
+            }
+            new TelaMyDolly().runTela();
+        }
+    }
+
 }

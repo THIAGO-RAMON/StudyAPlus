@@ -10,10 +10,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +41,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
     private BarraLateral barraLateral;
     private Recompensa recompensa;
     private RecompensaController recompensaController;
+    private JButton leave;
     
     private User user = Principal.user;
     
@@ -78,6 +82,19 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelDesbloqueados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         painelDesbloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelDesbloqueados);
+        
+        leave = new JButton("X");
+        leave.setBackground(new Color(223, 63, 16));
+        leave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                System.exit(0);
+            }
+        });
+        leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
+
+        painelPrincipal.add(leave);
 
         getRecompensas();
         
