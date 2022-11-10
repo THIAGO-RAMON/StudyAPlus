@@ -54,10 +54,8 @@ create table recompensa(
     descricao varchar(200) not null,
     imagem longblob,
     habilitado boolean,
-    foreign key (id_desafio) references desafio(id) on update cascade,
     primary key(id_desafio),
-    foreign key (user_nome) references Usuario(nome) on update cascade,
-
+    foreign key (user_nome) references Usuario(nome) on update cascade
 );
 
 select * from tarefas;
