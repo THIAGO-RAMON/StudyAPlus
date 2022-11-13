@@ -1,7 +1,7 @@
 package model;
 
 public class User {
-    
+
     private String nome;
     private String senha;
     private int idade;
@@ -9,81 +9,56 @@ public class User {
     private String escolaridade;
     private double desempenho_percentual;
     private String img;
+    private String sexo;
 
+    public User() {
 
-    /**
-     * @return String return the nome
-     */
+    }
+
+    public User(String nome, String senha) {
+        this.nome = nome;
+        this.senha = senha;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    /**
-     * @param nome the nome to set
-     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /**
-     * @return String return the senha
-     */
     public String getSenha() {
         return senha;
     }
 
-    /**
-     * @param senha the senha to set
-     */
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    /**
-     * @return Integer return the idade
-     */
+
     public int getIdade() {
         return idade;
     }
 
-    /**
-     * @param idade the senha to set
-     */
     public void setIdade(int idade) {
-        this.idade= idade;
+        this.idade = idade;
     }
 
-    /**
-     * @return String return the sobreMim
-     */
     public String getSobreMim() {
         return sobreMim;
     }
 
-    /**
-     * @param sobreMim the sobreMim to set
-     */
     public void setSobreMim(String sobreMim) {
         this.sobreMim = sobreMim;
     }
 
-    /**
-     * @return String return the escolaridade
-     */
     public String getEscolaridade() {
         return escolaridade;
     }
 
-    /**
-     * @param escolaridade the escolaridade to set
-     */
     public void setEscolaridade(String escolaridade) {
         this.escolaridade = escolaridade;
     }
-
-    /**
-     * @return String return the objetivo
-     */
-  
 
     public double getDesempenho_percentual() {
         return desempenho_percentual;
@@ -101,13 +76,12 @@ public class User {
         this.img = img;
     }
 
-    public User(){
-
+    public String getSexo() {
+        return sexo;
     }
 
-    public User(String nome, String senha){
-        this.nome = nome;
-        this.senha = senha;
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
 }

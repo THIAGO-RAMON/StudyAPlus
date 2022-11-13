@@ -25,14 +25,15 @@ import dao.UserDAO;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import view.auxiliares.Principal;
 import static view.auxiliares.Principal.tl;
 import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaCadastro extends TelaPadraoFullScreen {
 
-    private JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar,lblIdade;
-    private JTextField jfNome,jfIdade;
+    private JLabel lblLogo, titulo, lblNU, lblSenha, lblConfirmar, lblIdade, lblSexo;
+    private JTextField jfNome, jfIdade;
     private JPasswordField pfSenha, pfConfirmar;
     private JButton btnOk, btnCancel, leave, btnVerSenha1, btnVerSenha2, btnOcultar1, btnOcultar2;
     private PainelPadrao painel1;
@@ -40,7 +41,8 @@ public class TelaCadastro extends TelaPadraoFullScreen {
     private UserDAO dao = new UserDAO();
     private UserController userController;
     private RecompensaController recompensaController;
-    
+    private JComboBox<String> combo;
+
     public static Principal principal;
 
     TelaCadastro() {
@@ -97,19 +99,33 @@ public class TelaCadastro extends TelaPadraoFullScreen {
         pfConfirmar.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         pfConfirmar.addKeyListener(new EventoTecla());
         painel1.add(pfConfirmar);
-        
+
         lblIdade = new JLabel("Idade:");
-        lblIdade.setFont(new Font("Arial",0,30));
-        lblIdade.setBounds(50,480,150,30);
+        lblIdade.setFont(new Font("Arial", 0, 30));
+        lblIdade.setBounds(50, 480, 150, 30);
         painel1.add(lblIdade);
-        
-        jfIdade =new JTextField();
+
+        jfIdade = new JTextField();
         jfIdade.setBackground(new Color(218, 217, 215));
         jfIdade.setBounds(50, 520, 90, 35);
         jfIdade.setFont(new Font("Arial", 0, 20));
         jfIdade.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
         jfIdade.addKeyListener(new EventoTecla());
         painel1.add(jfIdade);
+
+        lblSexo = new JLabel("sexo:");
+        lblSexo.setFont(new Font("Arial", 0, 30));
+        lblSexo.setBounds(350, 480, 150, 30);
+        painel1.add(lblSexo);
+
+        combo = new JComboBox<>();
+        combo.setBounds(350, 520, 90, 35);
+        combo.addItem("");
+        combo.addItem("Masculino");
+        combo.addItem("Feminino");
+        combo.setSelectedIndex(0);
+        combo.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+        painel1.add(combo);
 
         btnOk = new JButton("OK");
         btnOk.setBackground(new Color(168, 168, 168));
@@ -231,6 +247,68 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
     }
 
+    private class EventoConfimar implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (e.getSource() == btnOk) {
+
+                userController = new UserController();
+                recompensaController = new RecompensaController();
+
+                if (jfNome.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
+                } else if (jfNome.getText().equals("") && pfSenha.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Preencha o Nome e senha!", "Cadastro",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (pfSenha.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Preencha a senha!", "Cadastro", JOptionPane.WARNING_MESSAGE);
+                } else if (!pfConfirmar.getText().equals(pfSenha.getText())) {
+                    JOptionPane.showMessageDialog(null, "Verifique a senha novamente!", "Cadastro",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (pfConfirmar.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Por favor, confirme a senha!", "Cadastro",
+                            JOptionPane.WARNING_MESSAGE);
+                } else if (combo.getSelectedItem().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Por favor, informe seu sexo", "Cadastro", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    usuario = new User();
+                    usuario.setNome(jfNome.getText().trim());
+                    usuario.setSenha(pfSenha.getText().trim());
+                    usuario.setSobreMim("");
+                    usuario.setIdade(Integer.parseInt(jfIdade.getText()));
+                    usuario.setDesempenho_percentual(0);
+
+                    if (combo.getSelectedItem().equals("Masculino")) {
+                        usuario.setSexo(combo.getItemAt(1));
+                    } else if (combo.getSelectedItem().equals("Feminino")) {
+                        usuario.setSexo(combo.getItemAt(2));
+                    }
+
+                    if (userController.saveUser(usuario)) {
+
+                        JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+                        tl.runTela();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                }
+
+            } else if (e.getSource() == btnCancel) {
+                setVisible(false);
+                new TelaMain().runTela();
+
+            } else if (e.getSource() == leave) {
+                System.exit(0);
+
+            }
+
+        }
+    }
+
     private class EventoSenha implements ActionListener {
 
         @Override
@@ -270,59 +348,6 @@ public class TelaCadastro extends TelaPadraoFullScreen {
 
         }
 
-    }
-
-    private class EventoConfimar implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            if (e.getSource() == btnOk) {
-                userController= new UserController();
-                recompensaController = new RecompensaController();
-                
-                if (jfNome.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha o Nome!", "Cadastro", JOptionPane.WARNING_MESSAGE);
-                } else if (jfNome.getText().equals("") && pfSenha.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha o Nome e senha!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
-                } else if (pfSenha.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preencha a senha!", "Cadastro", JOptionPane.WARNING_MESSAGE);
-                } else if (!pfConfirmar.getText().equals(pfSenha.getText())) {
-                    JOptionPane.showMessageDialog(null, "Verifique a senha novamente!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
-                } else if (pfConfirmar.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Por favor, confirme a senha!", "Cadastro",
-                            JOptionPane.WARNING_MESSAGE);
-                } else {
-                    usuario = new User();
-                    usuario.setNome(jfNome.getText().trim());
-                    usuario.setSenha(pfSenha.getText().trim());
-                    usuario.setSobreMim("");
-                    usuario.setIdade(Integer.parseInt(jfIdade.getText()));
-                    usuario.setDesempenho_percentual(0);
-                    
-                    
-                    if (userController.saveUser(usuario)) {
-                        JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso\nVolte e faça o login", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
-                        tl.runTela();
-                        dispose();
-                    } else {
-                        JOptionPane.showConfirmDialog(null, "Erro no cadastro:\nErro com no arquivamento com o Banco de Dados", "ERROR", JOptionPane.WARNING_MESSAGE);
-                    }
-
-                }
-
-            } else if (e.getSource() == btnCancel) {
-                setVisible(false);
-                new TelaMain().runTela();
-
-            } else if (e.getSource() == leave) {
-                System.exit(0);
-
-            }
-
-        }
     }
 
     public void runTela() {

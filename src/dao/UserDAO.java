@@ -22,7 +22,7 @@ public class UserDAO {
 
     public boolean saveCadastro(User user) {
 
-        String sql = "INSERT into usuario(nome, senha, sobreMim,idade) values (?,?,?,?)";
+        String sql = "INSERT into usuario(nome, senha, sobreMim,idade, sexo) values (?,?,?,?,?)";
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(sql);
@@ -30,6 +30,7 @@ public class UserDAO {
             stmt.setString(2, user.getSenha());
             stmt.setString(3, user.getSobreMim());
             stmt.setInt(4,user.getIdade());
+            stmt.setString(5, user.getSexo());
             stmt.execute();
             return true;
         } catch (SQLException e) {

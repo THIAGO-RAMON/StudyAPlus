@@ -1,5 +1,7 @@
-#create database StudyAPLus;
+create database StudyAPLus;
 use StudyAPlus;
+
+#drop schema studyaplus;
 
 drop table if exists recompensa;
 drop table if exists desafio;
@@ -14,6 +16,7 @@ idade int not null,
 sobreMim varchar(500) null,
 escolaridade varchar(50),
 desempenho double null,
+sexo varchar(10) not null,
 imagem longblob,
 primary key(nome) 
 );
@@ -54,6 +57,7 @@ create table recompensa(
     descricao varchar(200) not null,
     imagem longblob,
     habilitado boolean,
+    foreign key (id_desafio) references desafio(id) on update cascade,
     primary key(id_desafio),
     foreign key (user_nome) references Usuario(nome) on update cascade
 );
@@ -64,7 +68,9 @@ select * from objetivos;
 select * from recompensa;
 select * from desafio;
 
-update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
+delete from usuario;
 
-insert into recompensa(id, user_nome, id_desafio, nome, descricao) values (default, 'Ramon', 1, 'Fazer sexo com teu pai', 'it now or never');
-insert into recompensa(id, user_nome, id_desafio, nome, descricao, imagem, habilitado) values (DEFAULT, 'Ramon', 3, 'Teupai', 'teu pai 3', '',true);
+#update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
+
+#insert into recompensa(id, user_nome, id_desafio, nome, descricao) values (default, 'Ramon', 1, 'Fazer sexo com teu pai', 'it now or never');
+#insert into recompensa(id, user_nome, id_desafio, nome, descricao, imagem, habilitado) values (DEFAULT, 'Ramon', 3, 'Teupai', 'teu pai 3', '',true);
