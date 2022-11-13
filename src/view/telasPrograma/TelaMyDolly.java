@@ -1,6 +1,7 @@
 package view.telasPrograma;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,21 +20,22 @@ import view.auxiliares.BarraLateral;
 import view.auxiliares.TelaPadraoFullScreen;
 import view.telasPrograma.TelaRecompensas;
 
-public class TelaMyDolly extends TelaPadraoFullScreen{
-    
+public class TelaMyDolly extends TelaPadraoFullScreen {
+
     private TelaMyDolly mydolly;
     private BarraLateral barraLateral;
     private JPanel painel1;
     private JButton leave;
-    private JButton cabeca,torco, bDireito, bEsquerdo, pDireita, pEsquerda;
-    private ImageIcon iconeCabeca,iconeTorco,iconeBEsquerdo,iconeBDireito,iconePEsquerda,iconePDireita;
-    
-    public TelaMyDolly(){
+    private JButton cabeca, torso, bDireito, bEsquerdo, pDireita, pEsquerda;
+    private ImageIcon iconeCabeca, iconeTorco, iconeBEsquerdo, iconeBDireito, iconePEsquerda, iconePDireita;
+    private SelecionarRec painelSelecionarRecompensas;
+
+    public TelaMyDolly() {
         painel();
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
-        
+
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -44,79 +46,92 @@ public class TelaMyDolly extends TelaPadraoFullScreen{
         });
         leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
         painel1.add(leave);
-        
-        
+
         cabeca = new JButton("cabeça");
         cabeca.setBackground(null);
         cabeca.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         cabeca.addMouseListener(new verRecompensas());
-        cabeca.setBounds(500, 30, 70, 70);
+        cabeca.setBounds(500, 200, 60, 60);
         painel1.add(cabeca);
 
-        torco = new JButton("torço");
-        torco.setBackground(null);
-        torco.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        torco.setBounds(cabeca.getX() - 43, 130, 150, 220);
-        painel1.add(torco);
+        torso = new JButton("torso");
+        torso.setBackground(null);
+        torso.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        torso.setBounds(cabeca.getX() - 10, cabeca.getY() + 65, 80, 130);
+        painel1.add(torso);
 
         bDireito = new JButton("braço");
         bDireito.setBackground(null);
         bDireito.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        bDireito.setBounds(torco.getX() - 80, 130, 60, 220);
+        bDireito.setBounds(torso.getX() - 63, cabeca.getY() + 65, 55, 130);
         painel1.add(bDireito);
 
-        bEsquerdo = new JButton("braço");
+        bEsquerdo = new JButton("braço2");
         bEsquerdo.setBackground(null);
         bEsquerdo.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        bEsquerdo.setBounds(torco.getX() + 170, 130, 60, 220);
+        bEsquerdo.setBounds(torso.getX() + 88, cabeca.getY() + 65, 55, 130);
         painel1.add(bEsquerdo);
 
         pDireita = new JButton(iconePDireita);
         pDireita.setBackground(null);
         pDireita.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        pDireita.setBounds(torco.getX(), torco.getHeight() + 150, torco.getWidth() / 2, 220);
+        pDireita.setBounds(torso.getX(), torso.getHeight() + 275, torso.getWidth() / 2, 130);
         painel1.add(pDireita);
 
         pEsquerda = new JButton("perna");
         pEsquerda.setBackground(null);
         pEsquerda.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        pEsquerda.setBounds(torco.getX() + pDireita.getWidth(), pDireita.getY(), torco.getWidth() / 2, 220);
+        pEsquerda.setBounds(torso.getX() + pDireita.getWidth(), pDireita.getY(), torso.getWidth() / 2, 130);
         painel1.add(pEsquerda);
-        
+
+        painelSelecionarRecompensas = new SelecionarRec();
+        painelSelecionarRecompensas.setVisible(true);
+
+        generateSelection();
     }
-    
-    private class SelecionarRec extends JFrame{
-        
-        private JPanel painelPrincipal;
+
+    private void generateSelection() {
+        painelSelecionarRecompensas = new SelecionarRec();
+        painelSelecionarRecompensas.setBounds(painel1.getX() + 800, painel1.getY() + 20, 400, 650);
+        painelSelecionarRecompensas.setVisible(false);
+        painel1.add(painelSelecionarRecompensas);
+
+    }
+
+    private class SelecionarRec extends JPanel {
+
         private TelaRecompensas tr = new TelaRecompensas();
-        public SelecionarRec(){
+
+        public SelecionarRec() {
             config();
-            configPainel();
-            JScrollPane teupai = new JScrollPane(tr.getPainelDes());
-            teupai.setBounds(0,0,painelPrincipal.getWidth(),painelPrincipal.getHeight());
-            painelPrincipal.add(teupai);
+            configRec();
         }
-        
-        private void config(){
-            setUndecorated(true);
-            setLocationRelativeTo(null);
+
+        private void config() {
+            setBackground(new Color(200, 200, 200));
             setLayout(null);
-            setBounds(painel1.getX()+800,painel1.getY()+20,400,650);
         }
-        private void configPainel() {
-            painelPrincipal = new JPanel(null);
-            painelPrincipal.setBounds(0, 0, this.getWidth(), this.getHeight());
-            painelPrincipal.setBackground(new Color(200, 200, 200));
-            add(painelPrincipal);
+
+        private void configRec() {
+            JScrollPane jsp = new JScrollPane(tr.getPainelDes());
+            jsp.setBounds(0, 0, 400, 650);
+            add(jsp);
         }
-        
+
     }
-    
-    private class verRecompensas implements MouseListener{
+
+    private class verRecompensas implements MouseListener {
+
+        public int cont = 0;
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            new SelecionarRec().setVisible(true);
+            if (cont % 2 != 0) {
+                painelSelecionarRecompensas.setVisible(true);
+            } else {
+                painelSelecionarRecompensas.setVisible(false);
+            }
+            cont++;
         }
 
         @Override
@@ -134,17 +149,17 @@ public class TelaMyDolly extends TelaPadraoFullScreen{
         @Override
         public void mouseExited(MouseEvent e) {
         }
-        
+
     }
-    
-    private void painel(){
+
+    private void painel() {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBackground(new Color(207, 227, 225));
-        painel1.setBounds(0,0,getWidth(),getHeight());
+        painel1.setBounds(0, 0, getWidth(), getHeight());
         add(painel1);
     }
-    
+
     public void runTela() {
         mydolly = new TelaMyDolly();
         if (mydolly.isActive()) {
@@ -155,4 +170,5 @@ public class TelaMyDolly extends TelaPadraoFullScreen{
         mydolly = My;
         mydolly.setVisible(true);
     }
+
 }

@@ -1,5 +1,7 @@
-#create database StudyAPLus;
+create database StudyAPLus;
 use StudyAPlus;
+
+#drop schema studyaplus;
 
 drop table if exists recompensa;
 drop table if exists desafio;
@@ -14,6 +16,7 @@ idade int not null,
 sobreMim varchar(500) null,
 escolaridade varchar(50),
 desempenho double null,
+sexo varchar(10) not null,
 imagem longblob,
 primary key(nome) 
 );
@@ -61,18 +64,26 @@ create table recompensa(
     foreign key (id_desafio) references desafio(id)
 );
 
+create table MyDolly(
+id int primary key auto_increment,
+id_recompensa int not null,
+user_nome varchar(100),
+cabeca longblob,
+torso longblob,
+bDireto longblob,
+dEsquerdo longblob,
+pDireita longblob,
+pEsquerda longblob,
+foreign key (user_nome) references Usuario(nome) on update cascade,
+foreign key (id_recompensa) references recompensa(id)
+);
+
 select * from tarefas;
 select * from usuario;
 select * from objetivos;
 select * from recompensa;	
 select * from desafio;
+select * from MyDolly;
 
-#select count(*) from recompensa where user_nome = 'Ramon';
-
-#update recompensa set habilitado = true where id_desafio = 10 and user_nome = 'Ramon2' and nome = 'Coroa';
-
-update recompensa set habilitado = false where id_desafio = 2 and user_nome = 'Ramon';
-
-#update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
 
 
