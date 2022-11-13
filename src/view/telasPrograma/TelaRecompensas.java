@@ -42,9 +42,9 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
     private Recompensa recompensa;
     private RecompensaController recompensaController;
     private JButton leave;
-    
+
     private User user = Principal.user;
-    
+
     private static TelaRecompensas telaRecompensas = new TelaRecompensas();
 
     public TelaRecompensas() {
@@ -59,7 +59,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
 
         painelDesbloqueado = new JPanel(new MigLayout());
         painelDesbloqueado.setPreferredSize(new Dimension(960, 120));
-        painelDesbloqueado.setBackground(new Color(168, 168, 168));     
+        painelDesbloqueado.setBackground(new Color(168, 168, 168));
 
         lblBloqueado = new JLabel("Bloqueados");
         lblBloqueado.setFont(new Font("Arial", 1, 32));
@@ -82,7 +82,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelDesbloqueados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         painelDesbloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelDesbloqueados);
-        
+
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -97,8 +97,17 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelPrincipal.add(leave);
 
         getRecompensas();
-        
+
     }
+
+    public JScrollPane getPainelDes() {
+        return painelDesbloqueados;
+    }
+    
+    public void setPainelDes(JScrollPane j){
+        this.painelDesbloqueados = j;
+    }
+    
 
     private void configPainel() {
 
@@ -109,26 +118,25 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         add(painelPrincipal);
 
     }
-    
+
     private void getRecompensas() {
 
         recompensaController = new RecompensaController();
-        
+
         for (Recompensa recompensa1 : recompensaController.listRecompensa(user)) {
 
             if (recompensa1.isHabilitado()) {
                 CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
                 painelDesbloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-            }else{
+            } else {
                 CardRecompensas cardRecompensas = new CardRecompensas(recompensa1, false);
                 painelBloqueado.add(cardRecompensas, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
             }
-            
+
         }
 
     }
-    
-    
+
     public static void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override

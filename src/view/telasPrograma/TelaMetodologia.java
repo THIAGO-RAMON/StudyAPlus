@@ -26,7 +26,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
     private JPanel painel1, painel2, painelFundamental, painelMedio, painelSuperior;
     private JTextArea txtFund, txtMedio, txtSuperior;
     private BarraLateral barraLateral;
-    private JButton leave, alterarFund, alterarMedio, alterarSup, next, back;
+    private JButton leave, alterarFund, alterarMedio, alterarSup, nextMedio, backFund,nextSup,backMedio;
     private TelaMetodologia metodologia;
     private JLabel lblmsg, lblmsg2, lblExtra;
     private User user = Principal.user;
@@ -146,23 +146,36 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
         alterarSup.setBounds((painel2.getWidth() / 2) - 75, 530, 150, 30);
         painel2.add(alterarSup);
         
+        /*
+        nextMedio = new JButton("M");backFund = new JButton("F");
+        nextMedio.setBackground(new Color(200, 200, 200));
+        nextMedio.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        nextMedio.setBounds(800-130, 530, 110, 30);
+        painel2.add(nextMedio);
         
-        back = new JButton("<<<<");
-        back.setVisible(true);
-        back.setBackground(new Color(200, 200, 200));
-        back.setBorder(new TelaMetodologia.BordaCantoArrendondado());
-        back.setBounds(50, 530, 110, 30);
-        painel2.add(back);
         
-        next = new JButton(">>>>");
-        next.setVisible(true);
-        next.setBackground(new Color(200, 200, 200));
-        next.setBorder(new TelaMetodologia.BordaCantoArrendondado());
-        next.setBounds(800-130, 530, 110, 30);
-        painel2.add(next);
+        //painel2
+        backFund = new JButton("F");
+        backFund.setBackground(new Color(200, 200, 200));
+        backFund.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        backFund.setBounds(50, 530, 110, 30);
+        painel2.add(backFund);
+        
+        nextSup = new JButton("S");
+        nextSup.setBackground(new Color(200, 200, 200));
+        nextSup.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        nextSup.setBounds(800-130, 530, 110, 30);
+        painel2.add(nextSup);
+        
+        //painel3
+        backMedio = new JButton("M");
+        backMedio.setBackground(new Color(200, 200, 200));
+        backMedio.setBorder(new TelaMetodologia.BordaCantoArrendondado());
+        backMedio.setBounds(50, 530, 110, 30);
+        painel2.add(backMedio);
+        **/
         
         AlgoritmoEstudo();
-        verOutras();
     }
 
     private void configPainel() {
@@ -207,29 +220,35 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
     }
 
     private void verOutras() {
-        if (painelFundamental.isVisible()) {
-            back.setEnabled(false);
-            next.setEnabled(true);
-            back.addActionListener(null);
-            next.addActionListener(new LiberaMedio());
-            alterarFund.setVisible(true);
-            alterarFund.setEnabled(true);
-        } else if (painelMedio.isVisible()) {
-            back.setEnabled(true);
-            next.setEnabled(true);
-            back.addActionListener(new LiberaFund());
-            next.addActionListener(new LiberaSup());
-            alterarMedio.setVisible(true);
-            alterarMedio.setEnabled(true);
-        }else if(painelSuperior.isVisible()){
-            back.setEnabled(true);
-            next.setEnabled(false);
-            back.addActionListener(new LiberaMedio());
-            back.addActionListener(null);
-            alterarSup.setVisible(true);
-            alterarSup.setEnabled(true);
+        if (painelFundamental.isVisible()&& user.getIdade() <=100) {
+            nextMedio.setVisible(true);
+            liberaM(nextMedio);
+        } else if (painelMedio.isVisible()&&user.getIdade() <=100) {
+            backFund.setVisible(true);
+            nextSup.setVisible(true);
+            liberaF(backFund);
+            liberaS(nextSup);
+        }else if(painelSuperior.isVisible()&&user.getIdade() <=100){
+            backMedio.setVisible(true);
+            liberaM(backMedio);
         }
     }
+    
+    private boolean liberaF(JButton b){
+        b.addActionListener(new LiberaFund());
+        return b.isVisible();
+    }
+    
+    private boolean liberaM(JButton b){
+        b.addActionListener(new LiberaMedio());
+        return b.isVisible();
+    }
+    
+    private boolean liberaS(JButton b){
+        b.addActionListener(new LiberaSup());
+        return b.isVisible();
+    }
+    
 
     private class LiberaFund implements ActionListener {
 
@@ -238,6 +257,13 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
             painelFundamental.setVisible(true);
             painelMedio.setVisible(false);
             painelSuperior.setVisible(false);
+            
+            alterarFund.setVisible(true);
+            alterarFund.setEnabled(true);
+            
+            backFund.setVisible(false);
+            nextSup.setVisible(false);
+            nextMedio.setVisible(true);
         }
 
     }
@@ -249,6 +275,13 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
             painelFundamental.setVisible(false);
             painelMedio.setVisible(true);
             painelSuperior.setVisible(false);
+
+            alterarMedio.setVisible(true);
+            alterarMedio.setEnabled(true);
+            
+            nextMedio.setVisible(false);
+            backFund.setVisible(true);
+            nextSup.setVisible(true);
         }
     }
 
@@ -259,6 +292,13 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
             painelFundamental.setVisible(false);
             painelMedio.setVisible(false);
             painelSuperior.setVisible(true);
+
+            alterarSup.setVisible(true);
+            alterarSup.setEnabled(true);
+            
+            backFund.setVisible(false);
+            nextSup.setVisible(false);
+            backMedio.setVisible(true);
         }
     }
 
@@ -283,6 +323,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
 
             alterarFund.setVisible(true);
             alterarFund.setEnabled(true);
+            
         } else if (user.getIdade() >= 15 && user.getIdade() <= 17) {
             lblExtra.setText("ensino médio,");
             painelFundamental.setVisible(false);
@@ -291,6 +332,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
 
             alterarMedio.setVisible(true);
             alterarMedio.setEnabled(true);
+            
         } else if (user.getIdade() > 17) {
             lblExtra.setText("ensino superior");
             painelFundamental.setVisible(false);
@@ -299,6 +341,7 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
 
             alterarSup.setVisible(true);
             alterarSup.setEnabled(true);
+            
         }
         
     }
