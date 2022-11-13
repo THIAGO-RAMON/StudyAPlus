@@ -1,7 +1,5 @@
-create database StudyAPLus;
+#create database StudyAPLus;
 use StudyAPlus;
-
-#drop schema studyaplus;
 
 drop table if exists recompensa;
 drop table if exists desafio;
@@ -16,7 +14,6 @@ idade int not null,
 sobreMim varchar(500) null,
 escolaridade varchar(50),
 desempenho double null,
-sexo varchar(10) not null,
 imagem longblob,
 primary key(nome) 
 );
@@ -46,31 +43,36 @@ foreign key (user_nome) references Usuario(nome) on update cascade
 create table desafio(
 	id int auto_increment,
     user_nome varchar(100) not null,
-    titulo varchar(100) not null,
-    primary key (id)
+    titulo varchar(200) not null,
+    primary key(id),
+    foreign key (user_nome) references Usuario(nome) on update cascade
 );
 
 create table recompensa(
-	id_desafio int not null,
+	id int auto_increment,
     user_nome varchar(100) not null,
+    id_desafio int not null,
     nome varchar(30) not null,
     descricao varchar(200) not null,
     imagem longblob,
     habilitado boolean,
-    foreign key (id_desafio) references desafio(id) on update cascade,
-    primary key(id_desafio),
-    foreign key (user_nome) references Usuario(nome) on update cascade
+    primary key(id),
+    foreign key (user_nome) references Usuario(nome) on update cascade,
+    foreign key (id_desafio) references desafio(id)
 );
 
 select * from tarefas;
 select * from usuario;
 select * from objetivos;
-select * from recompensa;
+select * from recompensa;	
 select * from desafio;
 
-delete from usuario;
+#select count(*) from recompensa where user_nome = 'Ramon';
+
+#update recompensa set habilitado = true where id_desafio = 10 and user_nome = 'Ramon2' and nome = 'Coroa';
+
+update recompensa set habilitado = false where id_desafio = 2 and user_nome = 'Ramon';
 
 #update objetivos set dataInic = '23/12/2006' where descricao= 'ua';
 
-#insert into recompensa(id, user_nome, id_desafio, nome, descricao) values (default, 'Ramon', 1, 'Fazer sexo com teu pai', 'it now or never');
-#insert into recompensa(id, user_nome, id_desafio, nome, descricao, imagem, habilitado) values (DEFAULT, 'Ramon', 3, 'Teupai', 'teu pai 3', '',true);
+

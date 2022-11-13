@@ -24,18 +24,7 @@ public class ConnectionFactory {
 
     }
 
-    public static void closeConnection(Connection con ){
-        if(con!=null){
-            try {
-                con.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                JOptionPane.showMessageDialog(null, "Erro no fechamento com o banco de dados", "ERROR", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }
-
-    public static void closeConnection(Connection con, PreparedStatement stmt ){
+    public static void closeConnection(PreparedStatement stmt ){
         if(stmt!=null){
             try {
                 stmt.close();
@@ -44,10 +33,9 @@ public class ConnectionFactory {
                 JOptionPane.showMessageDialog(null, "Erro no fechamento com o banco de dados", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
         }
-        closeConnection(con);
     }
 
-    public static void closeConnection(Connection con, PreparedStatement stmt, ResultSet rs ){
+    public static void closeConnection(PreparedStatement stmt, ResultSet rs ){
         if(rs!=null){
             try {
                 rs.close();
@@ -56,6 +44,6 @@ public class ConnectionFactory {
                 JOptionPane.showMessageDialog(null, "Erro no fechamento com o banco de dados", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
         }
-        closeConnection(con, stmt);
+        closeConnection(stmt);
     }
 }

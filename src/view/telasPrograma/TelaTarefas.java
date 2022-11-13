@@ -25,14 +25,10 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import model.Task;
 import model.User;
 import dao.TaskDAO;
-import dao.UserDAO;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
 
 import view.auxiliares.BarraLateral;
-import view.auxiliares.MensagemDesafio;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
 
@@ -48,10 +44,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private HashMap<JButton, Task> pendentes = new HashMap<>();
     private HashMap<JButton, Task> concluidos = new HashMap<>();
 
-    private MensagemDesafio mensagemDesafio;
-
     private final TaskDAO daoTarefas = new TaskDAO();
-    private UserDAO daoUser = new UserDAO();
 
     private JLabel lblAfazeres;
     private JButton btnConcluido, btnPendente, leave;
@@ -66,7 +59,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private boolean isCreatedTarefaPendente = false, hasComponentPendente = false, isOpenPendente = false;
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
 
-    private RecompensaController controllerRecompensa = new RecompensaController();
+    private RecompensaController controllerRecompensa;
 
     public static TelaTarefas telaDasTarefas;
 
@@ -76,7 +69,10 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     public static int YTAREFALBL = 60, YCBTAREFA = 60, YBTNREMOVE = 60;
 
     public TelaTarefas() {
-
+        
+        controllerRecompensa = new RecompensaController();
+        controllerRecompensa.execListRecompensa();
+        
         runTask();
 
         TelaPadraoFullScreen.InserirIcone ic = new TelaPadraoFullScreen.InserirIcone();
@@ -110,16 +106,10 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         leave.setBounds(painelPrincipal.getWidth() - 60, 0, 60, 30);
         painelPrincipal.add(leave);
 
-        //mensagemDesafio = new MensagemDesafio(painelPrincipal.getBackground());
-        //mensagemDesafio.setBounds(painelPrincipal.getWidth() - 150, 40, 150, 50);
-        //mensagemDesafio.setVisible(false);
-        //painelPrincipal.add(mensagemDesafio);
+        vefDesafioConcluido();
 
-        //Thread thread = new Thread(vefRecompensa);
-        //thread.run();
-        
         generateConcluido();
-        
+
         generatePendente();
     }
 
@@ -196,37 +186,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         }
 
     }
-
-    private Runnable vefRecompensa = new Runnable() {
-        @Override
-        public void run() {
-
-            boolean run = true;
-
-            while (run) {
-                try {
-                    controllerRecompensa.vefRecompensas();
-                } catch (SQLException ex) {
-                    System.err.println(ex);
-                } catch (RecompensaController.DesafioCumprido ex) {
-                    mensagemDesafio.setVisible(true);
-                    try {
-                        mensagemDesafio.loadMensagem(mensagemDesafio.getX(), mensagemDesafio.getY(), painelPrincipal, mensagemDesafio);
-                    } catch (InterruptedException ex1) {
-                        System.err.println(ex);
-                    }
-                    run = false;
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    System.err.println(ex);
-                }
-
-            }
-
-        }
-    };
 
     private void telaConcVisivel() {
         painelExternoConc = new JPanel(new MigLayout());
@@ -658,6 +617,15 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         painelPrincipal.add(painelBackgroundTarefas);
     }
 
+    private void vefDesafioConcluido() {
+        try {
+            controllerRecompensa.vefRecompensas();
+        } catch (SQLException ex) {
+            System.err.println("Erro na verificação de recompensas");
+            System.err.println(ex);
+        }
+    }
+
     //Classes Internas Anonimas
     private class PainelInfoTarefas extends JPanel {
 
@@ -829,6 +797,15 @@ public class TelaTarefas extends TelaPadraoFullScreen {
             g.setColor(Color.BLACK);
             g.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 35, 35);
         }
+    }
+
+    private class VefDesafioConcluido implements Runnable {
+
+        @Override
+        public void run() {
+            vefDesafioConcluido();
+        }
+
     }
 
     // Runnables

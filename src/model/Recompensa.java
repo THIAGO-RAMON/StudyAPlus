@@ -10,12 +10,21 @@ package model;
  */
 public class Recompensa {
 
+    private int id;
     private String nome;
     private String descricao;
     private String img;
     private boolean habilitado;
     private User user;
     private Desafio desafio;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;

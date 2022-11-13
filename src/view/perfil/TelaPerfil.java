@@ -101,7 +101,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtNome.setBackground(new Color(218, 217, 215));
         txtNome.setFont(new Font("Arial", 0, 24));
         txtNome.setText("" + Principal.user.getNome());
-        txtNome.setBorder(new BordaCantoArrendondado());
+        txtNome.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         txtNome.setEditable(false);
         painel1.add(txtNome);
 
@@ -115,7 +115,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSenha.setFont(new Font("Arial", 0, 24));
         txtSenha.setBackground(new Color(218, 217, 215));
         txtSenha.setText("" + Principal.user.getSenha());
-        txtSenha.setBorder(new BordaCantoArrendondado());
+        txtSenha.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         txtSenha.setEditable(false);
         painel1.add(txtSenha);
 
@@ -129,7 +129,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtIdade.setFont(new Font("Arial", 0, 24));
         txtIdade.setBackground(new Color(218, 217, 215));
         txtIdade.setText("" + Principal.user.getIdade());
-        txtIdade.setBorder(new BordaCantoArrendondado());
+        txtIdade.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         txtIdade.setEditable(false);
         painel1.add(txtIdade);
 
@@ -142,7 +142,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         txtSobreMim.setLineWrap(true);
         txtSobreMim.setBackground(new Color(218, 217, 215));
         txtSobreMim.setFont(new Font("Arial", 0, 20));
-        txtSobreMim.setBorder(new BordaCantoArrendondado());
+        txtSobreMim.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         txtSobreMim.getDocument().addDocumentListener(new ShowAlterarSobreMim());
 
         painelSobreMim = new JScrollPane(txtSobreMim);
@@ -164,7 +164,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
         btnEditSobreMim = new JButton("Alterar");
         btnEditSobreMim.setBounds(810, 540, 165, 40);
-        btnEditSobreMim.setBorder(new BordaCantoArrendondado());
+        btnEditSobreMim.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnEditSobreMim.setBackground(new Color(218, 217, 215));
         btnEditSobreMim.addActionListener(new AlterarSobreMim());
         btnEditSobreMim.setFont(new Font("Arial", 1, 20));
@@ -174,7 +174,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
         btnCancelarSobreMim = new JButton("Cancelar");
         btnCancelarSobreMim.setBounds(1025, 540, 165, 40);
-        btnCancelarSobreMim.setBorder(new BordaCantoArrendondado());
+        btnCancelarSobreMim.setBorder(new TelaPadraoFullScreen.BordaCantoArrendondado());
         btnCancelarSobreMim.addActionListener(new CancelarSobreMim());
         btnCancelarSobreMim.setBackground(new Color(218, 217, 215));
         btnCancelarSobreMim.setFont(new Font("Arial", 1, 20));
@@ -341,6 +341,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         @Override
         public void actionPerformed(ActionEvent e) {
             new TelaMain().runTela();
+            Principal.user = new User("", "");
             dispose();
         }
 

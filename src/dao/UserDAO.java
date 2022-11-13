@@ -20,24 +20,27 @@ public class UserDAO {
         con = ConnectionFactory.getConnection();
     }
 
+    public Connection getCon() {
+        return con;
+    }
+    
     public boolean saveCadastro(User user) {
 
-        String sql = "INSERT into usuario(nome, senha, sobreMim,idade, sexo) values (?,?,?,?,?)";
+        String sql = "INSERT into usuario(nome, senha, sobreMim,idade) values (?,?,?,?)";
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, user.getNome());
             stmt.setString(2, user.getSenha());
             stmt.setString(3, user.getSobreMim());
             stmt.setInt(4,user.getIdade());
-            stmt.setString(5, user.getSexo());
             stmt.execute();
             return true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
         } finally {
-            ConnectionFactory.closeConnection(con, stmt);
+            ConnectionFactory.closeConnection(stmt);
         }
     }
     
@@ -47,7 +50,7 @@ public class UserDAO {
         PreparedStatement stmt = null;
         
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, ImagePath);
             stmt.setString(2, user.getNome());
             stmt.executeUpdate();
@@ -67,7 +70,7 @@ public class UserDAO {
         ResultSet rs = null;
         
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, user.getNome());
             rs = stmt.executeQuery();
             while(rs.next()){
@@ -90,7 +93,7 @@ public class UserDAO {
         ArrayList<User> usuarios = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -105,7 +108,7 @@ public class UserDAO {
             // TODO Auto-generated catch block
             JOptionPane.showMessageDialog(null, "Error na hora de listar os usuarios", "ERROR", JOptionPane.WARNING_MESSAGE);
         } finally {
-            ConnectionFactory.closeConnection(con, stmt, rs);
+            ConnectionFactory.closeConnection(stmt, rs);
         }
 
         return usuarios;
@@ -116,7 +119,7 @@ public class UserDAO {
         String sql = "UPDATE usuario set desempenho = ? where nome = ?";
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setDouble(1, porcentagem);
             stmt.setString(2, user.getNome());
             stmt.execute();
@@ -137,7 +140,7 @@ public class UserDAO {
         ResultSet rs = null;
 
         try {
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
 
             stmt.setString(1, user.getNome());
 
@@ -158,7 +161,7 @@ public class UserDAO {
         String sql = "UPDATE usuario set nome = ? , senha =?, idade = ? where nome = ?";
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, userNew.getNome());
             stmt.setString(2, userNew.getSenha());
             stmt.setInt(3, userNew.getIdade());
@@ -170,7 +173,7 @@ public class UserDAO {
             JOptionPane.showMessageDialog(null, e, "ERROR BD\n Erro ao Atualizar", JOptionPane.WARNING_MESSAGE);
             return false;
         } finally {
-            ConnectionFactory.closeConnection(con, stmt);
+            ConnectionFactory.closeConnection(stmt);
         }
     }
 
@@ -179,7 +182,7 @@ public class UserDAO {
         String sql = "UPDATE usuario set sobreMim = ? where nome = ?";
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, user.getSobreMim());
             stmt.setString(2, user.getNome());
             stmt.executeUpdate();
@@ -189,7 +192,24 @@ public class UserDAO {
             JOptionPane.showMessageDialog(null, e, "ERROR BD\n Erro ao Atualizar", JOptionPane.WARNING_MESSAGE);
             return false;
         } finally {
-            ConnectionFactory.closeConnection(con, stmt);
+            ConnectionFactory.closeConnection(stmt);
         }
     }
+    
+//    public User findUserById(int id) throws SQLException{
+//        
+//        String sql = "select * from usuario where id = ?";
+//        
+//        PreparedStatement stmt = getCon().prepareStatement(sql);
+//        stmt.setInt(1, id);
+//
+//        ResultSet rs = stmt.executeQuery();
+//        rs.next();
+//        
+//        User user = new User();
+//        user.setNome(rs.getString("nome"));
+//        
+//        return user;
+//    }
+//    
 }

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Task;
 import model.User;
+import view.auxiliares.Principal;
 
 /**
  *
@@ -28,13 +29,17 @@ public class TaskDAO {
     public TaskDAO() {
         con = ConnectionFactory.getConnection();
     }
+    
+    public Connection getCon() {
+        return con;
+    }
 
     public boolean saveTarefa(Task task) {
         String sql = "insert into tarefas(id, User_nome, titulo, descricao, dataInic, dataFim, importante, concluido) values (DEFAULT,?,?,?,?,?,?,?)";
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
             stmt.setString(1, task.getUser().getNome());
             stmt.setString(2, task.getTitulo());
             stmt.setString(3, task.getDescricao());
@@ -50,6 +55,8 @@ public class TaskDAO {
 
             JOptionPane.showMessageDialog(null, ex, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
+        } finally{
+            ConnectionFactory.closeConnection(stmt);
         }
     }
 
@@ -62,7 +69,7 @@ public class TaskDAO {
 
         try {
 
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, usuario.getNome());
             rs = stmt.executeQuery();
 
@@ -82,6 +89,8 @@ public class TaskDAO {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error na hora de listar as tarefas", "ERROR", JOptionPane.WARNING_MESSAGE);
+        } finally{
+            ConnectionFactory.closeConnection(stmt, rs);
         }
 
         return tasks;
@@ -94,7 +103,7 @@ public class TaskDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
 
             stmt.setString(1, tarefaNova.getTitulo());
             stmt.setString(2, tarefaNova.getDescricao());
@@ -111,6 +120,8 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa\n" + ex, "Error", 0);
             return false;
+        } finally{
+            ConnectionFactory.closeConnection(stmt);
         }
 
     }
@@ -121,13 +132,15 @@ public class TaskDAO {
 
         try {
 
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
             stmt.setString(1, tarefa.getTitulo());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
+        } finally{
+            ConnectionFactory.closeConnection(stmt);
         }
 
     }
@@ -139,13 +152,15 @@ public class TaskDAO {
 
         try {
 
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
             stmt.setString(1, tarefa.getTitulo());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
+        }finally{
+            ConnectionFactory.closeConnection(stmt);
         }
 
     }
@@ -157,7 +172,7 @@ public class TaskDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
 
             stmt.setString(1, tarefa.getUser().getNome());
             stmt.setString(2, tarefa.getTitulo());
@@ -168,21 +183,30 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro deletando a tarefa", "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
+        } finally{
+            ConnectionFactory.closeConnection(stmt);
         }
 
     }
 
     public int qtdsTarefa() throws SQLException {
 
-        String sql = "select count(*) from tarefas";
+        int qtd = 0;
+        
+        String sql = "select count(*) from tarefas where user_nome = ?";
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        stmt = con.prepareStatement(sql);
+        stmt = getCon().prepareStatement(sql);
+        stmt.setString(1, Principal.user.getNome());
         rs = stmt.executeQuery();
         rs.next();
-        return Integer.parseInt(rs.getString(1));
+        qtd = Integer.parseInt(rs.getString(1));
+        
+        ConnectionFactory.closeConnection(stmt, rs);
+        
+        return qtd;
 
     }
 

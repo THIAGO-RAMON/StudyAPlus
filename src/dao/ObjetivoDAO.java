@@ -29,12 +29,16 @@ public class ObjetivoDAO {
         con = ConnectionFactory.getConnection();
     }
 
+    public Connection getCon() {
+        return con;
+    }
+
     public boolean saveObjetivo(Objetivo obj) {
 
         String sql = "INSERT into objetivos(user_nome,descricao, dataInic) values (?,?,?)";
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
             stmt.setString(1, obj.getUser().getNome());
             stmt.setString(2, obj.getDescricao());
             stmt.setString(3, obj.getDataInic());
@@ -44,7 +48,7 @@ public class ObjetivoDAO {
             JOptionPane.showMessageDialog(null, e, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
         } finally {
-            ConnectionFactory.closeConnection(con, stmt);
+            ConnectionFactory.closeConnection(stmt);
         }
     }
 
@@ -59,7 +63,7 @@ public class ObjetivoDAO {
 
         try {
 
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
             stmt.setString(1, user.getNome());
             rs = stmt.executeQuery();
 
@@ -75,6 +79,8 @@ public class ObjetivoDAO {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR_LIST", JOptionPane.WARNING_MESSAGE);
+        } finally {
+            ConnectionFactory.closeConnection(stmt, rs);
         }
 
         return objetivos;
@@ -86,7 +92,7 @@ public class ObjetivoDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareCall(sql);
+            stmt = getCon().prepareCall(sql);
 
             stmt.setString(1, objetivoNovo.getDescricao());
             stmt.setString(2, objetivoNovo.getDataInic());
@@ -99,6 +105,10 @@ public class ObjetivoDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na alteração de objetivos\n" + ex, "Error", 0);
             return false;
+        } finally {
+
+            ConnectionFactory.closeConnection(stmt);
+
         }
 
     }
@@ -110,7 +120,7 @@ public class ObjetivoDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement(sql);
+            stmt = getCon().prepareStatement(sql);
 
             stmt.setString(1, objetivo.getUser().getNome());
             stmt.setString(2, objetivo.getDescricao());
@@ -119,8 +129,10 @@ public class ObjetivoDAO {
 
             return true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro deletando a tarefa"+ex, "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro deletando a tarefa" + ex, "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
+        } finally {
+            ConnectionFactory.closeConnection(stmt);
         }
 
     }

@@ -7,15 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Recompensa;
 
@@ -28,13 +27,11 @@ public class CardRecompensas extends RecompensasTemplate {
     private JLabel imagemRecompensa;
     private JLabel nomeRecompensa;
     private JButton verMais;
-    private FileNameExtensionFilter filtro;
 
     public CardRecompensas(Recompensa recompensa, boolean isHabilitado) {
         super(recompensa, isHabilitado);
         setBackground(new Color(168, 168, 168));
         addMouseListener(new CardSelecionado());
-        configFilterFileChosser();
         configPainel();
     }
 
@@ -53,9 +50,6 @@ public class CardRecompensas extends RecompensasTemplate {
         
     }
 
-    private void configFilterFileChosser() {
-        filtro = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png", "jpeg");
-    }
 
     private ImageIcon resizeImage(String imagemPath, int width, int height) {
         ImageIcon minhaImagem = new ImageIcon(imagemPath);
@@ -125,7 +119,8 @@ public class CardRecompensas extends RecompensasTemplate {
             imagem = new JLabel(resizeImage(recompensa.getImg(), 150, 150));
             imagem.setHorizontalAlignment(SwingConstants.CENTER);
             imagem.setHorizontalTextPosition(SwingConstants.CENTER);
-            imagem.setBounds(0, 50, 300, 150);
+            imagem.setBounds(75, 60, 150, 150);
+            imagem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             painelPrincipal.add(imagem);
 
             descricao = new JTextArea(recompensa.getDescricao());
@@ -155,7 +150,7 @@ public class CardRecompensas extends RecompensasTemplate {
         private void configPainel() {
             painelPrincipal = new JPanel(null);
             painelPrincipal.setBounds(0, 0, this.getWidth(), this.getHeight());
-            painelPrincipal.setBackground(new Color(207, 227, 225));
+            painelPrincipal.setBackground(new Color(216, 221, 222));
             add(painelPrincipal);
         }
 

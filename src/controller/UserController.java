@@ -5,7 +5,10 @@
 package controller;
 
 import dao.UserDAO;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -46,5 +49,15 @@ public class UserController {
         return new UserDAO().updateSobreMim(user);
     }
     
-    
+//    public User encontrarUserPorId(int id){
+//        User user = new User();
+//        
+//        try {
+//            user = new UserDAO().findUserById(id);
+//        } catch (SQLException ex) {
+//            System.err.println("Usuario com id invalido ou não existente");
+//        }
+//        
+//        return user;
+//    }
 }

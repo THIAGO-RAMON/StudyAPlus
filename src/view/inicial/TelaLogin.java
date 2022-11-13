@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import model.User;
 import dao.UserDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Recompensa;
 import view.auxiliares.Principal;
@@ -33,16 +34,18 @@ public class TelaLogin extends TelaPadraoFullScreen {
     private JTextField tfNome;
     private JPasswordField pfSenha;
     private JButton btnOk, btnCancel, btnVerSenha1, btnOcultar1;
-    private PainelGraphics painel1;
-    private User usuario = new User();
-    private UserDAO dao = new UserDAO();
+    private final PainelGraphics painel1;
+    private final User usuario = new User();
+    private final UserDAO dao = new UserDAO();
     private RecompensaController recompensaController = new RecompensaController();
-    private ArrayList<Recompensa> recompensas = (ArrayList<Recompensa>) recompensaController.listRecompensa(usuario);
+    private ArrayList<Recompensa> recompensas;
     private UserController cc;
 
     public static Principal principal;
 
     TelaLogin() {
+
+        loadRecompensas();
 
         TelaPadraoFullScreen.InserirIcone ic = new TelaPadraoFullScreen.InserirIcone();
         ic.InserirIcone(this);
@@ -129,6 +132,14 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
     }
 
+    private void loadRecompensas() {
+        try {
+            recompensas = (ArrayList<Recompensa>) recompensaController.listRecompensa(usuario);
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+
     private class EventoTecla implements KeyListener {
 
         @Override
@@ -137,39 +148,46 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            int code = e.getKeyCode();
-            int tecla = KeyEvent.VK_ENTER;
-            cc = new UserController();
+            try {
+                int code = e.getKeyCode();
+                int tecla = KeyEvent.VK_ENTER;
+                cc = new UserController();
 
-            if (code == tecla) {
-                String nome = tfNome.getText().trim();
-                boolean b = false;
+                if (code == tecla) {
+                    String nome = tfNome.getText().trim();
+                    boolean b = false;
 
-                for (User user : cc.listUser()) {
+                    for (User user : cc.listUser()) {
 
-                    if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
+                        if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
-                        Principal.user = user;
-                        if (recompensas == null) {
-                            recompensaController.loadRecompensas(Principal.user);
+                            Principal.user = user;
+
+                            if (recompensaController.quantidadeDeRecompensasValida(user)) { // Verifica se as recompensas foram já carregadas para o perfil
+                                recompensaController.loadRecompensas(user);
+                            }
+
+                            b = true;
+
+                            break;
                         }
-                        b = true;
 
-                        break;
+                    }
+
+                    if (b) {
+                        JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
+                        new TelaTarefas().runTela();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
+                        new TelaMain().runTela();
+                        dispose();
                     }
 
                 }
-
-                if (b) {
-                    JOptionPane.showMessageDialog(null, "Login realizado!", "Login!", JOptionPane.INFORMATION_MESSAGE);
-                    new TelaTarefas().runTela();
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Login Incorreto!", "Login!", 0);
-                    new TelaMain().runTela();
-                    dispose();
-                }
-
+            } catch (SQLException ex) {
+                System.err.println("Erro no loading das recompensas");
+                System.err.println(ex);
             }
         }
 
@@ -183,6 +201,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            try{
             String nome = tfNome.getText().trim();
             boolean b = false;
             cc = new UserController();
@@ -194,9 +213,11 @@ public class TelaLogin extends TelaPadraoFullScreen {
                     if (nome.equals(user.getNome()) && pfSenha.getText().equals(user.getSenha())) { // True
 
                         Principal.user = user;
-                        if (recompensas == null) {
-                            recompensaController.loadRecompensas(Principal.user);
+
+                        if (recompensaController.quantidadeDeRecompensasValida(user)) { // Verifica se as recompensas foram já carregadas para o perfil
+                            recompensaController.loadRecompensas(user);
                         }
+
                         b = true;
 
                         break;
@@ -214,7 +235,10 @@ public class TelaLogin extends TelaPadraoFullScreen {
                 new TelaMain().runTela();
                 dispose();
             }
-
+            }catch(SQLException ex){
+                System.err.println("Erro no loading das recompensas");
+                System.err.println(ex);
+            }
         }
     }
 
