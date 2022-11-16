@@ -26,7 +26,6 @@ public class CardRecompensas extends RecompensasTemplate {
 
     private JLabel imagemRecompensa;
     private JLabel nomeRecompensa;
-    private JButton verMais;
 
     public CardRecompensas(Recompensa recompensa, boolean isHabilitado) {
         super(recompensa, isHabilitado);

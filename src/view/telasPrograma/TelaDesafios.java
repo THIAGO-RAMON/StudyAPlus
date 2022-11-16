@@ -65,7 +65,7 @@ public class TelaDesafios extends JFrame {
 
     private void configPaineis() {
         painelPrincipal = new JPanel(new MigLayout());
-        painelPrincipal.setPreferredSize(new Dimension(600, 800));
+        painelPrincipal.setPreferredSize(new Dimension(600, 1500));
         painelPrincipal.setBackground(new Color(216, 221, 222));
 
         painelScroll = new JScrollPane(painelPrincipal);
@@ -111,7 +111,9 @@ public class TelaDesafios extends JFrame {
             JLabel lblDesafio = new JLabel();
             lblDesafio.setText(desafios.get(cont).getTitulo());
             lblDesafio.setFont(new Font("Arial", 1, 18));
-            painelPrincipal.add(lblDesafio, "x (75+20)+40, gaptop 40, w 300, h 75, wrap");
+            lblDesafio.setVerticalAlignment(SwingConstants.CENTER);
+            lblDesafio.setVerticalTextPosition(SwingConstants.CENTER);
+            painelPrincipal.add(lblDesafio, "x (75+20)+40, gaptop 40, w 350, h 75, wrap");
             
             cont++;
         }

@@ -42,7 +42,7 @@ public class VisualizarObjetivos extends JFrame {
     private JTable tabela;
     private JButton btnPes, leave;
     private JTextField txtPes;
-    private JLabel lblObj;
+    private JLabel lblObj, lblTitulo;
     public static VisualizarObjetivos visualizarObjetivos;
     private DefaultTableModel modeloTabelaObjetivos;
     private JScrollPane js;
@@ -62,6 +62,11 @@ public class VisualizarObjetivos extends JFrame {
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
+        
+        lblTitulo = new JLabel("Objetivos");
+        lblTitulo.setFont(new Font("Arial", 1, 32));
+        lblTitulo.setBounds((int)(painel1.getWidth()/2)+50, 10, 300, 30);
+        painel1.add(lblTitulo);
 
         telaVisualizar = new TelaVisualizar();
 

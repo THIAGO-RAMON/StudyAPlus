@@ -12,14 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,7 +30,7 @@ import view.auxiliares.Principal;
 public class DicasEstudo extends JFrame {
 
     private JPanel painel1, painel2;
-    private JLabel msg;
+    private JLabel msg, titulo;
     private JButton btnGerar,leave;
     private static DicasEstudo dicasEstudo;
     private BarraLateral barraLateral;
@@ -55,6 +50,11 @@ public class DicasEstudo extends JFrame {
         config();
         painel();
         
+        titulo = new JLabel("Dicas de estudos");
+        titulo.setFont(new Font("Arial", 1, 32));
+        titulo.setBounds((int)(painel1.getWidth()/2)-50, 10, 300, 30);
+        painel1.add(titulo);
+        
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -72,12 +72,12 @@ public class DicasEstudo extends JFrame {
 
         msg = new JLabel("Seu desempenho foi bom, gerar uma dica!");
         msg.setFont(new Font("Arial", 1, 20));
-        msg.setBounds(550, 70, 400, 30);
+        msg.setBounds(550, 90, 400, 30);
         painel1.add(msg);
 
         btnGerar = new JButton("Gerar dica");
         btnGerar.setFont(new Font("Arial", 1, 22));
-        btnGerar.setBounds(675, 150, 160, 40);
+        btnGerar.setBounds(675, 170, 160, 40);
         btnGerar.setEnabled(false);
         //btnGerar.addMouseListener(new verMouse(btnGerar));
         btnGerar.setBorder(new BordaPersonalizada());

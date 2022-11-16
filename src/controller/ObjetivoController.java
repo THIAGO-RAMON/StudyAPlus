@@ -8,6 +8,7 @@ import java.util.List;
 import model.Objetivo;
 import model.User;
 import dao.ObjetivoDAO;
+import java.sql.SQLException;
 
 /**
  *
@@ -37,6 +38,13 @@ public class ObjetivoController {
         ObjetivoDAO dao = new ObjetivoDAO();
 
         return dao.listObjetivo(user);
+    }
+
+    public int qtdObjetivosPorUser(User user) throws SQLException {
+
+        String sql = "select count(*) from objetivos where user_nome = ?";
+
+        return new ObjetivoDAO().getNumObjetivosByUser(sql, user);
     }
 
 }

@@ -1,5 +1,10 @@
 Crie 3 tarefas
 Cumpra 1 tarefa
-Crie 10 tarefas
-Cumpra 5 tarefas
-Tenha um desempenho superior a 70%	
+Crie 5 tarefas
+Cumpra 3 tarefas
+<html><body>Com 5 tarefas,<br> Tenha um desempenho superior a 70%<body></html>
+Crie 7 tarefas
+Cumpra no tempo estabelecido uma tarefa
+Crie 1 objetivo
+Crie 3 objetivos
+Tenha mais que 5 recompensas

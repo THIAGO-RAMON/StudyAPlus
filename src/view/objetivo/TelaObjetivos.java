@@ -21,13 +21,14 @@ import view.telasPrograma.TelaTarefas;
 public class TelaObjetivos extends TelaPadraoFullScreen {
 
     private JPanel painel1, painel2;
-    private JLabel lblMensagem, lblMensagem2, lblMensagem3, lblMensagem4, lbl;
+    private JLabel lblMensagem, lblMensagem2, lblMensagem3, lblMensagem4, lbl, lblTitulo;
     private JButton btnC, leave;
     public static TelaObjetivos telaObjetivos = new TelaObjetivos();
     
     TelaObjetivos() {
         painel();
-
+        
+        
         lblMensagem = new JLabel("Olá! Bem vindo(a) ao StudyAPlus!");
         lblMensagem2 = new JLabel("Todo o usuário tem objetivos para serem alcançados,");
         lblMensagem3 = new JLabel("esses objetivos são importantes para o total");

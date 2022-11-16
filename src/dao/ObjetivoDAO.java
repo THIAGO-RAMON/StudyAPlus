@@ -136,4 +136,20 @@ public class ObjetivoDAO {
         }
 
     }
+    
+    public int getNumObjetivosByUser(String sql,User user) throws SQLException{
+        
+        int qtd = 0;
+        
+        PreparedStatement stmt = getCon().prepareStatement(sql);
+        stmt.setString(1, user.getNome());
+        
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        qtd = Integer.parseInt(rs.getString(1));
+        
+        ConnectionFactory.closeConnection(stmt, rs);
+        
+        return qtd;
+    }
 }

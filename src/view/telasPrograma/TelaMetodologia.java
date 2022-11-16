@@ -28,13 +28,18 @@ public class TelaMetodologia extends TelaPadraoFullScreen {
     private BarraLateral barraLateral;
     private JButton leave, alterarFund, alterarMedio, alterarSup, nextMedio, backFund,nextSup,backMedio;
     private TelaMetodologia metodologia;
-    private JLabel lblmsg, lblmsg2, lblExtra;
+    private JLabel lblmsg, lblmsg2, lblExtra, titulo;
     private User user = Principal.user;
 
     public TelaMetodologia() {
         configPainel();
         paineisMetodos();
-
+        
+        titulo = new JLabel("Metodologias");
+        titulo.setFont(new Font("Arial", 1, 32));
+        titulo.setBounds((int)(painel1.getWidth()/2), 10, 250, 30);
+        painel1.add(titulo);
+        
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);

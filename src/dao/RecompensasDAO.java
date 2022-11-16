@@ -33,7 +33,7 @@ public class RecompensasDAO {
 
     public void insertRecompensa(Recompensa recompensa) throws SQLException {
 
-        String sql = "insert into recompensa(id, id_desafio, user_nome, nome, descricao, imagem, habilitado) values (DEFAULT, ?, ?, ?, ?, ?,?)";
+        String sql = "insert into recompensa(id, id_desafio, user_nome, nome, descricao, imagem, habilitado, tipo) values (DEFAULT, ?, ?, ?, ?, ?,?,?)";
 
         PreparedStatement stmt = null;
 
@@ -45,7 +45,8 @@ public class RecompensasDAO {
         stmt.setString(4, recompensa.getDescricao());
         stmt.setString(5, recompensa.getImg());
         stmt.setBoolean(6, recompensa.isHabilitado());
-
+        stmt.setString(7, recompensa.getTipo());
+        
         stmt.execute();
 
         ConnectionFactory.closeConnection(stmt);
@@ -79,6 +80,7 @@ public class RecompensasDAO {
             recompensa.setDescricao(rs.getString("descricao"));
             recompensa.setImg(rs.getString("imagem"));
             recompensa.setHabilitado(rs.getBoolean("habilitado"));
+            recompensa.setTipo(rs.getString("tipo"));
 
             recompensas.add(recompensa);
 
@@ -120,5 +122,57 @@ public class RecompensasDAO {
         ConnectionFactory.closeConnection(stmt, rs);
 
         return qtd;
+    }
+    
+    public int qtdRecompensasGanha(User user) throws SQLException {
+        int qtd = 0;
+        
+        String sql = "select count(*) from recompensa where user_nome = ? and habilitado = true";
+        
+        PreparedStatement stmt = null;
+
+        stmt = getCon().prepareStatement(sql);
+        stmt.setString(1, user.getNome());
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        qtd = Integer.parseInt(rs.getString(1));
+
+        ConnectionFactory.closeConnection(stmt, rs);
+        
+        return qtd;
+    }
+    
+    public List<Recompensa> listarRecompensasHabilitadaPorTipo(User user, String tipo) throws SQLException{
+        
+        ArrayList<Recompensa> recompensas = new ArrayList<>();
+        
+        String sql = "select * from recompensa where user_nome = ? and habilitado = true and tipo = ?";
+        
+        PreparedStatement stmt = getCon().prepareStatement(sql);
+        stmt.setString(1, user.getNome());
+        stmt.setString(2, tipo);
+        
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+
+            Desafio desafio = new Desafio();
+
+            desafio.setId(rs.getInt("id_desafio"));
+
+            Recompensa recompensa = new Recompensa();
+            recompensa.setUser(user);
+            recompensa.setDesafio(desafio);
+            recompensa.setNome(rs.getString("nome"));
+            recompensa.setDescricao(rs.getString("descricao"));
+            recompensa.setImg(rs.getString("imagem"));
+
+            recompensas.add(recompensa);
+
+        }
+        
+        ConnectionFactory.closeConnection(stmt, rs);
+        
+        return recompensas;
     }
 }

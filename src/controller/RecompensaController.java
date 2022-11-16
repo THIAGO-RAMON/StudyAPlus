@@ -2,6 +2,7 @@ package controller;
 
 import dao.RecompensasDAO;
 import dao.TaskDAO;
+import dao.UserDAO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -63,17 +64,23 @@ public class RecompensaController {
             String pathImagem = fileProject + "\\etc\\Recompensas\\PathImagensRecompensas.txt";
             File fileImage = new File(pathImagem);
 
+            String pathTipo = fileProject + "\\etc\\Recompensas\\tipoRecompensas.txt";
+            File fileTipo = new File(pathTipo);
+
             FileReader leitorNome = new FileReader(fileNome);
             FileReader leitorDescricao = new FileReader(fileDescricao);
             FileReader leitorImage = new FileReader(fileImage);
+            FileReader leitorTipo = new FileReader(fileTipo);
 
             BufferedReader lerNome = new BufferedReader(leitorNome);
             BufferedReader lerDecricao = new BufferedReader(leitorDescricao);
             BufferedReader lerImage = new BufferedReader(leitorImage);
+            BufferedReader lerTipo = new BufferedReader(leitorTipo);
 
             String nome = lerNome.readLine();
             String descricao = lerDecricao.readLine();
             String imagem = fileProject + lerImage.readLine();
+            String tipo = lerTipo.readLine();
 
             desafios = (ArrayList<Desafio>) controllerDesafio.listarDesafios(user);
 
@@ -84,6 +91,7 @@ public class RecompensaController {
                 recompensa.setNome(nome);
                 recompensa.setDesafio(desafio);
                 recompensa.setDescricao(descricao);
+                recompensa.setTipo(tipo);
                 recompensa.setImg(imagem);
                 recompensa.setHabilitado(false);
 
@@ -92,6 +100,7 @@ public class RecompensaController {
                 nome = lerNome.readLine();
                 descricao = lerDecricao.readLine();
                 imagem = fileProject + lerImage.readLine();
+                tipo = lerTipo.readLine();
             }
 
             leitorNome.close();
@@ -155,8 +164,8 @@ public class RecompensaController {
             }
         }
 
-        // Verifica a criação de 10 Tarefa
-        if (daoTarefas.qtdsTarefa() >= 10) {
+        // Verifica a criação de 5 Tarefa
+        if (daoTarefas.qtdsTarefa() >= 5) {
             Recompensa recompensa = recompensas.get(2);
             if (recompensa.isHabilitado() == false) {
                 atualizarRecompensa(recompensa);
@@ -173,7 +182,7 @@ public class RecompensaController {
             }
         }
 
-        if (qtdTarefasCumpridas >= 5) {
+        if (qtdTarefasCumpridas >= 3) {
             Recompensa recompensa = recompensas.get(3);
             if (recompensa.isHabilitado() == false) {
                 atualizarRecompensa(recompensa);
@@ -183,7 +192,7 @@ public class RecompensaController {
 
         // Tenha um desempenho superior a 70%
         if (daoTarefas.qtdsTarefa() >= 5) {
-            if (usuario.getDesempenho_percentual() >= 70) {
+            if (new UserDAO().getPorcentagem(usuario) >= 70) {
                 Recompensa recompensa = recompensas.get(4);
                 if (recompensa.isHabilitado() == false) {
                     atualizarRecompensa(recompensa);
@@ -191,6 +200,51 @@ public class RecompensaController {
                 }
             }
         }
+
+        if (daoTarefas.qtdsTarefa() >= 7) {
+            Recompensa recompensa = recompensas.get(5);
+            if (recompensa.isHabilitado() == false) {
+                atualizarRecompensa(recompensa);
+                notificarCumprimento(recompensa);
+            }
+        }
+
+        if(new ObjetivoController().qtdObjetivosPorUser(usuario) >= 1){
+            Recompensa recompensa = recompensas.get(7);
+            if(recompensa.isHabilitado() == false){
+                atualizarRecompensa(recompensa);
+                notificarCumprimento(recompensa);
+            }
+        }
+        
+        if(new ObjetivoController().qtdObjetivosPorUser(usuario) >= 3){
+            Recompensa recompensa = recompensas.get(8);
+            if(recompensa.isHabilitado() == false){
+                atualizarRecompensa(recompensa);
+                notificarCumprimento(recompensa);
+            }
+        }
+        
+        if (qtdRecompensasGanha(usuario) >= 5) {
+            Recompensa recompensa = recompensas.get(9);
+            if (recompensa.isHabilitado() == false) {
+                atualizarRecompensa(recompensa);
+                notificarCumprimento(recompensa);
+            }
+        }
+
+    }
+
+    private int qtdRecompensasGanha(User user) throws SQLException {
+
+        return new RecompensasDAO().qtdRecompensasGanha(user);
+
+    }
+    
+    public List<Recompensa> recompensasHabilitadasPorTipo(User user, String tipo) throws SQLException{
+        
+        return new RecompensasDAO().listarRecompensasHabilitadaPorTipo(user, tipo);
+        
     }
 
     private void notificarCumprimento(Recompensa recompensa) {

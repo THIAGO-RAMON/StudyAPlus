@@ -34,40 +34,45 @@ import view.auxiliares.TelaPadraoFullScreen;
 public class TelaRecompensas extends TelaPadraoFullScreen {
 
     private JPanel painelPrincipal, painelBloqueado, painelDesbloqueado;
-    private JLabel lblBloqueado, lblDesbloqueado;
+    private JLabel lblBloqueado, lblDesbloqueado, lblTitulo;
     private JScrollPane painelBloqueados, painelDesbloqueados;
     private BarraLateral barraLateral;
     private Recompensa recompensa;
     private RecompensaController recompensaController;
     private ArrayList<Recompensa> recompensas;
     private JButton leave, btnDesafios;
-    
+
     private User user = Principal.user;
-    
+
     private static TelaRecompensas telaRecompensas = new TelaRecompensas();
 
     public TelaRecompensas() {
         configPainel();
-        
+
+        lblTitulo = new JLabel("Recompensas");
+        lblTitulo.setFont(new Font("Arial", 1, 32));
+        lblTitulo.setBounds((int) (painelPrincipal.getWidth() / 2) + 50, 30, 300, 30);
+        painelPrincipal.add(lblTitulo);
+
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painelPrincipal.add(barraLateral);
 
         painelBloqueado = new JPanel(new MigLayout());
-        painelBloqueado.setPreferredSize(new Dimension(960, 120));
+        painelBloqueado.setPreferredSize(new Dimension(960, 300));
         painelBloqueado.setBackground(new Color(168, 168, 168));
 
         painelDesbloqueado = new JPanel(new MigLayout());
-        painelDesbloqueado.setPreferredSize(new Dimension(960, 120));
-        painelDesbloqueado.setBackground(new Color(168, 168, 168));     
+        painelDesbloqueado.setPreferredSize(new Dimension(960, 300));
+        painelDesbloqueado.setBackground(new Color(168, 168, 168));
 
         lblBloqueado = new JLabel("Bloqueados");
         lblBloqueado.setFont(new Font("Arial", 1, 32));
         lblBloqueado.setBounds(315, 100, 300, 30);
         painelPrincipal.add(lblBloqueado);
-        
+
         btnDesafios = new JButton(new ImageIcon(getClass().getResource("/images/desafioLogo.png")));
-        btnDesafios.setBounds(painelPrincipal.getWidth()-75, 70, 50, 50);
+        btnDesafios.setBounds(painelPrincipal.getWidth() - 75, 70, 50, 50);
         btnDesafios.setBackground(null);
         btnDesafios.setBorder(null);
         btnDesafios.addActionListener(new ActionListener() {
@@ -78,7 +83,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
                 telaDesafios.setAlwaysOnTop(true);
             }
         });
-        
+
         painelPrincipal.add(btnDesafios);
 
         painelBloqueados = new JScrollPane(painelBloqueado);
@@ -97,7 +102,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelDesbloqueados.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         painelDesbloqueados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         painelPrincipal.add(painelDesbloqueados);
-        
+
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -112,7 +117,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         painelPrincipal.add(leave);
 
         getRecompensas();
-        
+
     }
 
     private void configPainel() {
@@ -124,24 +129,41 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         add(painelPrincipal);
 
     }
-    
+
     private void getRecompensas() {
+
+        int qtdBloqueadas = 0;
+        int qtdDesbloqueadas = 0;
 
         try {
             recompensaController = new RecompensaController();
-            
+
             recompensas = (ArrayList<Recompensa>) recompensaController.listRecompensa(user);
-            
+
             for (Recompensa recompensa1 : recompensas) {
-                
+
                 if (recompensa1.isHabilitado()) {
-                    CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
-                    painelDesbloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-                }else{
-                    CardRecompensas cardRecompensas = new CardRecompensas(recompensa1, false);
-                    painelBloqueado.add(cardRecompensas, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                    if (qtdDesbloqueadas >= 4) {
+                        CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
+                        painelDesbloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30, wrap");
+                        qtdDesbloqueadas = 0;
+                    }else{
+                        CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, true);
+                        painelDesbloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                        qtdDesbloqueadas++;
+                    }
+                } else {
+                    if (qtdBloqueadas >= 4) {
+                        CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, false);
+                        painelBloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30, wrap");
+                        qtdBloqueadas = 0;
+                    }else{
+                        CardRecompensas cardRecompensa = new CardRecompensas(recompensa1, false);
+                        painelBloqueado.add(cardRecompensa, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                        qtdBloqueadas++;
+                    }
                 }
-                
+
             }
         } catch (SQLException ex) {
             System.err.println("Erro na listagem da tela de recompensas");
@@ -149,7 +171,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
         }
 
     }
-    
+
     public static void runTela() {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -169,11 +191,11 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
     public JScrollPane getPainelDes() {
         return painelDesbloqueados;
     }
-    
-    public void setPainelDes(JScrollPane painel){
+
+    public void setPainelDes(JScrollPane painel) {
         this.painelDesbloqueados = painel;
     }
-    
+
     public static void main(String[] args) {
         new TelaRecompensas().setVisible(true);
     }

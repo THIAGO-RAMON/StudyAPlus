@@ -15,6 +15,7 @@ public class Recompensa {
     private String descricao;
     private String img;
     private boolean habilitado;
+    private String tipo;
     private User user;
     private Desafio desafio;
 
@@ -72,6 +73,14 @@ public class Recompensa {
 
     public void setDesafio(Desafio desafio) {
         this.desafio = desafio;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     public Recompensa() {

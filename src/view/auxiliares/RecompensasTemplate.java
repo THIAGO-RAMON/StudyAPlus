@@ -15,12 +15,11 @@ public class RecompensasTemplate extends JPanel{
     protected Recompensa recompensa;
     protected Color corBackground;
     private boolean isHabilitado;
-    
+
     public RecompensasTemplate(Recompensa recompensa, boolean isHabilitado) {
         configPainelTemplate();
         
         this.recompensa = recompensa;
-        this.isHabilitado = isHabilitado;
         
         if(isHabilitado){
             corBackground = new Color(167, 196, 193);

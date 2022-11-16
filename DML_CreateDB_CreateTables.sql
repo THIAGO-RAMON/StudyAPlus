@@ -1,8 +1,9 @@
-create database StudyAPLus;
+#create database StudyAPLus;
 use StudyAPlus;
 
 #drop schema studyaplus;
 
+drop table if exists mydolly;
 drop table if exists recompensa;
 drop table if exists desafio;
 drop table if exists objetivos;
@@ -57,6 +58,7 @@ create table recompensa(
     id_desafio int not null,
     nome varchar(30) not null,
     descricao varchar(200) not null,
+    tipo varchar(7) not null,
     imagem longblob,
     habilitado boolean,
     primary key(id),
@@ -70,10 +72,7 @@ id_recompensa int not null,
 user_nome varchar(100),
 cabeca longblob,
 torso longblob,
-bDireto longblob,
-dEsquerdo longblob,
-pDireita longblob,
-pEsquerda longblob,
+perna longblob,
 foreign key (user_nome) references Usuario(nome) on update cascade,
 foreign key (id_recompensa) references recompensa(id)
 );
@@ -84,6 +83,7 @@ select * from objetivos;
 select * from recompensa;	
 select * from desafio;
 select * from MyDolly;
+
 
 
 
