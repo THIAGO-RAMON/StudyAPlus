@@ -30,7 +30,8 @@ import view.telasPrograma.TelaRecompensas;
 
 public class BarraLateral extends JPanel {
 
-    private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas;
+    private JLabel iconeTarefas, iconeCriarTarefa, iconePerfil, iconeProgesso, iconeObjetivo, iconeDicas,
+                    iconeMetodologias, iconeRecompensa, iconeMyDolly;
     private JButton painelTarefas, painelProgresso, painelPerfil, painelCriarTarefa, btnLogo, painelCriarObj, painelObjetivos,
                     painelDicas,painelMetodologias,painelRecompensas,painelMyDolly;
     private Color colorButton = Color.WHITE;
@@ -117,7 +118,6 @@ public class BarraLateral extends JPanel {
         
         EventoAbrirDicas evtDicas = new EventoAbrirDicas();
         
-        
         painelDicas = new JButton("Dicas de Estudos");
         painelDicas.setFont(new Font("Arial", 1, 20));
         painelDicas.setBackground(colorButton);
@@ -141,6 +141,11 @@ public class BarraLateral extends JPanel {
         painelMetodologias.addActionListener(evtMetodologias);
         add(painelMetodologias);
         
+        iconeMetodologias = new JLabel();
+        iconeMetodologias.setBounds(0, 415, 50, 50);
+        iconeMetodologias.setIcon(new ImageIcon(getClass().getResource("/images/metodologiaIcone.png")));
+        add(iconeMetodologias);
+        
         AbrirRecompensas evtRecompensas = new AbrirRecompensas();
         
         painelRecompensas = new JButton("Recompensas");
@@ -151,6 +156,11 @@ public class BarraLateral extends JPanel {
         painelRecompensas.addActionListener(evtRecompensas);
         add(painelRecompensas);
         
+        iconeRecompensa = new JLabel();
+        iconeRecompensa.setBounds(0, 475, 50, 50);
+        iconeRecompensa.setIcon(new ImageIcon(getClass().getResource("/images/recompensaIcone.png")));
+        add(iconeRecompensa);
+        
         AbrirMyDolly evtMyDolly = new AbrirMyDolly();
         
         painelMyDolly = new JButton("My Dolly");
@@ -160,6 +170,11 @@ public class BarraLateral extends JPanel {
         painelMyDolly.setBounds(60, 535, 230, 50);
         painelMyDolly.addActionListener(evtMyDolly);
         add(painelMyDolly);
+        
+        iconeMyDolly = new JLabel();
+        iconeMyDolly.setBounds(0, 535, 50, 50);
+        iconeMyDolly.setIcon(new ImageIcon(getClass().getResource("/images/recompensaIcone.png")));
+        add(iconeMyDolly);
 
         painelPerfil = new JButton("Perfil");
         painelPerfil.setFont(new Font("Arial", 1, 20));

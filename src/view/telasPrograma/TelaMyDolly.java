@@ -1,5 +1,6 @@
 package view.telasPrograma;
 
+import controller.MyDollyController;
 import controller.RecompensaController;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import model.MyDolly;
 import model.Recompensa;
 import net.miginfocom.swing.MigLayout;
 import view.auxiliares.BarraLateral;
@@ -28,18 +32,25 @@ import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaMyDolly extends TelaPadraoFullScreen {
 
-    private TelaMyDolly mydolly;
+    private TelaMyDolly mydollyTela;
     private BarraLateral barraLateral;
     private JPanel painel1, painelRecompensas;
     private JButton leave;
-    private JButton cabeca, torso, bDireito, bEsquerdo, pDireita, pEsquerda;
+    private JButton cabeca, torso, perna;
+    private MyDolly mydolly;
     private ImageIcon iconeCabeca, iconeTorco, iconeBEsquerdo, iconeBDireito, iconePEsquerda, iconePDireita;
     private SelecionarRec painelSelecionarRecompensas;
     private JLabel lblTitulo, lblDescricao;
 
     public TelaMyDolly() {
         painel();
-
+        
+        if(new MyDollyController().verificarSeJaFoiCarregado() == 0){
+            carregarDollyProUser();
+        }else{
+            carregarMeuDolly();
+        }
+        
         lblTitulo = new JLabel("MyDolly");
         lblTitulo.setFont(new Font("Arial", 1, 32));
         lblTitulo.setBounds((int) (painel1.getWidth() / 2) + 50, 30, 300, 30);
@@ -73,47 +84,26 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         painelRecompensas.setPreferredSize(new Dimension(350, 600));
         painelRecompensas.setBackground(new Color(168, 168, 168));
 
-        cabeca = new JButton("cabeça");
+        cabeca = new JButton(resizeImage(mydolly.getCabeca(), 100, 100));
         cabeca.setBackground(null);
         cabeca.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         cabeca.addActionListener(new verRecompensas(cabeca));
-        cabeca.setBounds(500, 200, 60, 60);
+        cabeca.setBounds(500, 200, 100, 100);
         painel1.add(cabeca);
 
-        torso = new JButton("torso");
+        torso = new JButton(resizeImage(mydolly.getTorso(), 100, 200));
         torso.setBackground(null);
         torso.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         torso.addActionListener(new verRecompensas(torso));
         torso.setBounds(cabeca.getX() - 10, cabeca.getY() + 65, 80, 130);
         painel1.add(torso);
 
-        bDireito = new JButton("");
-        bDireito.setBackground(null);
-        bDireito.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        bDireito.addActionListener(new verRecompensas(torso));
-        bDireito.setBounds(torso.getX() - 63, cabeca.getY() + 65, 55, 130);
-        painel1.add(bDireito);
-
-        bEsquerdo = new JButton("");
-        bEsquerdo.setBackground(null);
-        bEsquerdo.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        bEsquerdo.addActionListener(new verRecompensas(torso));
-        bEsquerdo.setBounds(torso.getX() + 88, cabeca.getY() + 65, 55, 130);
-        painel1.add(bEsquerdo);
-
-        pDireita = new JButton("perna");
-        pDireita.setBackground(null);
-        pDireita.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        pDireita.addActionListener(new verRecompensas(pDireita));
-        pDireita.setBounds(torso.getX(), torso.getHeight() + 275, torso.getWidth() / 2, 130);
-        painel1.add(pDireita);
-
-        pEsquerda = new JButton("perna");
-        pEsquerda.setBackground(null);
-        pEsquerda.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
-        pEsquerda.addActionListener(new verRecompensas(pDireita));
-        pEsquerda.setBounds(torso.getX() + pDireita.getWidth(), pDireita.getY(), torso.getWidth() / 2, 130);
-        painel1.add(pEsquerda);
+        perna = new JButton(resizeImage(mydolly.getPerna(), 100, 100));
+        perna.setBackground(null);
+        perna.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        perna.addActionListener(new verRecompensas(perna));
+        perna.setBounds(torso.getX(), torso.getHeight() + 275, torso.getWidth() / 2, 130);
+        painel1.add(perna);
 
         painelSelecionarRecompensas = new SelecionarRec();
         painelSelecionarRecompensas.setVisible(true);
@@ -210,6 +200,31 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
 
     }
     
+    public void carregarMeuDolly(){
+        try {
+            mydolly = new MyDollyController().listarMyDolly();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+    
+    public void carregarDollyProUser(){
+        try {
+            new MyDollyController().loadMyDolly();
+            mydolly = new MyDollyController().listarMyDolly();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+    
+    private ImageIcon resizeImage(String imagemPath, int width, int height) {
+        ImageIcon minhaImagem = new ImageIcon(imagemPath);
+        Image img = minhaImagem.getImage();
+        Image imgNew = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon imagem = new ImageIcon(imgNew);
+        return imagem;
+    }
+    
     //Classe interna
     
     public class BotaoRecompensa extends RecompensasTemplate {
@@ -275,30 +290,10 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     }
     
     private void alterarParteDoCorpo(JButton btn, Recompensa recompensa){
-        btn.setText("");
         btn.setIcon(null);
-        configLocalizaçãoByRecompensa(btn, recompensa);
-        painel1.repaint();
-        painel1.revalidate();
-    }
-    
-    private void configLocalizaçãoByRecompensa(JButton btn, Recompensa recompensa){
-        
-        switch(recompensa.getNome()){
-            case "Oculos":
-                btn.setIcon(resizeImage(recompensa.getImg(), btn.getWidth(), btn.getHeight()));
-                btn.setHorizontalAlignment(SwingConstants.CENTER);
-                btn.setHorizontalTextPosition(SwingConstants.CENTER);
-                btn.setVerticalAlignment(SwingConstants.CENTER);
-                btn.setVerticalTextPosition(SwingConstants.CENTER);
-                break;
-            case "Boné":
-                btn.setIcon(resizeImage(recompensa.getImg(), btn.getWidth(), btn.getHeight()));
-                btn.setHorizontalAlignment(SwingConstants.CENTER);
-                btn.setHorizontalTextPosition(SwingConstants.CENTER);
-                break;
-        }
-        
+        new MyDollyController().updateMyDolly(btn.getName(), recompensa);
+        dispose();
+        runTela();
     }
     
 }
@@ -312,14 +307,14 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     }
 
     public void runTela() {
-        mydolly = new TelaMyDolly();
-        if (mydolly.isActive()) {
-            mydolly.dispose();
+        mydollyTela = new TelaMyDolly();
+        if (mydollyTela.isActive()) {
+            mydollyTela.dispose();
         }
 
         TelaMyDolly My = new TelaMyDolly();
-        mydolly = My;
-        mydolly.setVisible(true);
+        mydollyTela = My;
+        mydollyTela.setVisible(true);
     }
 
 }
