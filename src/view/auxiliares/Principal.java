@@ -11,6 +11,7 @@ public class Principal {
     public static User user = new User();
     
     public static void main(String[] args) {
+        new Splash();
         tl.runTela();
     }
     

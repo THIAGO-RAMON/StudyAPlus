@@ -173,7 +173,7 @@ public class BarraLateral extends JPanel {
         
         iconeMyDolly = new JLabel();
         iconeMyDolly.setBounds(0, 535, 50, 50);
-        iconeMyDolly.setIcon(new ImageIcon(getClass().getResource("/images/recompensaIcone.png")));
+        iconeMyDolly.setIcon(new ImageIcon(getClass().getResource("/images/myDollyIcone.png")));
         add(iconeMyDolly);
 
         painelPerfil = new JButton("Perfil");
