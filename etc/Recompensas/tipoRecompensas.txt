@@ -1,10 +1,10 @@
 cabeca
-cabeca
-cabeca
+torso
+perna
 cabeca
 cabeca
 torso
 torso
 torso
-pernas
+perna
 torso

@@ -1,0 +1,3 @@
+etc\MyDolly\ImagensDefault\CABEÇA_DEFAULT.png
+etc\MyDolly\ImagensDefault\TORSO_DEFAULT.png
+etc\MyDolly\ImagensDefault\PERNA_DEFAULT.png

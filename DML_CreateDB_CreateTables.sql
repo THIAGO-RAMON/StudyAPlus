@@ -68,13 +68,11 @@ create table recompensa(
 
 create table MyDolly(
 id int primary key auto_increment,
-id_recompensa int not null,
 user_nome varchar(100),
 cabeca longblob,
 torso longblob,
 perna longblob,
-foreign key (user_nome) references Usuario(nome) on update cascade,
-foreign key (id_recompensa) references recompensa(id)
+foreign key (user_nome) references Usuario(nome) on update cascade
 );
 
 select * from tarefas;
@@ -83,6 +81,8 @@ select * from objetivos;
 select * from recompensa;	
 select * from desafio;
 select * from MyDolly;
+
+select * from mydolly where user_nome = 'Ramon';
 
 
 

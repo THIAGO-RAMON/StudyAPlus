@@ -28,7 +28,7 @@ public class MyDollyDAO {
         return con;
     }
     
-    private void insertRoupa(MyDolly mydolly) throws SQLException{
+    public void insertRoupa(MyDolly mydolly) throws SQLException{
         
         String sql = "insert into mydolly(id, user_nome, cabeca, torso, perna) values (DEFAULT, ?, ?, ?, ?)";
         
@@ -47,13 +47,34 @@ public class MyDollyDAO {
     
     public void updateMyDolly(String parte, Recompensa recompensa) throws SQLException{
         
-        String sql = "update mydolly set ? = ? where user_nome = ?";
+        String sql = "update mydolly set torso = ? where user_nome = ?";
         
         PreparedStatement stmt = getCon().prepareStatement(sql);
         
-        stmt.setString(1, parte);
-        stmt.setString(2, recompensa.getImg());
-        stmt.setString(3, Principal.user.getNome());
+        stmt.setString(1, recompensa.getImg());
+        stmt.setString(2, Principal.user.getNome());
+        
+        stmt.executeUpdate();
+    }
+    public void updateMyDollyCabeca(String parte, Recompensa recompensa) throws SQLException{
+        
+        String sql = "update mydolly set cabeca = ? where user_nome = ?";
+        
+        PreparedStatement stmt = getCon().prepareStatement(sql);
+        
+        stmt.setString(1, recompensa.getImg());
+        stmt.setString(2, Principal.user.getNome());
+        
+        stmt.executeUpdate();
+    }
+    public void updateMyDollyPerna(String parte, Recompensa recompensa) throws SQLException{
+        
+        String sql = "update mydolly set perna = ? where user_nome = ?";
+        
+        PreparedStatement stmt = getCon().prepareStatement(sql);
+        
+        stmt.setString(1, recompensa.getImg());
+        stmt.setString(2, Principal.user.getNome());
         
         stmt.executeUpdate();
     }

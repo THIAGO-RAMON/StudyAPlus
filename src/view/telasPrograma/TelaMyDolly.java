@@ -38,19 +38,20 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     private JButton leave;
     private JButton cabeca, torso, perna;
     private MyDolly mydolly;
+    private MyDollyController controllerMD = new MyDollyController();
     private ImageIcon iconeCabeca, iconeTorco, iconeBEsquerdo, iconeBDireito, iconePEsquerda, iconePDireita;
     private SelecionarRec painelSelecionarRecompensas;
     private JLabel lblTitulo, lblDescricao;
 
     public TelaMyDolly() {
         painel();
-        
-        if(new MyDollyController().verificarSeJaFoiCarregado() == 0){
+
+        if (controllerMD.verificarSeJaFoiCarregado() == 0) {
             carregarDollyProUser();
-        }else{
+        } else {
             carregarMeuDolly();
         }
-        
+
         lblTitulo = new JLabel("MyDolly");
         lblTitulo.setFont(new Font("Arial", 1, 32));
         lblTitulo.setBounds((int) (painel1.getWidth() / 2) + 50, 30, 300, 30);
@@ -84,25 +85,29 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         painelRecompensas.setPreferredSize(new Dimension(350, 600));
         painelRecompensas.setBackground(new Color(168, 168, 168));
 
-        cabeca = new JButton(resizeImage(mydolly.getCabeca(), 100, 100));
+        cabeca = new JButton();
         cabeca.setBackground(null);
-        cabeca.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        cabeca.setText("cabeca");
+        cabeca.setBorder(null);
+        cabeca.setIcon(resizeImage(mydolly.getCabeca(), 150, 150));
         cabeca.addActionListener(new verRecompensas(cabeca));
-        cabeca.setBounds(500, 200, 100, 100);
+        cabeca.setBounds(500, 220, 100, 100);
         painel1.add(cabeca);
 
-        torso = new JButton(resizeImage(mydolly.getTorso(), 100, 200));
+        torso = new JButton(resizeImage(mydolly.getTorso(), 200, 200));
         torso.setBackground(null);
-        torso.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        torso.setText("torso");
+        torso.setBorder(null);
         torso.addActionListener(new verRecompensas(torso));
-        torso.setBounds(cabeca.getX() - 10, cabeca.getY() + 65, 80, 130);
+        torso.setBounds(cabeca.getX() - 35, cabeca.getY() + 105, 150, 120);
         painel1.add(torso);
 
-        perna = new JButton(resizeImage(mydolly.getPerna(), 100, 100));
+        perna = new JButton(resizeImage(mydolly.getPerna(), 200, 300));
         perna.setBackground(null);
-        perna.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
+        perna.setText("perna");
+        perna.setBorder(null);
         perna.addActionListener(new verRecompensas(perna));
-        perna.setBounds(torso.getX(), torso.getHeight() + 275, torso.getWidth() / 2, 130);
+        perna.setBounds(torso.getX(), torso.getY() + 125, 150, 100);
         painel1.add(perna);
 
         painelSelecionarRecompensas = new SelecionarRec();
@@ -188,35 +193,77 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
 
         for (Recompensa recompensa : recompensasHabilitada) {
             if (qtdRecompensas >= 3) {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa,true,btn);
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
                 painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
                 qtdRecompensas = 0;
             } else {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa,true,btn);
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
                 painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
                 qtdRecompensas++;
             }
         }
 
     }
-    
-    public void carregarMeuDolly(){
+
+    private void carregarRecompensaGanhaPorTelaCabeca(String tipo, JButton btn) throws SQLException {
+
+        int qtdRecompensas = 0;
+
+        ArrayList<Recompensa> recompensasHabilitada
+                = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
+
+        for (Recompensa recompensa : recompensasHabilitada) {
+            if (qtdRecompensas >= 3) {
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
+                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                qtdRecompensas = 0;
+            } else {
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
+                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                qtdRecompensas++;
+            }
+        }
+
+    }
+
+    private void carregarRecompensaGanhaPorTelaPerna(String tipo, JButton btn) throws SQLException {
+
+        int qtdRecompensas = 0;
+
+        ArrayList<Recompensa> recompensasHabilitada
+                = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
+
+        for (Recompensa recompensa : recompensasHabilitada) {
+            if (qtdRecompensas >= 3) {
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
+                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                qtdRecompensas = 0;
+            } else {
+                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
+                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                qtdRecompensas++;
+            }
+        }
+
+    }
+
+    public void carregarMeuDolly() {
         try {
-            mydolly = new MyDollyController().listarMyDolly();
+            mydolly = controllerMD.listarMyDolly();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
-    
-    public void carregarDollyProUser(){
+
+    public void carregarDollyProUser() {
         try {
-            new MyDollyController().loadMyDolly();
-            mydolly = new MyDollyController().listarMyDolly();
+            controllerMD.loadMyDolly();
+            mydolly = controllerMD.listarMyDolly();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
-    
+
     private ImageIcon resizeImage(String imagemPath, int width, int height) {
         ImageIcon minhaImagem = new ImageIcon(imagemPath);
         Image img = minhaImagem.getImage();
@@ -224,79 +271,101 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         ImageIcon imagem = new ImageIcon(imgNew);
         return imagem;
     }
-    
+
     //Classe interna
-    
     public class BotaoRecompensa extends RecompensasTemplate {
 
-    private JLabel imagemRecompensa;
-    private JButton btn;
+        private JLabel imagemRecompensa;
+        private JButton btn;
 
-    public BotaoRecompensa(Recompensa recompensa, boolean isHabilitada, JButton btn) {
-        super(recompensa, isHabilitada);
-        this.btn = btn;
-        setBackground(new Color(168, 168, 168));
-        addMouseListener(new BotaoSelecionado());
-        configPainel();
-    }
-
-    private void configPainel() {
-        imagemRecompensa = new JLabel();
-        imagemRecompensa.setBounds(0, 0, 125, 125);
-        imagemRecompensa.setIcon(resizeImage(recompensa.getImg(), 100, 100));
-        imagemRecompensa.setHorizontalAlignment(SwingConstants.CENTER);
-        imagemRecompensa.setHorizontalTextPosition(SwingConstants.CENTER);
-        imagemRecompensa.setVerticalAlignment(SwingConstants.CENTER);
-        imagemRecompensa.setVerticalTextPosition(SwingConstants.CENTER);
-        imagemRecompensa.setBorder(null);
-        imagemRecompensa.setBackground(null);
-        add(imagemRecompensa);
-
-    }
-
-    private ImageIcon resizeImage(String imagemPath, int width, int height) {
-        ImageIcon minhaImagem = new ImageIcon(imagemPath);
-        Image img = minhaImagem.getImage();
-        Image imgNew = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        ImageIcon imagem = new ImageIcon(imgNew);
-        return imagem;
-    }
-    
-    private class BotaoSelecionado extends MouseAdapter{
-
-        @Override
-        public void mouseClicked(MouseEvent me) {
+        public BotaoRecompensa(Recompensa recompensa, boolean isHabilitada, JButton btn) {
+            super(recompensa, isHabilitada);
+            this.btn = btn;
+            setBackground(new Color(168, 168, 168));
+            addMouseListener(new BotaoSelecionado());
+            configPainel();
         }
 
-        @Override
-        public void mousePressed(MouseEvent me) {
-            alterarParteDoCorpo(btn, recompensa);
+        private void configPainel() {
+            imagemRecompensa = new JLabel();
+            imagemRecompensa.setBounds(0, 0, 125, 125);
+            imagemRecompensa.setIcon(resizeImage(recompensa.getImg(), 100, 100));
+            imagemRecompensa.setHorizontalAlignment(SwingConstants.CENTER);
+            imagemRecompensa.setHorizontalTextPosition(SwingConstants.CENTER);
+            imagemRecompensa.setVerticalAlignment(SwingConstants.CENTER);
+            imagemRecompensa.setVerticalTextPosition(SwingConstants.CENTER);
+            imagemRecompensa.setBorder(null);
+            imagemRecompensa.setBackground(null);
+            add(imagemRecompensa);
+
         }
 
-        @Override
-        public void mouseReleased(MouseEvent me) {
+        private ImageIcon resizeImage(String imagemPath, int width, int height) {
+            ImageIcon minhaImagem = new ImageIcon(imagemPath);
+            Image img = minhaImagem.getImage();
+            Image imgNew = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            ImageIcon imagem = new ImageIcon(imgNew);
+            return imagem;
         }
 
-        @Override
-        public void mouseEntered(MouseEvent me) {
-            setBackground(getBackground().darker());
+        private class BotaoSelecionado extends MouseAdapter {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                alterarParteDoCorpo(btn, recompensa);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                setBackground(getBackground().darker());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+                setBackground(getBackground().brighter());
+            }
+
         }
 
-        @Override
-        public void mouseExited(MouseEvent me) {
-            setBackground(getBackground().brighter());
+        private void alterarParteDoCorpo(JButton btn, Recompensa recompensa) {
+            btn.setIcon(null);
+            String parte = btn.getText();
+            if (parte.equalsIgnoreCase("cabeca")) {
+                new MyDollyController().updateMyDollyCabeca(btn.getText(), recompensa);
+            } else if (parte.equalsIgnoreCase("perna")) {
+                new MyDollyController().updateMyDollyPerna(btn.getText(), recompensa);
+            } else if (parte.equalsIgnoreCase("torso")) {
+                new MyDollyController().updateMyDolly(btn.getText(), recompensa);
+
+            }
+
+            dispose();
+            runTela();
         }
-        
+
+        private void alterarParteDoCorpoCabeca(JButton btn, Recompensa recompensa) {
+            btn.setIcon(null);
+            new MyDollyController().updateMyDollyCabeca(btn.getText(), recompensa);
+            dispose();
+            runTela();
+        }
+
+        private void alterarParteDoCorpoPerna(JButton btn, Recompensa recompensa) {
+            btn.setIcon(null);
+            new MyDollyController().updateMyDollyPerna(btn.getText(), recompensa);
+            dispose();
+            runTela();
+        }
+
     }
-    
-    private void alterarParteDoCorpo(JButton btn, Recompensa recompensa){
-        btn.setIcon(null);
-        new MyDollyController().updateMyDolly(btn.getName(), recompensa);
-        dispose();
-        runTela();
-    }
-    
-}
 
     private void painel() {
         painel1 = new JPanel();

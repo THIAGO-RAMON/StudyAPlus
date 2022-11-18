@@ -31,46 +31,29 @@ public class MyDollyController {
     private String fileProject = System.getProperty("user.dir");
 
     public void loadMyDolly() throws SQLException {
+        
+        String[] elementos = new String[3];
+        elementos[0] = fileProject+"\\etc\\MyDolly\\ImagensDefault\\CABEÇA_DEFAULT.png";
+        elementos[1] = fileProject+"\\etc\\MyDolly\\ImagensDefault\\TORSO_DEFAULT.png";
+        elementos[2] = fileProject+"\\etc\\MyDolly\\ImagensDefault\\PERNA_DEFAULT.png";
+        
+        int cont = 0;
 
-        int cont = 1;
-
-        FileReader leitorDescricao = null;
-        try {
-            String pathMyDollyDefault = fileProject + "\\etc\\Recompensas\\nomeRecompensas.txt";
-            File fileMyDollyDefault = new File(pathMyDollyDefault);
-
-            FileReader leitorDefault = new FileReader(fileMyDollyDefault);
-
-            BufferedReader lerDefault = new BufferedReader(leitorDefault);
-
-            String linhaDefault = fileProject + lerDefault.readLine();
-
-            MyDolly mydolly = new MyDolly();
-            mydolly.setUser(Principal.user);
-
-            while (linhaDefault != null) {
-
-                switch (cont) {
-                    case 1:
-                        mydolly.setCabeca(linhaDefault);
-                        break;
-                    case 2:
-                        mydolly.setTorso(linhaDefault);
-                        break;
-                    case 3:
-                        mydolly.setPerna(linhaDefault);
-                        break;
+        MyDolly mydolly = new MyDolly();
+        mydolly.setUser(Principal.user);
+        
+            for (int i = 0; i < elementos.length; i++) {
+                if(elementos[i] == elementos[0]){
+                    mydolly.setCabeca(elementos[0]);
+                }else if(elementos[i] == elementos[1]){
+                    mydolly.setTorso(elementos[1]);
+                }else if(elementos[i] == elementos[2]){
+                    mydolly.setPerna(elementos[2]);
                 }
-
-                cont++;
-                linhaDefault = fileProject + lerDefault.readLine();
             }
-        } catch (FileNotFoundException ex) {
-            System.err.println(ex);
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
-
+            
+            new MyDollyDAO().insertRoupa(mydolly);
+            
     }
 
     public MyDolly listarMyDolly() throws SQLException {
@@ -124,6 +107,24 @@ public class MyDollyController {
 
         try {
             new MyDollyDAO().updateMyDolly(parte, recompensa);
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+    }
+    public void updateMyDollyCabeca(String parte, Recompensa recompensa) {
+
+        try {
+            new MyDollyDAO().updateMyDollyCabeca(parte, recompensa);
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+    }
+    public void updateMyDollyPerna(String parte, Recompensa recompensa) {
+
+        try {
+            new MyDollyDAO().updateMyDollyPerna(parte, recompensa);
         } catch (SQLException ex) {
             System.err.println(ex);
         }
