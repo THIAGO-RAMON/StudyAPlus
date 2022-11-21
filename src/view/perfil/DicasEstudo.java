@@ -24,6 +24,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import model.User;
 import dao.UserDAO;
+import java.awt.Frame;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 
@@ -31,7 +32,7 @@ public class DicasEstudo extends JFrame {
 
     private JPanel painel1, painel2;
     private JLabel msg, titulo;
-    private JButton btnGerar,leave;
+    private JButton btnGerar, leave;
     private static DicasEstudo dicasEstudo;
     private BarraLateral barraLateral;
     private UserDAO userDao = new UserDAO();
@@ -42,19 +43,19 @@ public class DicasEstudo extends JFrame {
     private static int v = 0;
 
     public DicasEstudo() {
-        
-        v=0;
+
+        v = 0;
 
         porcentagem = userDao.getPorcentagem(usuario);
 
         config();
         painel();
-        
+
         titulo = new JLabel("Dicas de estudos");
         titulo.setFont(new Font("Arial", 1, 32));
-        titulo.setBounds((int)(painel1.getWidth()/2)-50, 10, 300, 30);
+        titulo.setBounds((int) (painel1.getWidth() / 2) - 50, 10, 300, 30);
         painel1.add(titulo);
-        
+
         leave = new JButton("X");
         leave.setBackground(new Color(223, 63, 16));
         leave.addActionListener(new ActionListener() {
@@ -78,14 +79,13 @@ public class DicasEstudo extends JFrame {
         btnGerar = new JButton("Gerar dica");
         btnGerar.setFont(new Font("Arial", 1, 22));
         btnGerar.setBounds(675, 170, 160, 40);
-        btnGerar.setEnabled(false);
-        //btnGerar.addMouseListener(new verMouse(btnGerar));
+        btnGerar.setEnabled(true);
+        btnGerar.addMouseListener(new verMouse(btnGerar));
         btnGerar.setBorder(new BordaPersonalizada());
         btnGerar.setBackground(new Color(207, 227, 225));
         btnGerar.addActionListener(new EventoBotao());
         painel1.add(btnGerar);
 
-        verifica();
     }
 
     private class EventoBotao implements ActionListener {
@@ -123,7 +123,7 @@ public class DicasEstudo extends JFrame {
                 posicao += 30;
 
                 if (dica.getText().equals("https://www.napratica.org.br/dicas-para-estudar-melhor-ciencia/")) {
-                    
+
                     Map<TextAttribute, Object> atributos = new HashMap<TextAttribute, Object>();
                     atributos.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 
@@ -244,11 +244,16 @@ public class DicasEstudo extends JFrame {
 
     }
 
-    private void verifica() {
+    public void verifica() {
 
         if (porcentagem > 60.00) {
-            btnGerar.setEnabled(true);
-            btnGerar.addMouseListener(new verMouse(btnGerar));
+            Frame frames[] = Frame.getFrames();
+            
+            for (int i = 0; i < frames.length; i++) {
+                frames[i].dispose();
+            }
+            
+            new DicasEstudo().runTela();
         } else {
             JOptionPane.showMessageDialog(null, "Seu desempenho não está bom o suficiente.", "Dicas de Estudo", JOptionPane.WARNING_MESSAGE);
         }

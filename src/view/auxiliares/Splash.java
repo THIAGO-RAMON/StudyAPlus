@@ -12,8 +12,8 @@ public class Splash {
 
     private final int LARGURA_IMG = 550;
     private final int ALTURA_IMG = 400;
-    private final int TIME_SLASH = 4000;
-    private final String CAMINHO_GIF = "/images/logo200x180.png";
+    private final int TIME_SLASH = 5000;
+    private final String CAMINHO_GIF = "/images/carregamento.gif";
 
     public Splash() {
         JWindow janela = new JWindow();

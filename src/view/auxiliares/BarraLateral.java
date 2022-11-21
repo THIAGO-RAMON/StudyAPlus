@@ -308,14 +308,8 @@ public class BarraLateral extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Frame frames[] = Frame.getFrames();
-            
-            for (int i = 0; i < frames.length; i++) {
-                frames[i].dispose();
-            }
-            
-            new DicasEstudo().runTela();
-            
+            DicasEstudo d = new DicasEstudo();
+            d.verifica();
         }
     }
     
