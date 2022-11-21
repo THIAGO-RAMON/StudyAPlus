@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.User;
 import dao.UserDAO;
+import javax.swing.border.LineBorder;
 
 import view.auxiliares.BarraLateral;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -120,6 +121,7 @@ public class TelaDesempenho extends TelaPadraoFullScreen {
         painel1 = new JPanel();
         painel1.setLayout(null);
         painel1.setBounds(0, 0, this.getWidth(), this.getHeight());
+        painel1.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painel1.setBackground(new Color(207, 227, 225));
         add(painel1);
     }

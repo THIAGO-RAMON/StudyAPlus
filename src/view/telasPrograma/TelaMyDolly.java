@@ -370,6 +370,7 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     private void painel() {
         painel1 = new JPanel();
         painel1.setLayout(null);
+        painel1.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painel1.setBackground(new Color(207, 227, 225));
         painel1.setBounds(0, 0, getWidth(), getHeight());
         add(painel1);

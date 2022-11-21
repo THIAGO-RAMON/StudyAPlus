@@ -12,7 +12,6 @@ public class Splash {
 
     private final int LARGURA_IMG = 550;
     private final int ALTURA_IMG = 400;
-    private final int TIME_SLASH = 5000;
     private final String CAMINHO_GIF = "/images/carregamento.gif";
 
     public Splash() {
@@ -29,7 +28,7 @@ public class Splash {
         janela.setVisible(true);
 
         try {
-            Thread.sleep(TIME_SLASH);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
         }
 

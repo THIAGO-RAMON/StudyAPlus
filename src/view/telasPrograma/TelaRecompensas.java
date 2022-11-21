@@ -6,7 +6,6 @@ package view.telasPrograma;
 
 import controller.RecompensaController;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -19,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 import model.Recompensa;
 import model.User;
 import net.miginfocom.swing.MigLayout;
@@ -124,6 +124,7 @@ public class TelaRecompensas extends TelaPadraoFullScreen {
 
         painelPrincipal = new JPanel(null);
         painelPrincipal.setBackground(new Color(205, 227, 225));
+        painelPrincipal.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelPrincipal.setBounds(0, 0, this.getWidth(), this.getHeight());
 
         add(painelPrincipal);

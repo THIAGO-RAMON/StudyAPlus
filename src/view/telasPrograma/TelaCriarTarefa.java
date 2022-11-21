@@ -27,6 +27,7 @@ import javax.swing.border.AbstractBorder;
 import model.Task;
 import model.User;
 import dao.TaskDAO;
+import javax.swing.border.LineBorder;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -327,6 +328,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         painel = new JPanel();
         painel.setSize(getSize());
+        painel.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painel.setLayout(null);
         painel.setBackground(new Color(207, 227, 225));
 

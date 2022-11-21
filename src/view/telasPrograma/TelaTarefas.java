@@ -26,6 +26,7 @@ import model.Task;
 import model.User;
 import dao.TaskDAO;
 import java.sql.SQLException;
+import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
 import view.auxiliares.BarraLateral;
@@ -80,6 +81,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         painelPrincipal = new JPanel(null);
         painelPrincipal.setBackground(new Color(207, 227, 225));
+        painelPrincipal.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painelPrincipal.setBounds(0, 0, getWidth(), getHeight());
         add(painelPrincipal);
 

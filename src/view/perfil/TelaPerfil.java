@@ -37,6 +37,7 @@ import java.awt.GridLayout;
 import java.io.FileReader;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
@@ -206,7 +207,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
                 System.exit(0);
             }
         });
-        leave.setBounds(painel1.getWidth() - 62, 0, 60, 30);
+        leave.setBounds(painel1.getWidth() - 60, 0, 60, 30);
         painel1.add(leave);
 
     }
@@ -215,6 +216,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
     private void painel1() {
         painel1 = new JPanel();
         painel1.setLayout(null);
+        painel1.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
         painel1.setBounds(0, 0, getWidth(), getHeight());
         painel1.setBackground(new Color(207, 227, 225));
         add(painel1);
