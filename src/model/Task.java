@@ -1,13 +1,15 @@
 package model;
 
+import java.sql.Date;
+
 public class Task {
     
     private int id;
     private User user;
     private String titulo;
     private String descricao;
-    private String dataInic;
-    private String dataFim;
+    private Date dataInic;
+    private Date dataFim;
     private int qtd;
     private boolean importante; 
     private boolean concluido;
@@ -60,28 +62,28 @@ public class Task {
     /**
      * @return Date return the dataInic
      */
-    public String getDataInic() {
+    public Date getDataInic() {
         return dataInic;
     }
 
     /**
      * @param dataInic the dataInic to set
      */
-    public void setDataInic(String dataInic) {
+    public void setDataInic(Date dataInic) {
         this.dataInic = dataInic;
     }
 
     /**
      * @return Date return the dataFim
      */
-    public String getDataFim() {
+    public Date getDataFim() {
         return dataFim;
     }
 
     /**
      * @param dataFim the dataFim to set
      */
-    public void setDataFim(String dataFim) {
+    public void setDataFim(Date dataFim) {
         this.dataFim = dataFim;
     }
 
@@ -113,7 +115,7 @@ public class Task {
 
     }
 
-    public Task(User user, String titulo, String descricao, String dataInic, String dataFim, boolean importante, boolean concluido){
+    public Task(User user, String titulo, String descricao, Date dataInic, Date dataFim, boolean importante, boolean concluido){
         this.user = user;
         this.titulo = titulo;
         this.descricao = descricao;

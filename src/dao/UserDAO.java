@@ -59,6 +59,8 @@ public class UserDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na hora de salvar a imagem do usuario", "ERROR", 0);
             return false;
+        }finally{
+            ConnectionFactory.closeConnection(stmt);
         }
     }
     
@@ -79,6 +81,8 @@ public class UserDAO {
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na hora de pegar a imagem do usuario", "ERROR", 0);
+        }finally{
+            ConnectionFactory.closeConnection(stmt, rs);
         }
         
         return pathImagem;
@@ -128,6 +132,8 @@ public class UserDAO {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
+        }finally{
+            ConnectionFactory.closeConnection(stmt);
         }
     }
 
@@ -152,6 +158,8 @@ public class UserDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na hora de pegar a porcentagem\n" + ex, "ERROR", JOptionPane.ERROR_MESSAGE);
             porcentagem = Double.NaN;
+        }finally{
+            ConnectionFactory.closeConnection(stmt, rs);
         }
 
         return porcentagem;

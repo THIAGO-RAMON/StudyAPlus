@@ -62,7 +62,7 @@ public class DesafioDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        stmt = new DesafioDAO().getCon().prepareStatement(sql);
+        stmt = getCon().prepareStatement(sql);
         stmt.setString(1, usuario.getNome());
         
         rs = stmt.executeQuery();

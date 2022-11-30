@@ -27,7 +27,13 @@ import javax.swing.border.AbstractBorder;
 import model.Task;
 import model.User;
 import dao.TaskDAO;
+import java.sql.Date;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.concurrent.TimeUnit;
 import javax.swing.border.LineBorder;
+import org.joda.time.Interval;
 import view.auxiliares.BarraLateral;
 import view.auxiliares.Principal;
 import view.auxiliares.TelaPadraoFullScreen;
@@ -40,7 +46,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
     public static TelaCriarTarefa telaCriarTarefa = new TelaCriarTarefa();
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     private TaskDAO dao = new TaskDAO();
     private Task tarefa;
@@ -185,60 +191,98 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
         painel.add(leave);
     }
 
-    private void confirmar() {
+    private java.sql.Date formatar(String data) throws ParseException {
+        return new java.sql.Date(formatter.parse(data).getTime());
+    }
+
+    private void confirmar() throws ParseException {
+
+        boolean dataInvalida = true;
 
         User user = principal.user;
 
         String titulo = "";
         String descricao = "";
-        String dataInicio;
-        String dataFim;
+        Date dataInicio;
+        Date dataFim;
 
         boolean importante = isImportante;
 
         if (txtTitulo.getText() == "" || txtDataInicio.getText() == "" || txtDataFim.getText() == "") {
             JOptionPane.showMessageDialog(null, "Preencha o Campos *", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } else if (vefData(txtDataFim) == false || vefData(txtDataInicio) == false) {
-            JOptionPane.showMessageDialog(null, "Datas Incompatives", "ERROR", JOptionPane.ERROR_MESSAGE);
         } else {
 
             titulo = txtTitulo.getText();
             descricao = txtDescricao.getText();
-            dataInicio = txtDataInicio.getText();
-            dataFim = txtDataFim.getText();
 
-            Task tarefa = new Task(user, titulo, descricao, dataInicio, dataFim, importante, false);
+            dataInicio = formatar(txtDataInicio.getText());
+            dataFim = formatar(txtDataFim.getText());
 
-            if (dao.saveTarefa(tarefa)) {
-                JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso", "Criar Tarefa", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                new TelaTarefas().runTela();
+            boolean dataInicioValido = validarData(txtDataInicio.getText());
+            boolean dataFimValido = validarData(txtDataFim.getText());
+            if (dataInicioValido && dataFimValido) {
+                dataInvalida = validacaoEmCompararDatas(dataInicio, dataFim);
+            }
+
+            if (dataInvalida == false) {
+                Task tarefa = new Task(user, titulo, descricao, dataInicio, dataFim, importante, false);
+
+                if (dao.saveTarefa(tarefa)) {
+                    JOptionPane.showMessageDialog(null, "Tarefa adicionada com sucesso", "Criar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new TelaTarefas().runTela();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Data invalida", "ERROR", 0);
             }
         }
 
     }
 
-    private boolean vefData(JTextField txtData) {
+    private boolean validarData(String data) {
 
-        String data = txtData.getText();
-        String auxiliar = "";
-        boolean isRight = false;
+        boolean diaSuperior = false;
 
-        if (data.length() == 10) {
-            isRight = true;
-        }else{
-            isRight = false;
+        boolean isValido = false;
+
+        int dia = Integer.parseInt(data.substring(0, 2));
+        int mes = Integer.parseInt(data.substring(3, 5));
+        int ano = Integer.parseInt(data.substring(6, 10));
+
+        if (mes > 12 || dia > 31 || ano > 2030) {
+            diaSuperior = true;
         }
 
-        if (isRight) {
-            if (data.charAt(2) == '/' && data.charAt(5) == '/') {
-                isRight = true;
-            }else{
-                isRight = false;
+        java.util.Date dataAtual = new java.util.Date();
+
+        String dataAtualFormatada = formatter.format(dataAtual);
+
+        System.out.println("Dia superior: " + diaSuperior);
+
+        if (diaSuperior) {
+            JOptionPane.showMessageDialog(null, "Data incorreta", "ERROR", 0);
+            isValido = false;
+        } else {
+            int anoAtual = Integer.parseInt(dataAtualFormatada.substring(6, 10));
+
+            if (ano >= anoAtual) {
+                isValido = true;
             }
+
         }
 
-        return isRight;
+        return isValido;
+    }
+
+    private boolean validacaoEmCompararDatas(Date data1, Date data2) {
+
+        Period diferenca = Period.between(data1.toLocalDate(), data2.toLocalDate());
+
+        if (diferenca.getDays() <= 0 && diferenca.getMonths() <= 0 && diferenca.getYears() <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private class EventoLimpar implements ActionListener {
@@ -256,7 +300,11 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            confirmar();
+            try {
+                confirmar();
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null, "Erro de data", "ERROR", 0);
+            }
         }
 
     }
@@ -328,7 +376,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         painel = new JPanel();
         painel.setSize(getSize());
-        painel.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painel.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         painel.setLayout(null);
         painel.setBackground(new Color(207, 227, 225));
 
@@ -341,7 +389,7 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
                 if (telaCriarTarefa.isVisible()) {
                     telaCriarTarefa.dispose();
                 }
-                
+
                 TelaCriarTarefa telaCriarNova = new TelaCriarTarefa();
                 telaCriarTarefa = telaCriarNova;
                 telaCriarTarefa.setVisible(true);

@@ -9,8 +9,6 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Desafio;
 import model.Recompensa;
@@ -32,8 +30,11 @@ public class RecompensaController {
     private String fileProject = System.getProperty("user.dir");
 
     private TaskDAO daoTarefas = new TaskDAO();
+    
+    private TaskController controllerTarefas = new TaskController();
+    private ObjetivoController controllerObjetivo = new ObjetivoController();
 
-    private ArrayList<Task> tarefas = (ArrayList<Task>) daoTarefas.listarTarefas(usuario);
+    private ArrayList<Task> tarefas = (ArrayList<Task>) controllerTarefas.listarTarefa(usuario);
 
     private ArrayList<Recompensa> recompensas = new ArrayList<>();
 
@@ -143,9 +144,12 @@ public class RecompensaController {
     }
 
     public void vefRecompensas() throws SQLException {
-
+        
+        int qtdTarefas = controllerTarefas.getQtdsTarefa();
+        int qtdObjetivos = controllerObjetivo.qtdObjetivosPorUser(usuario);
+        
         //Verifica o Desafio criar 3 tarefas
-        if (daoTarefas.qtdsTarefa() >= 3) {
+        if (qtdTarefas >= 3) {
             Recompensa recompensa = recompensas.get(0);
             if (recompensa.isHabilitado() == false) {
                 atualizarRecompensa(recompensa);
@@ -165,7 +169,7 @@ public class RecompensaController {
         }
 
         // Verifica a criação de 5 Tarefa
-        if (daoTarefas.qtdsTarefa() >= 5) {
+        if (qtdTarefas >= 5) {
             Recompensa recompensa = recompensas.get(2);
             if (recompensa.isHabilitado() == false) {
                 atualizarRecompensa(recompensa);
@@ -191,7 +195,7 @@ public class RecompensaController {
         }
 
         // Tenha um desempenho superior a 70%
-        if (daoTarefas.qtdsTarefa() >= 5) {
+        if (qtdTarefas >= 5) {
             if (new UserDAO().getPorcentagem(usuario) >= 70) {
                 Recompensa recompensa = recompensas.get(4);
                 if (recompensa.isHabilitado() == false) {
@@ -201,7 +205,7 @@ public class RecompensaController {
             }
         }
 
-        if (daoTarefas.qtdsTarefa() >= 7) {
+        if (qtdTarefas >= 7) {
             Recompensa recompensa = recompensas.get(5);
             if (recompensa.isHabilitado() == false) {
                 atualizarRecompensa(recompensa);
@@ -209,7 +213,7 @@ public class RecompensaController {
             }
         }
 
-        if(new ObjetivoController().qtdObjetivosPorUser(usuario) >= 1){
+        if(qtdObjetivos >= 1){
             Recompensa recompensa = recompensas.get(7);
             if(recompensa.isHabilitado() == false){
                 atualizarRecompensa(recompensa);
@@ -217,7 +221,7 @@ public class RecompensaController {
             }
         }
         
-        if(new ObjetivoController().qtdObjetivosPorUser(usuario) >= 3){
+        if(qtdObjetivos >= 3){
             Recompensa recompensa = recompensas.get(8);
             if(recompensa.isHabilitado() == false){
                 atualizarRecompensa(recompensa);

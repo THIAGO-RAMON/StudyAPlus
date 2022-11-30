@@ -29,7 +29,7 @@ public class TaskDAO {
     public TaskDAO() {
         con = ConnectionFactory.getConnection();
     }
-    
+
     public Connection getCon() {
         return con;
     }
@@ -43,8 +43,8 @@ public class TaskDAO {
             stmt.setString(1, task.getUser().getNome());
             stmt.setString(2, task.getTitulo());
             stmt.setString(3, task.getDescricao());
-            stmt.setString(4, task.getDataInic());
-            stmt.setString(5, task.getDataFim());
+            stmt.setDate(4, task.getDataInic());
+            stmt.setDate(5, task.getDataFim());
             stmt.setBoolean(6, task.isImportante());
             stmt.setBoolean(7, task.isConcluido());
 
@@ -55,46 +55,9 @@ public class TaskDAO {
 
             JOptionPane.showMessageDialog(null, ex, "ERROR BD", JOptionPane.WARNING_MESSAGE);
             return false;
-        } finally{
+        } finally {
             ConnectionFactory.closeConnection(stmt);
         }
-    }
-
-    public List<Task> listarTarefas(User usuario) {
-
-        String sql = "Select * from Tarefas where user_nome = (?)";
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        ArrayList<Task> tasks = new ArrayList<>();
-
-        try {
-
-            stmt = getCon().prepareStatement(sql);
-            stmt.setString(1, usuario.getNome());
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Task task = new Task();
-
-                task.setUser(usuario);
-                task.setTitulo(rs.getString("titulo"));
-                task.setDescricao(rs.getString("descricao"));
-                task.setDataInic(rs.getString("dataInic"));
-                task.setDataFim(rs.getString("dataFim"));
-                task.setImportante(rs.getBoolean("importante"));
-                task.setConcluido(rs.getBoolean("concluido"));
-                tasks.add(task);
-
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error na hora de listar as tarefas", "ERROR", JOptionPane.WARNING_MESSAGE);
-        } finally{
-            ConnectionFactory.closeConnection(stmt, rs);
-        }
-
-        return tasks;
-
     }
 
     public boolean updateTarefa(Task tarefaAntiga, Task tarefaNova) {
@@ -107,8 +70,8 @@ public class TaskDAO {
 
             stmt.setString(1, tarefaNova.getTitulo());
             stmt.setString(2, tarefaNova.getDescricao());
-            stmt.setString(3, tarefaNova.getDataInic());
-            stmt.setString(4, tarefaNova.getDataFim());
+            stmt.setDate(3, tarefaNova.getDataInic());
+            stmt.setDate(4, tarefaNova.getDataFim());
             stmt.setBoolean(5, tarefaNova.isImportante());
 
             stmt.setString(6, tarefaAntiga.getUser().getNome());
@@ -120,7 +83,7 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro na alteração da tarefa\n" + ex, "Error", 0);
             return false;
-        } finally{
+        } finally {
             ConnectionFactory.closeConnection(stmt);
         }
 
@@ -139,7 +102,7 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
-        } finally{
+        } finally {
             ConnectionFactory.closeConnection(stmt);
         }
 
@@ -159,7 +122,7 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "ERROR BD\n Erro ao Concluir a tarefa no banco de dados", JOptionPane.WARNING_MESSAGE);
             return false;
-        }finally{
+        } finally {
             ConnectionFactory.closeConnection(stmt);
         }
 
@@ -183,30 +146,71 @@ public class TaskDAO {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro deletando a tarefa", "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
-        } finally{
+        } finally {
             ConnectionFactory.closeConnection(stmt);
         }
 
     }
 
-    public int qtdsTarefa() throws SQLException {
+    public int qtdsTarefa(){
 
         int qtd = 0;
-        
+
         String sql = "select count(*) from tarefas where user_nome = ?";
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        stmt = getCon().prepareStatement(sql);
-        stmt.setString(1, Principal.user.getNome());
-        rs = stmt.executeQuery();
-        rs.next();
-        qtd = Integer.parseInt(rs.getString(1));
-        
-        ConnectionFactory.closeConnection(stmt, rs);
-        
+        try {
+            stmt = getCon().prepareStatement(sql);
+            stmt.setString(1, Principal.user.getNome());
+            rs = stmt.executeQuery();
+            rs.next();
+            qtd = Integer.parseInt(rs.getString(1));
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            System.out.println("Erro no loading da qtd de tarefas");
+        } finally {
+            ConnectionFactory.closeConnection(stmt, rs);
+        }
+
         return qtd;
+
+    }
+
+    public List<Task> listTask(User usuario) {
+        String sql = "Select * from Tarefas where user_nome = (?)";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        try {
+
+            stmt = getCon().prepareStatement(sql);
+            stmt.setString(1, usuario.getNome());
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Task task = new Task();
+
+                task.setUser(usuario);
+                task.setTitulo(rs.getString("titulo"));
+                task.setDescricao(rs.getString("descricao"));
+                task.setDataInic(rs.getDate("dataInic"));
+                task.setDataFim(rs.getDate("dataFim"));
+                task.setImportante(rs.getBoolean("importante"));
+                task.setConcluido(rs.getBoolean("concluido"));
+                tasks.add(task);
+
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            System.out.println("Erro na listagem de tarefas");
+        } finally {
+            ConnectionFactory.closeConnection(stmt, rs);
+        }
+
+        return tasks;
 
     }
 

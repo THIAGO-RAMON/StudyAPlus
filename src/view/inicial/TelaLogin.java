@@ -217,7 +217,7 @@ public class TelaLogin extends TelaPadraoFullScreen {
                         if (recompensaController.quantidadeDeRecompensasValida(user)) { // Verifica se as recompensas foram já carregadas para o perfil
                             recompensaController.loadRecompensas(user);
                         }
-
+                        
                         b = true;
 
                         break;

@@ -1,6 +1,7 @@
 package view.telasPrograma;
 
 import controller.RecompensaController;
+import controller.TaskController;
 import controller.UserController;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +25,10 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import model.Task;
 import model.User;
 import dao.TaskDAO;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -35,23 +38,25 @@ import view.auxiliares.TelaPadraoFullScreen;
 
 public class TelaTarefas extends TelaPadraoFullScreen {
 
-    private User user = Principal.user;
     private PainelTarefas painelTarefas;
     private JPanel painelPrincipal, painelInternoPendente, painelExternoPendetes, painelExternoConc, painelInternoConc;
     private BarraLateral barraLateral;
     private JScrollPane painelPendente, painelConcluido, painelBackgroundTarefas;
     private PainelInfoTarefas painelInformaçõesTarefa;
+    private JLabel lblAfazeres;
+    private JButton btnConcluido, btnPendente, leave;
+    private JTextField txtConcluido, txtPendente;
 
     private HashMap<JButton, Task> pendentes = new HashMap<>();
     private HashMap<JButton, Task> concluidos = new HashMap<>();
 
-    private final TaskDAO daoTarefas = new TaskDAO();
+    private User user = Principal.user;
+    private TaskController taskController = new TaskController();
+    private RecompensaController controllerRecompensa;
+    private UserController userController;
 
-    private JLabel lblAfazeres;
-    private JButton btnConcluido, btnPendente, leave;
-    private JTextField txtConcluido, txtPendente;
-    private ArrayList<JCheckBox> cBoxs = new ArrayList<>();
     private ArrayList<Task> tarefas = new ArrayList<>();
+
     private ImageIcon iconeMarcado = new ImageIcon(getClass().getResource("/images/QuadradoMarcado.png"));
     private ImageIcon iconeNaoMarcado = new ImageIcon(getClass().getResource("/images/QuadradoNaoMarcado.png"));
     private ImageIcon iconeSetaEsquerda = new ImageIcon(getClass().getResource("/images/setaEsquerda.png"));
@@ -59,21 +64,15 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     private boolean isCreatedTarefaPendente = false, hasComponentPendente = false, isOpenPendente = false;
     private boolean isCreatedTarefaConcluido = false, hasComponentConcluido = false;
-
-    private RecompensaController controllerRecompensa;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     public static TelaTarefas telaDasTarefas;
 
-    private UserController cc;
-
-    public static int XTAREFALBL = 90, XCBTAREFA = 60, XBTNRMOVE = 700;
-    public static int YTAREFALBL = 60, YCBTAREFA = 60, YBTNREMOVE = 60;
-
     public TelaTarefas() {
-        
+
         controllerRecompensa = new RecompensaController();
         controllerRecompensa.execListRecompensa();
-        
+
         runTask();
 
         TelaPadraoFullScreen.InserirIcone ic = new TelaPadraoFullScreen.InserirIcone();
@@ -81,7 +80,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         painelPrincipal = new JPanel(null);
         painelPrincipal.setBackground(new Color(207, 227, 225));
-        painelPrincipal.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painelPrincipal.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         painelPrincipal.setBounds(0, 0, getWidth(), getHeight());
         add(painelPrincipal);
 
@@ -142,6 +141,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     }
 
+    // Painel Pendente
     private void telaPendenteVisivel() {
         painelExternoPendetes = new JPanel(new MigLayout());
         painelExternoPendetes.add(painelPendente, "w 840, h 400");
@@ -189,6 +189,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     }
 
+    // Painel Concluido
     private void telaConcVisivel() {
         painelExternoConc = new JPanel(new MigLayout());
         painelExternoConc.add(painelConcluido, "w 840, h 400");
@@ -232,6 +233,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     }
 
+    // Mostrar mais tarefa
     private class EventoMostrarInfoTarefas implements ActionListener {
 
         Task tarefa;
@@ -242,7 +244,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-
             painelInformaçõesTarefa = new PainelInfoTarefas(tarefa);
             painelInformaçõesTarefa.setBounds(460, 120, painelInformaçõesTarefa.getWidth(), painelInformaçõesTarefa.getHeight());
             painelBackgroundTarefas.setVisible(false);
@@ -284,42 +285,47 @@ public class TelaTarefas extends TelaPadraoFullScreen {
             int ok = JOptionPane.showConfirmDialog(null, "Deseja alterar a sua tarefa?", "Alterar Tarefa", JOptionPane.YES_NO_OPTION,
                     JOptionPane.PLAIN_MESSAGE);
             if (ok == 0) {
-                String titulo = painel.tituloTarefa.getText();
-                String descricao = painel.descricaoTarefa.getText();
-                String dataInicio = painel.dataInicioTarefa.getText();
-                String dataFim = painel.dataFimTarefa.getText();
-                String importante = painel.importanteTarefa.getText();
-                boolean concluido = tarefaAntiga.isConcluido();
+                try {
+                    String titulo = painel.tituloTarefa.getText();
+                    String descricao = painel.descricaoTarefa.getText();
+                    Date dataInicio = formatar(painel.dataInicioTarefa.getText());
+                    Date dataFim = formatar(painel.dataFimTarefa.getText());
+                    String importante = painel.importanteTarefa.getText();
+                    boolean concluido = tarefaAntiga.isConcluido();
 
-                boolean importanteBol = false;
+                    boolean importanteBol = false;
 
-                importante = importante.trim();
+                    importante = importante.trim();
 
-                if (importante.equalsIgnoreCase("Sim")) {
-                    importanteBol = true;
-                    isAlteravel = true;
-                } else if (importante.equalsIgnoreCase("Não")) {
-                    importanteBol = false;
-                    isAlteravel = true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "Preencha o campo importante com:\n \"Sim\" ou \"Não\"", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    isAlteravel = false;
-                }
-
-                if (isAlteravel) {
-                    Task tarefaNova = new Task(user, titulo, descricao, dataInicio, dataFim, importanteBol, concluido);
-
-                    if (daoTarefas.updateTarefa(tarefaAntiga, tarefaNova)) {
-                        JOptionPane.showMessageDialog(null, "Tarefa alterada com sucesso", "Alterar Tarefa", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-
-                        runTask();
-
-                        new TelaTarefas().runTela();
-
-                        painelPrincipal.revalidate();
-                        painelPrincipal.repaint();
+                    if (importante.equalsIgnoreCase("Sim")) {
+                        importanteBol = true;
+                        isAlteravel = true;
+                    } else if (importante.equalsIgnoreCase("Não")) {
+                        importanteBol = false;
+                        isAlteravel = true;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Preencha o campo importante com:\n \"Sim\" ou \"Não\"", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        isAlteravel = false;
                     }
+
+                    if (isAlteravel) {
+                        Task tarefaNova = new Task(user, titulo, descricao, dataInicio, dataFim, importanteBol, concluido);
+
+                        if (taskController.updateTarefa(tarefaAntiga, tarefaNova)) {
+                            JOptionPane.showMessageDialog(null, "Tarefa alterada com sucesso", "Alterar Tarefa", JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+
+                            runTask();
+
+                            new TelaTarefas().runTela();
+
+                            painelPrincipal.revalidate();
+                            painelPrincipal.repaint();
+                        }
+                    }
+                } catch (ParseException ex) {
+                    System.err.println(ex);
+                    JOptionPane.showMessageDialog(null, "Erro de data", "ERROR", 0);
                 }
             }
         }
@@ -341,7 +347,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
             if (ok == 0) {
 
-                if (daoTarefas.deleteTarefa(tarefa)) {
+                if (taskController.deletarTarefa(tarefa)) {
                     JOptionPane.showMessageDialog(null, "Tarefa deletada com sucesso", "Excluir Tarefa", JOptionPane.INFORMATION_MESSAGE);
 
                     dispose();
@@ -435,7 +441,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     private void runTask() {
         if (tarefas.isEmpty()) {
-            for (Task tarefa : daoTarefas.listarTarefas(user)) {
+            for (Task tarefa : taskController.listarTarefa(user)) {
                 tarefas.add(tarefa);
             }
         } else {
@@ -538,11 +544,11 @@ public class TelaTarefas extends TelaPadraoFullScreen {
                 public void run() {
                     for (JButton btn : pendentes.keySet()) {
                         if (btn.getIcon() == iconeMarcado) {
-                            if (daoTarefas.updateTarefaConcluido(pendentes.get(btn))) {
+                            if (taskController.updateTarefaConcluido(pendentes.get(btn))) {
                                 System.out.println("Marcado concluido no BD");
                             }
                         } else if (btn.getIcon() == iconeNaoMarcado) {
-                            if (daoTarefas.updateTarefaNaoConcluido(pendentes.get(btn))) {
+                            if (taskController.updateTarefaNaoConcluido(pendentes.get(btn))) {
                                 System.out.println("Desmarcado concluido no BD");
                             }
                         }
@@ -555,11 +561,11 @@ public class TelaTarefas extends TelaPadraoFullScreen {
                 public void run() {
                     for (JButton btn : concluidos.keySet()) {
                         if (btn.getIcon() == iconeMarcado) {
-                            if (daoTarefas.updateTarefaConcluido(concluidos.get(btn))) {
+                            if (taskController.updateTarefaConcluido(concluidos.get(btn))) {
                                 System.out.println("Marcado concluido no BD");
                             }
                         } else if (btn.getIcon() == iconeNaoMarcado) {
-                            if (daoTarefas.updateTarefaNaoConcluido(concluidos.get(btn))) {
+                            if (taskController.updateTarefaNaoConcluido(concluidos.get(btn))) {
                                 System.out.println("Desmarcado concluido no BD");
                             }
                         }
@@ -587,7 +593,7 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private void atualizarPercentual() {
 
         double porcentagem;
-        cc = new UserController();
+        userController = new UserController();
 
         if (!(concluidos.isEmpty())) {
             double qtdTarefasConcluida = concluidos.size();
@@ -595,12 +601,11 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
             porcentagem = (qtdTarefasConcluida / qtdTarefas) * 100;
 
-            if (cc.updateDesempenho(user, porcentagem)) {
-            }
+            if (userController.updateDesempenho(user, porcentagem));
 
         } else {
             porcentagem = 0;
-            if (cc.updateDesempenho(user, porcentagem));
+            if (userController.updateDesempenho(user, porcentagem));
         }
 
     }
@@ -628,7 +633,15 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         }
     }
 
-    //Classes Internas Anonimas
+    private java.sql.Date formatar(String data) throws ParseException {
+        return new java.sql.Date(formatter.parse(data).getTime());
+    }
+    
+    private String formatarString(Date data){
+        return formatter.format(data);
+    }
+
+    //Classes Internas 
     private class PainelInfoTarefas extends JPanel {
 
         private Font arialRotulos = new Font("Arial", 1, 20);
@@ -695,8 +708,8 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
             tituloTarefa = new JTextField(tarefa.getTitulo());
             descricaoTarefa = new JTextArea(tarefa.getDescricao().trim());
-            dataInicioTarefa = new JTextField(tarefa.getDataInic());
-            dataFimTarefa = new JTextField(tarefa.getDataFim());
+            dataInicioTarefa = new JTextField(formatarString(tarefa.getDataInic()));
+            dataFimTarefa = new JTextField(formatarString(tarefa.getDataFim()));
             importanteTarefa = new JTextField();
 
             if (tarefa.isImportante()) {
@@ -799,15 +812,6 @@ public class TelaTarefas extends TelaPadraoFullScreen {
             g.setColor(Color.BLACK);
             g.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 35, 35);
         }
-    }
-
-    private class VefDesafioConcluido implements Runnable {
-
-        @Override
-        public void run() {
-            vefDesafioConcluido();
-        }
-
     }
 
     // Runnables
