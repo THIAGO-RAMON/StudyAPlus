@@ -475,6 +475,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         private Card cardInformações;
         private Informações textoInformações;
         private JLabel lblTitulo;
+        private JLabel fotoMiguel, fotoFelipe, fotoRamon, fotoPedro;
         private JLabel lblNome1, lblNome2, lblNome3, lblNome4;
         private JLabel email1, email2, email3, email4;
 
@@ -520,7 +521,9 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
             cardPedro = new Card(200, 300);
             cardPedro.setBounds(20, 70, cardPedro.getWidth(), cardPedro.getHeight());
-
+            
+            fotoPedro = new JLabel();
+            
             lblNome1 = new JLabel("Pedro Uhlmann");
             lblNome1.setBounds(50, 200, 100, 30);
             lblNome1.setFont(new Font("Arial", 0, 14));
@@ -536,6 +539,11 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             cardFelipe = new Card(200, 300);
             cardFelipe.setBounds(270, 70, cardPedro.getWidth(), cardPedro.getHeight());
 
+            fotoFelipe = new JLabel(new ImageIcon(getClass().getResource("/images/FelipeGabril.png")));
+            fotoFelipe.setBounds(25, 25, 150, 150);
+            fotoFelipe.setBorder(BorderFactory.createLineBorder(Color.black));
+            cardFelipe.add(fotoFelipe);
+            
             lblNome2 = new JLabel("Felipe Gabriel");
             lblNome2.setBounds(50, 200, 100, 30);
             lblNome2.setFont(new Font("Arial", 0, 14));
@@ -551,6 +559,11 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             cardMiguel = new Card(200, 300);
             cardMiguel.setBounds(20, 400, cardPedro.getWidth(), cardPedro.getHeight());
 
+            fotoMiguel = new JLabel(new ImageIcon(getClass().getResource("/images/MigasArcanjo.png")));
+            fotoMiguel.setBounds(25, 25, 150, 150);
+            fotoMiguel.setBorder(BorderFactory.createLineBorder(Color.black));
+            cardMiguel.add(fotoMiguel);
+            
             lblNome3 = new JLabel("Miguel Arcanjo");
             lblNome3.setBounds(50, 200, 100, 30);
             lblNome3.setFont(new Font("Arial", 0, 14));

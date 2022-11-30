@@ -254,8 +254,6 @@ public class TelaCriarTarefa extends TelaPadraoFullScreen {
 
         String dataAtualFormatada = formatter.format(dataAtual);
 
-        System.out.println("Dia superior: " + diaSuperior);
-
         if (diaSuperior) {
             JOptionPane.showMessageDialog(null, "Data incorreta", "ERROR", 0);
             isValido = false;
