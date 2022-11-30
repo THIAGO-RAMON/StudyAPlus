@@ -9,6 +9,7 @@ public class Principal {
     public static TelaMain tl = new TelaMain();
 //    public static TelaTarefas tela = new TelaTarefas();
     public static User user = new User();
+    public static boolean isNotified = false;
     
     public static void main(String[] args) {
         new Splash();

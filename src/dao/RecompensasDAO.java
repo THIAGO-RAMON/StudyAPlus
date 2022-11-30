@@ -23,6 +23,8 @@ public class RecompensasDAO {
 
     Connection con;
 
+    private String fileProject = System.getProperty("user.dir");
+
     public RecompensasDAO() {
         con = ConnectionFactory.getConnection();
     }
@@ -46,7 +48,7 @@ public class RecompensasDAO {
         stmt.setString(5, recompensa.getImg());
         stmt.setBoolean(6, recompensa.isHabilitado());
         stmt.setString(7, recompensa.getTipo());
-        
+
         stmt.execute();
 
         ConnectionFactory.closeConnection(stmt);
@@ -123,12 +125,12 @@ public class RecompensasDAO {
 
         return qtd;
     }
-    
+
     public int qtdRecompensasGanha(User user) throws SQLException {
         int qtd = 0;
-        
+
         String sql = "select count(*) from recompensa where user_nome = ? and habilitado = true";
-        
+
         PreparedStatement stmt = null;
 
         stmt = getCon().prepareStatement(sql);
@@ -138,22 +140,22 @@ public class RecompensasDAO {
         qtd = Integer.parseInt(rs.getString(1));
 
         ConnectionFactory.closeConnection(stmt, rs);
-        
+
         return qtd;
     }
-    
-    public List<Recompensa> listarRecompensasHabilitadaPorTipo(User user, String tipo) throws SQLException{
-        
+
+    public List<Recompensa> listarRecompensasHabilitadaPorTipo(User user, String tipo) throws SQLException {
+
         ArrayList<Recompensa> recompensas = new ArrayList<>();
-        
+
         String sql = "select * from recompensa where user_nome = ? and habilitado = true and tipo = ?";
-        
+
         PreparedStatement stmt = getCon().prepareStatement(sql);
         stmt.setString(1, user.getNome());
         stmt.setString(2, tipo);
-        
+
         ResultSet rs = stmt.executeQuery();
-        
+
         while (rs.next()) {
 
             Desafio desafio = new Desafio();
@@ -170,9 +172,26 @@ public class RecompensasDAO {
             recompensas.add(recompensa);
 
         }
-        
+
+        if (tipo.equals("cabeca")) {
+            Recompensa cabecaDefault = new Recompensa();
+            cabecaDefault.setImg(fileProject + "\\etc\\MyDolly\\ImagensDefault\\CABEÇA_DEFAULT.png");
+            cabecaDefault.setTipo("cabeca");
+            recompensas.add(cabecaDefault);
+        } else if (tipo.equals("torso")) {
+            Recompensa torsoDefault = new Recompensa();
+            torsoDefault.setImg(fileProject + "\\etc\\MyDolly\\ImagensDefault\\TORSO_DEFAULT.png");
+            torsoDefault.setTipo("torso");
+            recompensas.add(torsoDefault);
+        } else if (tipo.equals("perna")) {
+            Recompensa pernaDefault = new Recompensa();
+            pernaDefault.setImg(fileProject + "\\etc\\MyDolly\\ImagensDefault\\PERNA_DEFAULT.png");
+            pernaDefault.setTipo("perna");
+            recompensas.add(pernaDefault);
+        }
+
         ConnectionFactory.closeConnection(stmt, rs);
-        
+
         return recompensas;
     }
 }

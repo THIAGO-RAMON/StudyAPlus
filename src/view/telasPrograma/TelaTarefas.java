@@ -29,6 +29,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
@@ -112,6 +113,11 @@ public class TelaTarefas extends TelaPadraoFullScreen {
         generateConcluido();
 
         generatePendente();
+
+        if (Principal.isNotified == false) {
+            notificarTarefa();
+            Principal.isNotified = true;
+        }
     }
 
     // EVENTOS DE BOTÃOS
@@ -636,9 +642,24 @@ public class TelaTarefas extends TelaPadraoFullScreen {
     private java.sql.Date formatar(String data) throws ParseException {
         return new java.sql.Date(formatter.parse(data).getTime());
     }
-    
-    private String formatarString(Date data){
+
+    private String formatarString(Date data) {
         return formatter.format(data);
+    }
+
+    private void notificarTarefa() {
+        for (Task tarefa : tarefas) {
+            validacaoEmCompararDatas(tarefa.getDataInic(), tarefa.getDataFim(), tarefa.getTitulo());
+        }
+    }
+
+    private void validacaoEmCompararDatas(Date data1, Date data2, String titulo) {
+
+        Period diferenca = Period.between(data1.toLocalDate(), data2.toLocalDate());
+
+        if (diferenca.getDays() == 1) {
+            JOptionPane.showMessageDialog(null, "Falta 1 dia para completar a tarefa :\n" + titulo, "AVISO", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     //Classes Internas 

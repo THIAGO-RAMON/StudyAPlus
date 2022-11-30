@@ -12,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,10 +40,15 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     private ImageIcon iconeCabeca, iconeTorco, iconeBEsquerdo, iconeBDireito, iconePEsquerda, iconePDireita;
     private SelecionarRec painelSelecionarRecompensas;
     private JLabel lblTitulo, lblDescricao;
+    private boolean isCabecaDefaultLoaded = false, isTorsoDefaultLoaded = false, isPernaDefaultLoaded = false;
+    private String fileProject = System.getProperty("user.dir");
+    private JPanel painelBackgroundMyDolly;
 
     public TelaMyDolly() {
         painel();
 
+        painelBackground();
+        
         if (controllerMD.verificarSeJaFoiCarregado() == 0) {
             carregarDollyProUser();
         } else {
@@ -91,8 +94,8 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         cabeca.setBorder(null);
         cabeca.setIcon(resizeImage(mydolly.getCabeca(), 150, 150));
         cabeca.addActionListener(new verRecompensas(cabeca));
-        cabeca.setBounds(500, 220, 100, 100);
-        painel1.add(cabeca);
+        cabeca.setBounds((int)(painelBackgroundMyDolly.getWidth()/2)-35, 60, 100, 100);
+        painelBackgroundMyDolly.add(cabeca);
 
         torso = new JButton(resizeImage(mydolly.getTorso(), 200, 200));
         torso.setBackground(null);
@@ -100,7 +103,7 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         torso.setBorder(null);
         torso.addActionListener(new verRecompensas(torso));
         torso.setBounds(cabeca.getX() - 35, cabeca.getY() + 105, 150, 120);
-        painel1.add(torso);
+        painelBackgroundMyDolly.add(torso);
 
         perna = new JButton(resizeImage(mydolly.getPerna(), 200, 300));
         perna.setBackground(null);
@@ -108,7 +111,7 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         perna.setBorder(null);
         perna.addActionListener(new verRecompensas(perna));
         perna.setBounds(torso.getX(), torso.getY() + 125, 150, 100);
-        painel1.add(perna);
+        painelBackgroundMyDolly.add(perna);
 
         painelSelecionarRecompensas = new SelecionarRec();
         painelSelecionarRecompensas.setVisible(true);
@@ -164,7 +167,7 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
         @Override
         public void actionPerformed(ActionEvent ae) {
             try {
-                if (cont % 2 != 0) {
+                if (painelSelecionarRecompensas.isVisible() == false) {
                     lblDescricao.setText(configDesc(btn.getText()));
                     lblDescricao.setVisible(true);
                     carregarRecompensaGanhaPorTela(btn.getText(), btn);
@@ -188,8 +191,7 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
 
         int qtdRecompensas = 0;
 
-        ArrayList<Recompensa> recompensasHabilitada
-                = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
+        ArrayList<Recompensa> recompensasHabilitada = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
 
         for (Recompensa recompensa : recompensasHabilitada) {
             if (qtdRecompensas >= 3) {
@@ -198,55 +200,12 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
                 qtdRecompensas = 0;
             } else {
                 BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
-                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
+                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30, wrap");
                 qtdRecompensas++;
             }
         }
 
     }
-
-    private void carregarRecompensaGanhaPorTelaCabeca(String tipo, JButton btn) throws SQLException {
-
-        int qtdRecompensas = 0;
-
-        ArrayList<Recompensa> recompensasHabilitada
-                = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
-
-        for (Recompensa recompensa : recompensasHabilitada) {
-            if (qtdRecompensas >= 3) {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
-                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-                qtdRecompensas = 0;
-            } else {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
-                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-                qtdRecompensas++;
-            }
-        }
-
-    }
-
-    private void carregarRecompensaGanhaPorTelaPerna(String tipo, JButton btn) throws SQLException {
-
-        int qtdRecompensas = 0;
-
-        ArrayList<Recompensa> recompensasHabilitada
-                = (ArrayList<Recompensa>) new RecompensaController().recompensasHabilitadasPorTipo(Principal.user, tipo);
-
-        for (Recompensa recompensa : recompensasHabilitada) {
-            if (qtdRecompensas >= 3) {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
-                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-                qtdRecompensas = 0;
-            } else {
-                BotaoRecompensa recompensaBtn = new BotaoRecompensa(recompensa, true, btn);
-                painelRecompensas.add(recompensaBtn, "w 125, h 125, gaptop 10,  gapleft 10, gapright 30");
-                qtdRecompensas++;
-            }
-        }
-
-    }
-
     public void carregarMeuDolly() {
         try {
             mydolly = controllerMD.listarMyDolly();
@@ -370,10 +329,19 @@ public class TelaMyDolly extends TelaPadraoFullScreen {
     private void painel() {
         painel1 = new JPanel();
         painel1.setLayout(null);
-        painel1.setBorder(new LineBorder(Color.BLACK.darker(),1,true));
+        painel1.setBorder(new LineBorder(Color.BLACK.darker(), 1, true));
         painel1.setBackground(new Color(207, 227, 225));
         painel1.setBounds(0, 0, getWidth(), getHeight());
         add(painel1);
+    }
+    
+    private void painelBackground(){
+        painelBackgroundMyDolly = new JPanel();
+        painelBackgroundMyDolly.setBounds(400, 145, 300, 500);
+        painelBackgroundMyDolly.setBackground(new Color(218, 217, 215));
+        painelBackgroundMyDolly.setBorder(new BordaCantoArrendondado());
+        painelBackgroundMyDolly.setLayout(null);
+        painel1.add(painelBackgroundMyDolly);
     }
 
     public void runTela() {

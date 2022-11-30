@@ -112,7 +112,7 @@ public class RecompensaController {
             System.err.println(e);
         }
     }
-
+    
     public List<Recompensa> listRecompensa(User usuario) throws SQLException {
 
         if (dao.listarRecompensas(usuario).isEmpty()) {
