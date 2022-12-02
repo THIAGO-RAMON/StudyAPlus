@@ -484,13 +484,16 @@ public class TelaPerfil extends TelaPadraoFullScreen {
         private JButton close;
 
         public SobreNos() {
-
+            
             painelSobreNos = new JPanel(null);
             painelSobreNos.setPreferredSize(new Dimension(500, 1350));
+            painelSobreNos.setBorder(null);
+            painelSobreNos.setBackground(new Color(207, 227, 225).brighter());
 
             painelScroll = new JScrollPane(painelSobreNos, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             painelScroll.setSize(500, 500);
             painelScroll.setBorder(null);
+            painelScroll.setBackground(new Color(207, 227, 225));
             configPainel();
 
             painelExternoScroll = new JPanel(new GridLayout(1, 1));
@@ -510,7 +513,7 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
             lblTitulo.setHorizontalTextPosition(SwingConstants.CENTER);
 
-            painelSobreNos.add(lblTitulo);
+            painelSobreNos.add(lblTitulo);            
 
             close = new JButton("X");
             close.setBackground(new Color(223, 63, 16));
@@ -522,7 +525,9 @@ public class TelaPerfil extends TelaPadraoFullScreen {
             cardPedro = new Card(200, 300);
             cardPedro.setBounds(20, 70, cardPedro.getWidth(), cardPedro.getHeight());
             
-            fotoPedro = new JLabel();
+            fotoPedro = new JLabel(new ImageIcon(getClass().getResource("/images/PedroUhlmann.jpeg")));
+            fotoPedro.setBounds(25, 25, 150, 150);
+            cardPedro.add(fotoPedro);
             
             lblNome1 = new JLabel("Pedro Uhlmann");
             lblNome1.setBounds(50, 200, 100, 30);
@@ -541,7 +546,6 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
             fotoFelipe = new JLabel(new ImageIcon(getClass().getResource("/images/FelipeGabril.png")));
             fotoFelipe.setBounds(25, 25, 150, 150);
-            fotoFelipe.setBorder(BorderFactory.createLineBorder(Color.black));
             cardFelipe.add(fotoFelipe);
             
             lblNome2 = new JLabel("Felipe Gabriel");
@@ -561,7 +565,6 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
             fotoMiguel = new JLabel(new ImageIcon(getClass().getResource("/images/MigasArcanjo.png")));
             fotoMiguel.setBounds(25, 25, 150, 150);
-            fotoMiguel.setBorder(BorderFactory.createLineBorder(Color.black));
             cardMiguel.add(fotoMiguel);
             
             lblNome3 = new JLabel("Miguel Arcanjo");
@@ -578,6 +581,10 @@ public class TelaPerfil extends TelaPadraoFullScreen {
 
             cardRamon = new Card(200, 300);
             cardRamon.setBounds(270, 400, cardPedro.getWidth(), cardPedro.getHeight());
+
+            fotoRamon = new JLabel(new ImageIcon(getClass().getResource("/images/Ramon.jpg")));
+            fotoRamon.setBounds(25, 25, 150, 150);
+            cardRamon.add(fotoRamon);
 
             lblNome4 = new JLabel("Thiago Ramon");
             lblNome4.setBounds(50, 200, 100, 30);
