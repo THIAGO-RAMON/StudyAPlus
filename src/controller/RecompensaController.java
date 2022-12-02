@@ -194,49 +194,6 @@ public class RecompensaController {
             }
         }
 
-        // Tenha um desempenho superior a 70%
-        if (qtdTarefas >= 5) {
-            if (new UserDAO().getPorcentagem(usuario) >= 70) {
-                Recompensa recompensa = recompensas.get(4);
-                if (recompensa.isHabilitado() == false) {
-                    atualizarRecompensa(recompensa);
-                    notificarCumprimento(recompensa);
-                }
-            }
-        }
-
-        if (qtdTarefas >= 7) {
-            Recompensa recompensa = recompensas.get(5);
-            if (recompensa.isHabilitado() == false) {
-                atualizarRecompensa(recompensa);
-                notificarCumprimento(recompensa);
-            }
-        }
-
-        if(qtdObjetivos >= 1){
-            Recompensa recompensa = recompensas.get(7);
-            if(recompensa.isHabilitado() == false){
-                atualizarRecompensa(recompensa);
-                notificarCumprimento(recompensa);
-            }
-        }
-        
-        if(qtdObjetivos >= 3){
-            Recompensa recompensa = recompensas.get(8);
-            if(recompensa.isHabilitado() == false){
-                atualizarRecompensa(recompensa);
-                notificarCumprimento(recompensa);
-            }
-        }
-        
-        if (qtdRecompensasGanha(usuario) >= 5) {
-            Recompensa recompensa = recompensas.get(9);
-            if (recompensa.isHabilitado() == false) {
-                atualizarRecompensa(recompensa);
-                notificarCumprimento(recompensa);
-            }
-        }
-
     }
 
     private int qtdRecompensasGanha(User user) throws SQLException {

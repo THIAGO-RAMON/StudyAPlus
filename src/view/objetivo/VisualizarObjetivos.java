@@ -62,10 +62,10 @@ public class VisualizarObjetivos extends JFrame {
         barraLateral = new BarraLateral();
         barraLateral.setBounds(10, 10, barraLateral.getWidth(), barraLateral.getHeight());
         painel1.add(barraLateral);
-        
+
         lblTitulo = new JLabel("Objetivos");
         lblTitulo.setFont(new Font("Arial", 1, 32));
-        lblTitulo.setBounds((int)(painel1.getWidth()/2)+50, 10, 300, 30);
+        lblTitulo.setBounds((int) (painel1.getWidth() / 2) + 50, 10, 300, 30);
         painel1.add(lblTitulo);
 
         telaVisualizar = new TelaVisualizar();
@@ -128,8 +128,8 @@ public class VisualizarObjetivos extends JFrame {
     }
 
     private void objetivosTabela() {
-        cc= new ObjetivoController();
-        
+        cc = new ObjetivoController();
+
         for (Objetivo o : cc.listObj(user)) {
             modeloTabelaObjetivos.addRow(new Object[]{o.getDescricao(), o.getDataInic()});
         }
@@ -271,15 +271,18 @@ public class VisualizarObjetivos extends JFrame {
 
             txtNome = new JTextField(Principal.user.getNome());
             txtNome.setBounds(82, 85, 300, 30);
+            txtNome.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
             txtNome.setEditable(false);
             painel.add(txtNome);
 
             txtObj = new JTextField();
             txtObj.setBounds(82, 155, 300, 30);
+            txtObj.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
             painel.add(txtObj);
 
             txtData = new JTextField();
             txtData.setBounds(82, 225, 300, 30);
+            txtData.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
             painel.add(txtData);
 
             txtNome.setFont(new Font("Arial", 0, 15));
@@ -333,7 +336,7 @@ public class VisualizarObjetivos extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?", "Objetivo", JOptionPane.WARNING_MESSAGE);
-                cc= new ObjetivoController();
+                cc = new ObjetivoController();
                 if (i == 0) {
                     if (cc.deleteObjetivo(objetivo)) {
 

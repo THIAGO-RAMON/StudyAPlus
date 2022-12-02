@@ -1,10 +1,4 @@
 \etc\Recompensas\images\CABEÇA COM BONE.png
 \etc\Recompensas\images\CORPO COM JERSEY.png
 \etc\Recompensas\images\SHORT DE BASQUETE.png
-\etc\Recompensas\images\CHAPEU DE BRUXA.png
-\etc\Recompensas\images\COROA.png
-\etc\Recompensas\images\CAMISA MARROM.png
-\etc\Recompensas\images\CAMISA.png
-\etc\Recompensas\images\CAMISA LISTRADA CINZA.png
-\etc\Recompensas\images\SHORT.png
-\etc\Recompensas\images\CAMISA DE BASQUETE.png
+

@@ -649,7 +649,9 @@ public class TelaTarefas extends TelaPadraoFullScreen {
 
     private void notificarTarefa() {
         for (Task tarefa : tarefas) {
-            validacaoEmCompararDatas(tarefa.getDataInic(), tarefa.getDataFim(), tarefa.getTitulo());
+            if (tarefa.isConcluido() == false) {
+                validacaoEmCompararDatas(tarefa.getDataInic(), tarefa.getDataFim(), tarefa.getTitulo());
+            }
         }
     }
 
